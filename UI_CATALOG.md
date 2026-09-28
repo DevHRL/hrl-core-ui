@@ -129,11 +129,11 @@ sale punteado y rotulado; los periodos vacíos del final se agrupan en un bloque
 
 | Componente | Props |
 |---|---|
-| `AppShell` | `navItems` `{id,label,icon,group?,badge?,href?}[]` · `active` · `onSelect` · `title` · `subtitle` · `breadcrumbs` · `actions` · `user` `{name,email?,role?,avatar?}` · `logo` (por defecto `HrlLogo`; `null` la deja sin marca) · `brand` (nombre del sistema; el kit no lo sabe) · `themeKey` · `notifications` · `onSignOut` · `children` |
+| `AppShell` | `navItems` `{id,label,icon,group?,badge?,href?}[]` · `active` · `onSelect` · `title` · `subtitle` · `breadcrumbs` · `actions` · `user` `{name,email?,role?,avatar?}` · `logo` (por defecto `HrlLogo`, que con el menú plegado queda en solo el escudo; `null` la deja sin marca) · `brand` (nombre del sistema; el kit no lo sabe) · `themeKey` · `notifications` · `onSignOut` · `children`. Plegado, los módulos conservan la altura que tienen con el menú abierto. |
 | `Stack` | `direction` column·row · `gap` 1…6 (escala `--space-*`) · `align` start·center·end·stretch·baseline · `justify` start·center·end·between · `wrap` · `as`. Una fila o columna con separación fija: reemplaza `style={{ display: 'flex', gap }}`. |
 | `Grid` | `min` (px, 240 por defecto: cuantas celdas quepan) · `columns` (número fijo; sustituye a `min`) · `gap` 1…6 · `as`. |
 | `HrlLogo` | `variant` full·mark · `width` (px o medida CSS) · `label`. El logo del Hospital Regional de Loreto, incluido en el paquete. `AppShell` lo pone solo en la barra lateral. |
-| `LoginScreen` | `systemName` · `onSubmit({username,password})` (async; si lanza, se muestra su mensaje) · `backdrop` auto·none·dawn·morning·afternoon·dusk·lit-night·night · `labels` · `footer`. Pantalla de ingreso con la fachada del hospital según la hora. No consulta nada. |
+| `LoginScreen` | `systemName` · `onSubmit({username,password})` (async; si lanza, se muestra su mensaje) · `backdrop` auto·none·dawn·morning·afternoon·dusk·lit-night·night · `labels` · `footer`. Pantalla de ingreso con la fachada del hospital según la hora. Ocupa exactamente la ventana, sin scroll: si no cabe, se desplaza la tarjeta. No consulta nada. |
 | `ChangePasswordScreen` | `systemName` · `onSubmit({current,next})` · `minLength` · `backdrop` · `labels` · `footer`. Cambio obligatorio de contraseña, con el mismo fondo. |
 | `PageHeader` | `title` **(req.)** · `description` · `breadcrumbs` `{label,href?}[]` · `actions` |
 | `PageActions` | `children`. Lleva controles de la vista abierta (periodo, Exportar) a la ranura de `PageHeader`, junto al título, sin subir su estado al shell. |

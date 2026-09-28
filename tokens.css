@@ -570,16 +570,28 @@
 }
 
 /* El logo viene recortado al contenido, así que el aire lo da el padding y no
-   el propio PNG. */
+   el propio PNG. El alto mínimo es el del logo extendido (158 px de ancho con
+   la proporción 640:316 = 78 px) más el relleno y el borde, y vale igual con el
+   menú plegado: el escudo es más bajo, y sin este mínimo todos los módulos
+   subían al plegar. Un logo propio más alto que 78 px sí mueve el menú. */
 .hrl-sidebar__logo {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 99px;
   padding: 11px 20px 9px;
   border-bottom: 1px solid var(--border-soft);
 }
 
 .hrl-sidebar__logo img { width: 158px; height: auto; display: block; }
+
+/* Logo por defecto del AppShell: el extendido con el menú abierto y solo el
+   escudo con el menú plegado. El extendido no cabe en los 76 px del menú
+   plegado, y HrlLogo no es un <img>, así que la regla de arriba no lo reducía:
+   quedaba cortado. */
+.hrl-sidebar__logo-escudo { display: none; }
+.hrl-shell--plegado .hrl-sidebar__logo-completo { display: none; }
+.hrl-shell--plegado .hrl-sidebar__logo-escudo { display: block; }
 
 .hrl-sidebar__group-label,
 .hrl-sidebar__section-label {
@@ -606,15 +618,28 @@
 /* Sidebar replegado: quedan solo los iconos, y la etiqueta de cada módulo
    pasa a un tooltip para que el menú siga siendo legible. */
 .hrl-shell--plegado .hrl-sidebar { width: 76px; }
-.hrl-shell--plegado .hrl-sidebar__logo { padding: 9px 10px 8px; }
+.hrl-shell--plegado .hrl-sidebar__logo { padding-left: 10px; padding-right: 10px; }
 .hrl-shell--plegado .hrl-sidebar__logo img { width: 54px; }
-.hrl-shell--plegado .hrl-sidebar__section-label,
-.hrl-shell--plegado .hrl-sidebar__group-label { display: none; }
 
-/* Sin las etiquetas de grupo hace falta otra separación entre bloques. */
-.hrl-shell--plegado .hrl-sidebar__group + .hrl-sidebar__group {
+/* Plegado, el rótulo de grupo no cabe, pero conserva su alto: sin texto, y en
+   su lugar una línea que separa los bloques. Antes se ocultaba y la línea iba
+   con otro relleno, y cada módulo quedaba a distinta altura abierto y plegado. */
+.hrl-shell--plegado .hrl-sidebar__section-label,
+.hrl-shell--plegado .hrl-sidebar__group-label {
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  color: transparent;
+}
+
+.hrl-shell--plegado .hrl-sidebar__section-label::after,
+.hrl-shell--plegado .hrl-sidebar__group-label::after {
+  content: "";
+  position: absolute;
+  left: var(--space-4);
+  right: var(--space-4);
+  top: 50%;
   border-top: 1px dashed var(--border-soft);
-  padding-top: 12px;
 }
 
 .hrl-shell--plegado .hrl-nav-item { justify-content: center; gap: 0; padding: 13px 0; }
@@ -2590,9 +2615,17 @@ body { margin: 0; background: #f9fafb; }
 /* -------------------------------------------------------------- pantalla de acceso */
 
 /* LoginScreen y ChangePasswordScreen (src/LoginScreen.jsx). La fachada cambia
-   con la hora; el color de fondo se ve mientras baja la imagen. */
+   con la hora; el color de fondo se ve mientras baja la imagen.
+
+   Ocupa exactamente la ventana y nunca tiene scroll. El `border-box` global
+   alcanza a los hijos de .hrl-nuevo, no a él mismo: con `min-height: 100vh`
+   el relleno se sumaba y la página crecía 32 px. Si la ventana es más baja
+   que la tarjeta (un teléfono apaisado), se desplaza la tarjeta, no la página. */
 .hrl-nuevo.hrl-login {
-  min-height: 100vh;
+  box-sizing: border-box;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2610,6 +2643,8 @@ body { margin: 0; background: #f9fafb; }
 .hrl-login__tarjeta {
   width: 100%;
   max-width: 400px;
+  max-height: 100%;
+  overflow-y: auto;
   padding: var(--space-6) var(--space-5);
   background: var(--surface);
   border-radius: var(--radius-card);
@@ -2653,6 +2688,14 @@ body { margin: 0; background: #f9fafb; }
   margin-top: var(--space-4);
   color: var(--muted-foreground);
   font-size: var(--text-xs);
+}
+
+/* Ventana baja: la tarjeta se compacta antes de tener que desplazarse. */
+@media (max-height: 600px) {
+  .hrl-login__tarjeta { padding: var(--space-4); }
+  /* `width` y no --hrl-logo-ancho: el componente fija esa variable en línea. */
+  .hrl-login__logo { width: 190px; margin-bottom: var(--space-2); }
+  .hrl-login__subtitulo { margin-bottom: var(--space-3); }
 }
 
 /* Impresión: solo el documento. Sin menú, sin barra superior, sin controles. */

@@ -3,6 +3,35 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.7.0 — 28/09/2026
+
+Correcciones del menú lateral plegado y de la pantalla de ingreso que dos sistemas
+(Reporte Estadístico y Vigilancia Oncológica) estaban arreglando cada uno por su cuenta en
+su `estilos.css`. Sin cambios de API. Es menor y no parche porque el menú plegado cambia de
+aspecto a propósito.
+
+- **`AppShell`: con el menú plegado, el logo por defecto es solo el escudo.** `HrlLogo` no
+  es un `<img>` y la regla que reducía el logo al plegar solo alcanzaba a un `<img>`: el logo
+  extendido (158 px) quedaba cortado en los 76 px del menú. Ahora `AppShell` monta los dos
+  (`.hrl-sidebar__logo-completo` y `.hrl-sidebar__logo-escudo`) y el CSS muestra el que
+  corresponde. Un `logo` propio sigue funcionando igual.
+- **Los módulos del menú quedan a la misma altura abierto y plegado.** Al plegar subían: el
+  bloque del logo perdía alto (ahora tiene `min-height` de 99 px, el del logo extendido con
+  su relleno) y los rótulos de grupo se ocultaban y la separación entre grupos cambiaba de
+  relleno. Ahora el rótulo conserva su alto, sin texto, con una línea punteada en su lugar;
+  desaparece el borde superior que se ponía entre grupos. Un logo propio de más de 78 px de
+  alto sí mueve el menú.
+- **`LoginScreen` y `ChangePasswordScreen` ocupan exactamente la ventana, sin scroll.** El
+  relleno se sumaba a `min-height: 100vh` (el `border-box` global no alcanzaba al propio
+  `.hrl-nuevo`) y la página crecía 32 px. Si la ventana es más baja que la tarjeta, se desplaza
+  la tarjeta y no la página; con menos de 600 px de alto la tarjeta se compacta (logo de
+  190 px, menos relleno).
+- Catálogo: historia `Layout / AppShell / Menú plegado`.
+
+**Al actualizar:** borrar las copias locales de estos arreglos y dejar `AppShell` sin `logo`.
+En Reporte Estadístico, `LOGO_MENU` en `App.jsx` y los bloques «logo del menú» e «ingreso» de
+`estilos.css`; lo mismo en Vigilancia Oncológica (`AppNuevo.jsx`).
+
 ## 1.6.1 — 23/09/2026
 
 Correcciones que salieron de usar 1.6.0 en `ficha_14`. Sin cambios de API.

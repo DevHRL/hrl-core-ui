@@ -1,4 +1,4 @@
-import { jsx, jsxs } from "react/jsx-runtime";
+import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Sprite, Icon } from "./icons.js";
 import { EmptyState } from "./EmptyState.js";
@@ -8,6 +8,10 @@ import { Tooltip } from "./Tooltip.js";
 import { readTheme, applyTheme } from "./theme.js";
 import { useExitAnimation } from "./useExitAnimation.js";
 const TABS_NOTIF = ["Todas", "No le\xEDdas", "Archivadas"];
+const LOGO_POR_DEFECTO = /* @__PURE__ */ jsxs(Fragment, { children: [
+  /* @__PURE__ */ jsx(HrlLogo, { width: 158, className: "hrl-sidebar__logo-completo" }),
+  /* @__PURE__ */ jsx(HrlLogo, { variant: "mark", width: 52, className: "hrl-sidebar__logo-escudo" })
+] });
 function iniciales(nombre) {
   if (!nombre) return "\xB7\xB7";
   const partes = nombre.trim().split(/\s+/).slice(0, 2);
@@ -245,7 +249,7 @@ function AppShell({
     /* @__PURE__ */ jsx(Sprite, {}),
     /* @__PURE__ */ jsxs("div", { className: `hrl-shell${plegado ? " hrl-shell--plegado" : ""}`, children: [
       /* @__PURE__ */ jsxs("aside", { className: "hrl-sidebar", children: [
-        /* @__PURE__ */ jsx("div", { className: "hrl-sidebar__logo", children: logo === void 0 ? /* @__PURE__ */ jsx(HrlLogo, { width: 158 }) : logo }),
+        /* @__PURE__ */ jsx("div", { className: "hrl-sidebar__logo", children: logo === void 0 ? LOGO_POR_DEFECTO : logo }),
         /* @__PURE__ */ jsx(SidebarNav, { navItems, active, onSelect, plegado })
       ] }),
       /* @__PURE__ */ jsxs("div", { className: "hrl-main", children: [

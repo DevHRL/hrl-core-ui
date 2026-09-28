@@ -69,6 +69,14 @@ import { LoginScreen } from '@hrl/core-ui';
   obligatorio de clave, con el mismo fondo.
 - Los archivos (logo, escudo y fachadas en WebP, ~1,2 MB) están en el paquete y se
   empaquetan solos al importar `tokens.css`. El navegador solo descarga el de la hora.
+- La pantalla ocupa exactamente la ventana y no tiene scroll (desde 1.7.0). Si el proyecto
+  la corregía en su propio CSS (`.hrl-nuevo.hrl-login { height: 100vh … }`), se borra.
+
+## Menú lateral
+
+- Sin `logo`, `AppShell` pone el del hospital y, con el menú plegado, solo el escudo (desde
+  1.7.0). Un `logo` propio que hacía eso mismo (dos `HrlLogo` y un contenedor de alto fijo) se
+  borra, junto con el CSS que ocultaba los rótulos de grupo al plegar.
 
 ## Probar de punta a punta
 

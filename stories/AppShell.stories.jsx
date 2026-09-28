@@ -36,3 +36,37 @@ export const Basico = () => {
     </div>
   );
 };
+
+/* El menú recuerda si estaba plegado (localStorage `hrl_menu`), así que la demo
+   lo deja plegado antes de montar el shell. Al plegar, el logo pasa a ser solo
+   el escudo y cada módulo queda a la misma altura que con el menú abierto:
+   los rótulos de grupo se vuelven una línea del mismo alto. */
+export const MenuPlegado = () => {
+  const [listo] = useState(() => {
+    try {
+      localStorage.setItem('hrl_menu', 'plegado');
+    } catch {
+      /* Sin almacenamiento, el shell arranca abierto: se pliega con su botón. */
+    }
+    return true;
+  });
+  const [activo, setActivo] = useState('indicadores');
+  return (
+    listo && (
+      <div style={{ height: '100vh' }}>
+        <AppShell
+          navItems={NAV}
+          active={activo}
+          onSelect={setActivo}
+          title="Indicadores"
+          brand="Sistema de ejemplo"
+          user={{ name: 'Persona de prueba', role: 'Administración' }}
+          notifications={NOTIFICACIONES}
+          onSignOut={() => {}}
+        >
+          <Card title="Menú plegado">Use el botón de la barra superior para abrirlo y comparar las alturas.</Card>
+        </AppShell>
+      </div>
+    )
+  );
+};

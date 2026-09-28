@@ -9,6 +9,16 @@ import { useExitAnimation } from './useExitAnimation.js';
 
 const TABS_NOTIF = ['Todas', 'No leídas', 'Archivadas'];
 
+/* Logo por defecto: el extendido con el menú abierto y solo el escudo con el
+   menú plegado, que no deja sitio para el nombre. Se montan los dos y el CSS
+   decide cuál se ve, así plegar no vuelve a pintar el árbol. */
+const LOGO_POR_DEFECTO = (
+  <>
+    <HrlLogo width={158} className="hrl-sidebar__logo-completo" />
+    <HrlLogo variant="mark" width={52} className="hrl-sidebar__logo-escudo" />
+  </>
+);
+
 /* Contrato de usuario del shell:
      { name, email?, role?, avatar? }
    Los nombres de campo son genéricos a propósito: cada sistema traduce los
@@ -249,7 +259,8 @@ function ProfileDrawer({ user, onClose, onSignOut, leaving, tema, onTema }) {
 
      navItems  { id, label, icon, group?, badge?, href? }[]
      user      { name, email?, role?, avatar? }
-     logo      nodo libre para la marca; si se omite, el logo del hospital (HrlLogo).
+     logo      nodo libre para la marca; si se omite, el logo del hospital (HrlLogo),
+               que al plegar el menú queda en solo el escudo.
                Pasar `logo={null}` deja la barra lateral sin marca
      brand     nombre del sistema en la barra superior; el kit no lo sabe
      themeKey  clave con la que se recuerda el modo oscuro */
@@ -339,7 +350,7 @@ export function AppShell({
       <Sprite />
       <div className={`hrl-shell${plegado ? ' hrl-shell--plegado' : ''}`}>
         <aside className="hrl-sidebar">
-          <div className="hrl-sidebar__logo">{logo === undefined ? <HrlLogo width={158} /> : logo}</div>
+          <div className="hrl-sidebar__logo">{logo === undefined ? LOGO_POR_DEFECTO : logo}</div>
           <SidebarNav navItems={navItems} active={active} onSelect={onSelect} plegado={plegado} />
         </aside>
 
