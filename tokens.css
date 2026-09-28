@@ -588,10 +588,13 @@
 /* Logo por defecto del AppShell: el extendido con el menú abierto y solo el
    escudo con el menú plegado. El extendido no cabe en los 76 px del menú
    plegado, y HrlLogo no es un <img>, así que la regla de arriba no lo reducía:
-   quedaba cortado. */
-.hrl-sidebar__logo-escudo { display: none; }
-.hrl-shell--plegado .hrl-sidebar__logo-completo { display: none; }
-.hrl-shell--plegado .hrl-sidebar__logo-escudo { display: block; }
+   quedaba cortado.
+   Van anidadas en .hrl-sidebar__logo a propósito: `.hrl-logo { display: block }`
+   se define más abajo con la misma especificidad y, con una sola clase, ganaba
+   y se veían los dos logos a la vez (1.7.0). */
+.hrl-sidebar__logo .hrl-sidebar__logo-escudo { display: none; }
+.hrl-shell--plegado .hrl-sidebar__logo .hrl-sidebar__logo-completo { display: none; }
+.hrl-shell--plegado .hrl-sidebar__logo .hrl-sidebar__logo-escudo { display: block; }
 
 .hrl-sidebar__group-label,
 .hrl-sidebar__section-label {

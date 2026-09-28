@@ -3,6 +3,13 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.7.1 — 28/09/2026
+
+- **`AppShell`: con el menú abierto se veían los dos logos, el extendido y el escudo, uno al lado del
+  otro.** La regla que oculta el escudo tenía la misma especificidad que `.hrl-logo { display: block }`,
+  que va más abajo en `tokens.css`, y perdía. Ahora va anidada en `.hrl-sidebar__logo`. Comprobado
+  en el catálogo, abierto y plegado. Sin cambios de API.
+
 ## 1.7.0 — 28/09/2026
 
 Correcciones del menú lateral plegado y de la pantalla de ingreso que dos sistemas
