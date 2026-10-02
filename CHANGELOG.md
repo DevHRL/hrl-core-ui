@@ -3,6 +3,15 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.10.0-redesign.2 — 02/10/2026 (prelanzamiento, rama `redesign`)
+
+- **`doctor` y `upgrade` aceptan tags de prelanzamiento** (`#v1.10.0-redesign.1`). `doctor` avisaba
+  que npm «tomaría la rama por defecto», y no es así: un tag de prelanzamiento es tan fijo como
+  cualquier otro. `comparar` ordena como semver (un prelanzamiento va antes de su versión final);
+  `upgrade latest` sigue sin elegir prelanzamientos.
+- Los mensajes de `doctor`/`upgrade`/`init` y `package.json` apuntan a `DevHRL/hrl-core-ui`, no al
+  repositorio personal anterior.
+
 ## 1.10.0-redesign.1 — 02/10/2026 (prelanzamiento, rama `redesign`)
 
 Salió de evaluar Reporte Estadístico con la skill de UI/UX «ui-ux-pro-max», midiendo en el navegador

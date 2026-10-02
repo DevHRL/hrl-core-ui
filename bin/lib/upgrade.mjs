@@ -13,7 +13,7 @@ import { join } from 'node:path';
 import { doctor } from './doctor.mjs';
 import { refrescar } from './plantilla.mjs';
 import {
-  KIT, comparar, escribirJson, especificacionKit, etiquetaDe, leerJson, leerTexto, raizGit, versionInstalada, versionesDelLockfile,
+  KIT, SEMVER, comparar, escribirJson, especificacionKit, etiquetaDe, leerJson, leerTexto, raizGit, versionInstalada, versionesDelLockfile,
 } from './proyecto.mjs';
 
 const normalizar = (v) => v.replace(/^v/, '');
@@ -56,7 +56,7 @@ const npmInstall = (dir) => spawnSync('npm install', { cwd: dir, shell: true, en
 
 export async function upgrade({ dir, pkg }, objetivo, { fix = false } = {}, escribir = (t) => console.log(t)) {
   const espec = especificacionKit(pkg);
-  if (!espec) return { error: `El kit no está declarado en package.json. Instálalo primero: npm i "git+https://github.com/GiancarloChavez/hrl-core-ui.git#vX.Y.Z"` };
+  if (!espec) return { error: `El kit no está declarado en package.json. Instálalo primero: npm i "git+https://github.com/DevHRL/hrl-core-ui.git#vX.Y.Z"` };
 
   const actual = etiquetaDe(espec.valor) ?? versionInstalada(dir);
   let nueva;
@@ -65,7 +65,7 @@ export async function upgrade({ dir, pkg }, objetivo, { fix = false } = {}, escr
   } catch (e) {
     return { error: `No pude averiguar la última versión: ${e.message}` };
   }
-  if (!/^\d+\.\d+\.\d+$/.test(nueva)) return { error: `Versión no válida: "${objetivo}". Usa vX.Y.Z o latest.` };
+  if (!SEMVER.test(nueva)) return { error: `Versión no válida: "${objetivo}". Usa vX.Y.Z, vX.Y.Z-pre.N o latest.` };
   if (nueva === actual) return { error: `El proyecto ya está en v${nueva}.` };
   if (actual && comparar(nueva, actual) < 0) escribir(`  aviso  v${nueva} es anterior a la actual (v${actual}): se va a bajar de versión.`);
 

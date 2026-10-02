@@ -118,10 +118,10 @@ export async function doctor({ dir, pkg }, { fix = false } = {}) {
   // 1. El kit: declarado con versión fija, instalado y coherente con el lockfile.
   const espec = especificacionKit(pkg);
   const instalada = versionInstalada(dir);
-  if (!espec) anota('error', 'El kit no está declarado en package.json', null, 'npm i "git+https://github.com/GiancarloChavez/hrl-core-ui.git#vX.Y.Z"');
+  if (!espec) anota('error', 'El kit no está declarado en package.json', null, 'npm i "git+https://github.com/DevHRL/hrl-core-ui.git#vX.Y.Z"');
   else {
     const etiqueta = etiquetaDe(espec.valor);
-    if (!etiqueta) anota('aviso', 'El kit no tiene la versión fija', `"${espec.valor}" no termina en #vX.Y.Z: npm tomaría la rama por defecto y el kit se movería bajo el proyecto.`, 'npx hrl-core-ui upgrade vX.Y.Z');
+    if (!etiqueta) anota('aviso', 'El kit no tiene la versión fija', `"${espec.valor}" no termina en #vX.Y.Z (ni #vX.Y.Z-pre.N): npm tomaría la rama por defecto y el kit se movería bajo el proyecto.`, 'npx hrl-core-ui upgrade vX.Y.Z');
     if (!instalada) anota('error', 'El kit no está instalado', null, 'npm install');
     else if (etiqueta && etiqueta !== instalada) anota('error', `Versión instalada (${instalada}) distinta de la declarada (${etiqueta})`, null, 'npm install');
     else anota('ok', `Kit ${instalada} declarado e instalado`);

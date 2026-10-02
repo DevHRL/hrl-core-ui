@@ -87,17 +87,27 @@ export function especificacionKit(pkg) {
   return null;
 }
 
-export const etiquetaDe = (valor) => (valor.match(/#v?(\d+\.\d+\.\d+)$/) || [])[1] ?? null;
+/* Una versión semver, con sufijo de prelanzamiento opcional (1.10.0-redesign.1):
+   un tag de prelanzamiento es tan fijo como cualquier otro. */
+export const SEMVER = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/;
+
+export const etiquetaDe = (valor) => (valor.match(/#v?(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)$/) || [])[1] ?? null;
 
 export function versionInstalada(dir) {
   const ruta = join(dir, 'node_modules', '@hrl', 'core-ui', 'package.json');
   return existsSync(ruta) ? JSON.parse(leerTexto(ruta)).version : null;
 }
 
+/* Como semver: primero la base; con la misma base, un prelanzamiento va antes
+   que la versión final (1.10.0-redesign.1 < 1.10.0). */
 export const comparar = (a, b) => {
-  const [x, y] = [a, b].map((v) => v.split('.').map(Number));
+  const [[ba, pa], [bb, pb]] = [a, b].map((v) => { const i = v.indexOf('-'); return i < 0 ? [v, null] : [v.slice(0, i), v.slice(i + 1)]; });
+  const [x, y] = [ba, bb].map((v) => v.split('.').map(Number));
   for (let i = 0; i < 3; i++) if (x[i] !== y[i]) return x[i] - y[i];
-  return 0;
+  if (pa === pb) return 0;
+  if (pa === null) return 1;
+  if (pb === null) return -1;
+  return pa.localeCompare(pb, 'en', { numeric: true });
 };
 
 /* Versiones de todos los paquetes del lockfile, para saber qué cambió al instalar. */

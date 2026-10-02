@@ -11,7 +11,7 @@ import {
 import { bloque, esqueleto, INICIO } from './plantilla.mjs';
 import { iconoDePestana, revisiones } from './revisiones.mjs';
 
-const REPO = 'git+https://github.com/GiancarloChavez/hrl-core-ui.git';
+const REPO = 'git+https://github.com/DevHRL/hrl-core-ui.git';
 const TOKENS = '@hrl/core-ui/tokens.css';
 
 /* Punto donde insertar el import de tokens.css: antes del primer import de CSS

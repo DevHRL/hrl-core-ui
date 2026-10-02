@@ -1,11 +1,11 @@
 {
   "name": "@hrl/core-ui",
-  "version": "1.10.0-redesign.1",
+  "version": "1.10.0-redesign.2",
   "description": "Sistema de diseño del Hospital Regional de Loreto: componentes React y tokens CSS, sin dependencias.",
   "license": "UNLICENSED",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GiancarloChavez/hrl-core-ui.git"
+    "url": "git+https://github.com/DevHRL/hrl-core-ui.git"
   },
   "bin": {
     "hrl-core-ui": "./bin/hrl-core-ui.mjs"
