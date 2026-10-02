@@ -30,7 +30,7 @@ import { usePagination, ROWS_PER_PAGE, PAGE_SIZES } from "./paginate.js";
 import { sortRows, nextSort } from "./sort.js";
 import { GaugeArc, Sparkline, StackedBars, SeriesBars, Funnel, Ranking, SplitBar } from "./Charts.js";
 import { Calendar } from "./Calendar.js";
-import { AppShell } from "./AppShell.js";
+import { AppShell, ID_CONTENIDO } from "./AppShell.js";
 import { PageHeader } from "./PageHeader.js";
 import { PageActions, PAGE_ACTIONS_ID } from "./PageActions.js";
 import { FilterBar } from "./FilterBar.js";
@@ -69,6 +69,7 @@ export {
   HrlLogo,
   ICONS,
   ICON_ALIASES,
+  ID_CONTENIDO,
   Icon,
   IconButton,
   IconSprite,

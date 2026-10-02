@@ -107,7 +107,7 @@ export function DetailDialog({
           </span>
           <div style={{ flex: 1, minWidth: 0 }}>
             <Badge label={badge.label} tone={badge.tone} />
-            <h3 className="hrl-detalle__titulo">{title}</h3>
+            <h2 className="hrl-detalle__titulo">{title}</h2>
             <p className="hrl-detalle__sub">{subtitle}</p>
           </div>
         </div>

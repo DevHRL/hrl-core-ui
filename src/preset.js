@@ -22,7 +22,7 @@ export const preset = {
     'bg-app': '#f9fafb',
     'bg-surface': '#ffffff',
     'text-primary': '#1c252e',
-    'text-secondary': '#637381',
+    'text-secondary': '#5f6f7c',
     'text-disabled': '#8493a1',
     border: 'rgba(145, 158, 171, 0.2)',
     'border-soft': 'rgba(145, 158, 171, 0.16)',
@@ -81,8 +81,8 @@ export const preset = {
     surface: '#ffffff',
     'surface-foreground': '#1c252e',
     muted: 'rgba(145, 158, 171, 0.08)',
-    'muted-foreground': '#637381',
-    'subtle-foreground': '#8493a1',
+    'muted-foreground': '#5f6f7c',
+    'subtle-foreground': '#667482',
     /* Accion principal */
     primary: '#008659',
     'primary-foreground': '#ffffff',
@@ -111,7 +111,7 @@ export const preset = {
     'neutral-soft': 'rgba(145, 158, 171, 0.10)',
     /* Bordes, campos y foco */
     input: '#ffffff',
-    'input-border': 'rgba(145, 158, 171, 0.32)',
+    'input-border': '#8493a1',
     ring: '#008659',
   },
 
@@ -144,7 +144,8 @@ export const preset = {
     'neutral-soft': 'rgba(145, 158, 171, 0.16)',
     /* Los semanticos que no se derivan solos de los de implementacion. */
     'primary-foreground': '#06231b',
-    'input-border': 'rgba(145, 158, 171, 0.34)',
+    'subtle-foreground': '#8696a2',
+    'input-border': '#66737f',
     /* El verde oscurecido en claro (para que el texto blanco del botón llegue a
      4.5:1) deja muy poco margen para el texto casi negro que usa este tema: se
      conserva aquí el verde original, que ya funcionaba bien con ese texto

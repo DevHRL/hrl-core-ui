@@ -79,7 +79,7 @@ function NotificationsDrawer({ items, tab, onTab, onMarkAllRead, onClose, leavin
       "aria-label": "Notificaciones",
       children: [
         /* @__PURE__ */ jsxs("div", { className: "hrl-drawer__head", children: [
-          /* @__PURE__ */ jsx("h3", { children: "Notificaciones" }),
+          /* @__PURE__ */ jsx("h2", { children: "Notificaciones" }),
           /* @__PURE__ */ jsx("button", { type: "button", className: "hrl-drawer__link", onClick: onMarkAllRead, disabled: !noLeidas, children: "Marcar le\xEDdas" }),
           /* @__PURE__ */ jsx("button", { type: "button", className: "hrl-iconbtn", onClick: onClose, "aria-label": "Cerrar", children: /* @__PURE__ */ jsx(Icon, { name: "sh-close", size: 18 }) })
         ] }),
@@ -184,6 +184,8 @@ function ProfileDrawer({ user, onClose, onSignOut, leaving, tema, onTema }) {
     }
   );
 }
+const ID_CONTENIDO = "contenido-principal";
+const ANCHO_MOVIL = 899;
 function AppShell({
   navItems = [],
   active,
@@ -206,6 +208,7 @@ function AppShell({
   const [tab, setTab] = useState("Todas");
   const [leidas, setLeidas] = useState({});
   const [plegado, setPlegado] = useState(() => localStorage.getItem("hrl_menu") === "plegado");
+  const [menuMovil, setMenuMovil] = useState(false);
   const [tema, setTema] = useState(() => readTheme(themeKey));
   useEffect(() => {
     applyTheme(tema, themeKey);
@@ -223,6 +226,18 @@ function AppShell({
     return () => ro.disconnect();
   }, [title, subtitle, breadcrumbs]);
   const abierto = notifOpen || profileOpen;
+  useEffect(() => {
+    if (!menuMovil) return void 0;
+    const alTeclear = (e) => {
+      if (e.key === "Escape") setMenuMovil(false);
+    };
+    window.addEventListener("keydown", alTeclear);
+    return () => window.removeEventListener("keydown", alTeclear);
+  }, [menuMovil]);
+  const saltarAlContenido = (e) => {
+    e.preventDefault();
+    document.getElementById(ID_CONTENIDO)?.focus();
+  };
   const ocultar = useCallback(() => {
     setNotifOpen(false);
     setProfileOpen(false);
@@ -239,7 +254,12 @@ function AppShell({
   const lista = notifications.map((n) => ({ ...n, unread: n.unread && !leidas[n.id] }));
   const noLeidas = lista.filter((n) => n.unread).length;
   const cambiarTema = (siguiente) => setTema(siguiente);
+  const esEstrecha = () => typeof window !== "undefined" && window.matchMedia?.(`(max-width: ${ANCHO_MOVIL}px)`).matches;
   const alternarMenu = () => {
+    if (esEstrecha()) {
+      setMenuMovil((v) => !v);
+      return;
+    }
     setPlegado((v) => {
       localStorage.setItem("hrl_menu", v ? "desplegado" : "plegado");
       return !v;
@@ -247,11 +267,24 @@ function AppShell({
   };
   return /* @__PURE__ */ jsxs("div", { className: "hrl-nuevo", children: [
     /* @__PURE__ */ jsx(Sprite, {}),
-    /* @__PURE__ */ jsxs("div", { className: `hrl-shell${plegado ? " hrl-shell--plegado" : ""}`, children: [
-      /* @__PURE__ */ jsxs("aside", { className: "hrl-sidebar", children: [
+    /* @__PURE__ */ jsx("a", { className: "hrl-saltar", href: `#${ID_CONTENIDO}`, onClick: saltarAlContenido, children: "Saltar al contenido" }),
+    /* @__PURE__ */ jsxs("div", { className: `hrl-shell${plegado ? " hrl-shell--plegado" : ""}${menuMovil ? " hrl-shell--menu-abierto" : ""}`, children: [
+      /* @__PURE__ */ jsxs("aside", { className: "hrl-sidebar", "aria-label": "Men\xFA principal", children: [
         /* @__PURE__ */ jsx("div", { className: "hrl-sidebar__logo", children: logo === void 0 ? LOGO_POR_DEFECTO : logo }),
-        /* @__PURE__ */ jsx(SidebarNav, { navItems, active, onSelect, plegado })
+        /* @__PURE__ */ jsx(
+          SidebarNav,
+          {
+            navItems,
+            active,
+            onSelect: (id) => {
+              setMenuMovil(false);
+              onSelect?.(id);
+            },
+            plegado
+          }
+        )
       ] }),
+      menuMovil && /* @__PURE__ */ jsx("button", { type: "button", className: "hrl-sidebar__velo", onClick: () => setMenuMovil(false), "aria-label": "Cerrar el men\xFA" }),
       /* @__PURE__ */ jsxs("div", { className: "hrl-main", children: [
         /* @__PURE__ */ jsxs("header", { className: "hrl-topbar", ref: topbarRef, children: [
           /* @__PURE__ */ jsxs("div", { className: "hrl-topbar__row", children: [
@@ -262,7 +295,7 @@ function AppShell({
                 className: `hrl-plegar${plegado ? " hrl-plegar--plegado" : ""}`,
                 onClick: alternarMenu,
                 "aria-label": plegado ? "Mostrar el men\xFA lateral" : "Replegar el men\xFA lateral",
-                "aria-expanded": !plegado,
+                "aria-expanded": menuMovil || !plegado,
                 children: /* @__PURE__ */ jsx(Icon, { name: "sh-sidebar-collapse", size: 18 })
               }
             ),
@@ -301,7 +334,7 @@ function AppShell({
           ] }),
           /* @__PURE__ */ jsx(PageHeader, { title, description: subtitle, breadcrumbs, actions })
         ] }),
-        /* @__PURE__ */ jsx("div", { className: `hrl-content${panelLeaving ? " hrl-content--saliendo" : ""}`, children })
+        /* @__PURE__ */ jsx("main", { id: ID_CONTENIDO, tabIndex: -1, className: `hrl-content${panelLeaving ? " hrl-content--saliendo" : ""}`, children })
       ] }),
       abierto && /* @__PURE__ */ jsx(
         "button",
@@ -338,6 +371,7 @@ function AppShell({
   ] });
 }
 export {
-  AppShell
+  AppShell,
+  ID_CONTENIDO
 };
 //# sourceMappingURL=AppShell.js.map

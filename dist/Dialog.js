@@ -21,7 +21,7 @@ function Dialog({ title, subtitle, onClose, maxWidth = 960, children, footer }) 
         children: /* @__PURE__ */ jsxs("div", { className: "hrl-modal", style: { maxWidth }, role: "dialog", "aria-modal": "true", "aria-label": title, children: [
           /* @__PURE__ */ jsx("button", { type: "button", className: "hrl-iconbtn hrl-modal__cerrar", onClick: close, "aria-label": "Cerrar", children: /* @__PURE__ */ jsx(Icon, { name: "sh-close", size: 18 }) }),
           /* @__PURE__ */ jsx("div", { className: "hrl-modal__head", children: /* @__PURE__ */ jsxs("div", { style: { minWidth: 0 }, children: [
-            /* @__PURE__ */ jsx("h3", { className: "hrl-modal__title", children: title }),
+            /* @__PURE__ */ jsx("h2", { className: "hrl-modal__title", children: title }),
             subtitle && /* @__PURE__ */ jsx("p", { className: "hrl-modal__subtitle", children: subtitle })
           ] }) }),
           /* @__PURE__ */ jsx("div", { className: "hrl-modal__body", children }),

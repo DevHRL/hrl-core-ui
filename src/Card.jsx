@@ -1,11 +1,16 @@
-export function Card({ title = 'Sección', subtitle, total, accent, actions, flush = false, children }) {
+/* El título de la sección es un `h2` por defecto: va bajo el `h1` de la página
+   (PageHeader) y un lector de pantalla recorre los títulos por nivel. Antes era
+   `h3` fijo, así que toda página saltaba de h1 a h3. Una tarjeta dentro de
+   otra sección pide `headingLevel={3}`. El nivel no cambia el aspecto. */
+export function Card({ title = 'Sección', subtitle, total, accent, actions, flush = false, headingLevel = 2, children }) {
+  const Titulo = `h${Math.min(6, Math.max(2, Number(headingLevel) || 2))}`;
   return (
     <section className={`hrl-section${flush ? ' hrl-section--flush' : ''}`}>
       <div className="hrl-section__head">
         <div className="hrl-section__title-row">
           {accent && <span className="hrl-section__accent" style={{ '--accent': accent }} />}
           <div style={{ minWidth: 0 }}>
-            <h3 className="hrl-section__title">{title}</h3>
+            <Titulo className="hrl-section__title">{title}</Titulo>
             {subtitle && <p className="hrl-section__subtitle">{subtitle}</p>}
           </div>
           {total && <span className="hrl-section__total">· {total}</span>}

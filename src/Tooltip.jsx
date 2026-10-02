@@ -91,7 +91,8 @@ export function Tooltip({ title, body, children, as: Etiqueta = 'span', focusabl
   return (
     <>
       <Etiqueta
-        style={{ display: 'inline-flex', alignItems: 'center', gap: 6, ...style }}
+        className={focusable ? 'hrl-tip-objetivo' : undefined}
+        style={{ display: 'inline-flex', alignItems: 'center', gap: 6, maxWidth: '100%', ...style }}
         onMouseEnter={mover}
         onMouseMove={mover}
         onMouseLeave={() => setPos(null)}

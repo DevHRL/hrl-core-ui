@@ -1,4 +1,6 @@
+import { useId, useState } from 'react';
 import { Tooltip } from './Tooltip.jsx';
+import { Icon } from './icons.jsx';
 
 export function Input({
   label = 'Campo',
@@ -25,6 +27,14 @@ export function Input({
   labelHidden = false,
 }) {
   const esSelect = kind === 'select';
+  /* El error y la pista se asocian al control: dentro de la etiqueta formaban
+     parte de su nombre, pero un lector de pantalla no los anunciaba como lo
+     que son, ni marcaba el campo como inválido. */
+  const base = useId();
+  const idError = error ? `${base}-error` : undefined;
+  const idPista = hint ? `${base}-pista` : undefined;
+  const describe = [idError, idPista].filter(Boolean).join(' ') || undefined;
+  const [verClave, setVerClave] = useState(false);
 
   /* La aclaración va en tooltip y no en `hint`: una línea extra bajo un campo
      lo hace más alto que sus vecinos y descuadra la fila de filtros. */
@@ -55,7 +65,14 @@ export function Input({
       )}
 
       {esSelect ? (
-        <select className="hrl-field__control" value={value} onChange={onChange} disabled={disabled}>
+        <select
+          className="hrl-field__control"
+          value={value}
+          onChange={onChange}
+          disabled={disabled}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={describe}
+        >
           {/* Una opción es una cadena (value y label coinciden) o
               {value, label} cuando el valor guardado no es el texto visible. */}
           {options.map((o) => {
@@ -91,7 +108,7 @@ export function Input({
               desplazarse sin que nadie lo note. */}
           <input
             className="hrl-field__input"
-            type={kind === 'date' ? 'date' : kind === 'password' ? 'password' : 'text'}
+            type={kind === 'date' ? 'date' : kind === 'password' && !verClave ? 'password' : 'text'}
             inputMode={kind === 'number' ? 'decimal' : undefined}
             style={kind === 'number' ? { textAlign: 'right' } : undefined}
             disabled={disabled}
@@ -100,12 +117,28 @@ export function Input({
             onChange={onChange}
             autoComplete={autoComplete}
             autoFocus={autoFocus}
+            aria-invalid={error ? true : undefined}
+            aria-describedby={describe}
           />
+          {/* Ver lo que se escribió evita errores al teclear una clave larga.
+              No envía el formulario ni cambia lo escrito. */}
+          {kind === 'password' && (
+            <button
+              type="button"
+              className="hrl-field__ver"
+              onClick={() => setVerClave((v) => !v)}
+              aria-label={verClave ? 'Ocultar la contraseña' : 'Mostrar la contraseña'}
+              aria-pressed={verClave}
+              disabled={disabled}
+            >
+              <Icon name={verClave ? 'sh-eye-off' : 'sh-eye'} size={18} />
+            </button>
+          )}
         </span>
       )}
 
       {error && (
-        <span className="hrl-field__error">
+        <span className="hrl-field__error" id={idError}>
           <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="12" r="9" fill="currentColor" opacity="0.2" />
             <path d="M12 7.5v6M12 16.6h0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -113,7 +146,11 @@ export function Input({
           {error}
         </span>
       )}
-      {hint && <span className="hrl-field__hint">{hint}</span>}
+      {hint && (
+        <span className="hrl-field__hint" id={idPista}>
+          {hint}
+        </span>
+      )}
     </label>
   );
 }

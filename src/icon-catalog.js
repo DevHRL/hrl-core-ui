@@ -18,6 +18,7 @@ export const ICONS = Object.freeze([
   'sh-chevron',
   'sh-crit',
   'sh-eye',
+  'sh-eye-off',
   'sh-chevron-down',
   'sh-info',
   'sh-upload',

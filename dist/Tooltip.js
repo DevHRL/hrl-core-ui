@@ -48,7 +48,8 @@ function Tooltip({ title, body, children, as: Etiqueta = "span", focusable = tru
     /* @__PURE__ */ jsx(
       Etiqueta,
       {
-        style: { display: "inline-flex", alignItems: "center", gap: 6, ...style },
+        className: focusable ? "hrl-tip-objetivo" : void 0,
+        style: { display: "inline-flex", alignItems: "center", gap: 6, maxWidth: "100%", ...style },
         onMouseEnter: mover,
         onMouseMove: mover,
         onMouseLeave: () => setPos(null),

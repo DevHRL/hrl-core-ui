@@ -3,6 +3,39 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.10.0-redesign.1 — 02/10/2026 (prelanzamiento, rama `redesign`)
+
+Salió de evaluar Reporte Estadístico con la skill de UI/UX «ui-ux-pro-max», midiendo en el navegador
+(contraste real, objetivos, foco con Tab, títulos, movimiento reducido, 375 px). Sin cambios que rompan
+la API: todo lo nuevo es opcional o cambia solo lo que no cumplía.
+
+- **Contraste del texto secundario.** `--subtle-foreground` era un alias de `--text-disabled` (3,15:1
+  en claro, 4,46:1 en oscuro) y el kit lo usaba —junto con `--text-disabled` a secas— como color de
+  texto: notas de `StatCard`, pistas de campo, rótulos del menú, fechas del historial, etiquetas de
+  `Field`. Ahora tiene valor propio que llega a 4,5:1 (`#667482` en claro, `#8696a2` en oscuro) y esos
+  textos lo usan. `--text-disabled` queda solo para lo deshabilitado. `npm run contrast`: 0 fallos.
+- **Borde de los campos a 3:1** (`--input-border`: `#8493a1` / `#66737f`). Medía 2,73:1, por debajo
+  del mínimo para el contorno de un control, y los campos lo tenían escrito a mano en vez de usar el token.
+- **Foco visible en los campos**: anillo de 2 px con `:focus-visible` (antes solo cambiaba el color del
+  borde de 1 px). También en `NumberCell`.
+- **`AppShell`**: el contenido es `<main id="contenido-principal" tabIndex=-1>` (`ID_CONTENIDO` exportado)
+  y hay enlace «Saltar al contenido», que mueve el foco sin tocar la URL. **Ya no exige 1440 px de ancho**:
+  por debajo de 900 px el menú es un cajón que se abre con el botón del menú y se cierra con Esc, con el
+  velo o al elegir una opción. En un teléfono la aplicación se desplazaba de lado.
+- **`Card` con `headingLevel`** (2 por defecto). Era `h3` fijo, y toda página saltaba de h1 a h3. Los
+  títulos de `Dialog`, `DetailDialog` y del cajón de notificaciones pasan a `h2`. El aspecto no cambia.
+- **Ingreso**: sin `autocomplete="off"`, con `username` / `current-password` / `new-password` — los
+  gestores de contraseñas vuelven a funcionar. `Input kind="password"` trae botón para mostrar u ocultar
+  (`aria-pressed`). Icono nuevo: `sh-eye-off`.
+- **Errores de campo asociados**: `error` y `hint` llegan al control por `aria-describedby`, y con
+  `error` el control lleva `aria-invalid`.
+- **`--text-secondary` en claro: `#637381` → `#5f6f7c`.** Sobre los fondos tintados (días del
+  calendario, chips, subtítulos de `SelectionStrip`, cabeceras) medía 4,25–4,47:1; ahora no baja de
+  4,52:1. El cambio de tono apenas se nota.
+- La tarjeta de `LoginScreen` es el `<main>` de la página de ingreso.
+- **Objetivos de 24 px** (WCAG 2.5.8) en el texto con `Tooltip` enfocable y en las cabeceras que
+  ordenan una tabla, sin mover el texto (relleno con margen negativo).
+
 ## 1.9.0 — 02/10/2026
 
 Cambio de aspecto deliberado de `ProgressSteps`, recién salido en 1.8.0. Sin cambios de API.

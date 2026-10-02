@@ -37,7 +37,7 @@ function Pantalla({ backdrop, children }) {
   const fondo = backdrop === "auto" ? backdropForHour((/* @__PURE__ */ new Date()).getHours()) : backdrop;
   return /* @__PURE__ */ jsxs("div", { className: cx("hrl-nuevo", "hrl-login", fondo && fondo !== "none" && `hrl-login--${fondo}`), children: [
     /* @__PURE__ */ jsx(Sprite, {}),
-    /* @__PURE__ */ jsx("div", { className: "hrl-login__tarjeta", children })
+    /* @__PURE__ */ jsx("main", { className: "hrl-login__tarjeta", children })
   ] });
 }
 function useEnvio() {
@@ -68,15 +68,14 @@ function LoginScreen({ systemName, onSubmit, backdrop = "auto", labels, footer }
       "form",
       {
         className: "hrl-login__form",
-        autoComplete: "off",
         onSubmit: (e) => {
           e.preventDefault();
           enviar(() => onSubmit({ username: username.trim(), password }));
         },
         children: [
           error && /* @__PURE__ */ jsx(Alert, { tone: "error", title: t.errorTitle, children: error }),
-          /* @__PURE__ */ jsx(Input, { label: t.username, required: true, autoFocus: true, value: username, onChange: (e) => setUsername(e.target.value) }),
-          /* @__PURE__ */ jsx(Input, { label: t.password, kind: "password", required: true, value: password, onChange: (e) => setPassword(e.target.value) }),
+          /* @__PURE__ */ jsx(Input, { label: t.username, required: true, autoFocus: true, autoComplete: "username", value: username, onChange: (e) => setUsername(e.target.value) }),
+          /* @__PURE__ */ jsx(Input, { label: t.password, kind: "password", required: true, autoComplete: "current-password", value: password, onChange: (e) => setPassword(e.target.value) }),
           /* @__PURE__ */ jsx(Button, { type: "submit", tone: "cta", loading: enviando, loadingText: t.submitting, className: "hrl-login__enviar", children: t.submit })
         ]
       }
@@ -99,7 +98,6 @@ function ChangePasswordScreen({ systemName, onSubmit, backdrop = "auto", minLeng
       "form",
       {
         className: "hrl-login__form",
-        autoComplete: "off",
         onSubmit: (e) => {
           e.preventDefault();
           if (next !== repeat) {
@@ -110,9 +108,9 @@ function ChangePasswordScreen({ systemName, onSubmit, backdrop = "auto", minLeng
         },
         children: [
           error && /* @__PURE__ */ jsx(Alert, { tone: "error", title: t.changeErrorTitle, children: error }),
-          /* @__PURE__ */ jsx(Input, { label: t.current, kind: "password", required: true, autoFocus: true, value: current, onChange: (e) => setCurrent(e.target.value) }),
-          /* @__PURE__ */ jsx(Input, { label: `${t.next} (m\xEDnimo ${minLength} caracteres)`, kind: "password", required: true, value: next, onChange: (e) => setNext(e.target.value) }),
-          /* @__PURE__ */ jsx(Input, { label: t.repeat, kind: "password", required: true, value: repeat, onChange: (e) => setRepeat(e.target.value) }),
+          /* @__PURE__ */ jsx(Input, { label: t.current, kind: "password", required: true, autoFocus: true, autoComplete: "current-password", value: current, onChange: (e) => setCurrent(e.target.value) }),
+          /* @__PURE__ */ jsx(Input, { label: `${t.next} (m\xEDnimo ${minLength} caracteres)`, kind: "password", required: true, autoComplete: "new-password", value: next, onChange: (e) => setNext(e.target.value) }),
+          /* @__PURE__ */ jsx(Input, { label: t.repeat, kind: "password", required: true, autoComplete: "new-password", value: repeat, onChange: (e) => setRepeat(e.target.value) }),
           /* @__PURE__ */ jsx(Button, { type: "submit", tone: "cta", loading: enviando, loadingText: t.saving, className: "hrl-login__enviar", children: t.save })
         ]
       }

@@ -54,7 +54,7 @@
   --bg-app: #f9fafb;
   --bg-surface: #ffffff;
   --text-primary: #1c252e;
-  --text-secondary: #637381;
+  --text-secondary: #5f6f7c;
   --text-disabled: #8493a1;
   --border: rgba(145, 158, 171, 0.2);
   --border-soft: rgba(145, 158, 171, 0.16);
@@ -132,7 +132,7 @@
   --surface-foreground: var(--text-primary);
   --muted: var(--head-bg);
   --muted-foreground: var(--text-secondary);
-  --subtle-foreground: var(--text-disabled);
+  --subtle-foreground: #667482;
 
   /* Accion principal */
   --primary: var(--brand);
@@ -166,7 +166,7 @@
 
   /* Bordes, campos y foco */
   --input: var(--bg-surface);
-  --input-border: rgba(145, 158, 171, 0.32);
+  --input-border: #8493a1;
   --ring: var(--brand);
 
   /* --------------------------------------------------- escala de radios */
@@ -326,7 +326,7 @@
   transition: color 0.35s var(--ease);
 }
 
-.hrl-stat__label--info svg { color: var(--text-disabled); flex: 0 0 auto; }
+.hrl-stat__label--info svg { color: var(--subtle-foreground); flex: 0 0 auto; }
 .hrl-stat__label--info:hover,
 .hrl-stat__label--info:hover svg,
 .hrl-stat__label--info:focus-visible { color: var(--text-primary); }
@@ -363,7 +363,7 @@
   animation-delay: calc(var(--delay, 0ms) + 120ms);
 }
 
-.hrl-stat__note { font-size: var(--text-sm, 12.5px); color: var(--text-disabled); }
+.hrl-stat__note { font-size: var(--text-sm, 12.5px); color: var(--subtle-foreground); }
 
 /* ------------------------------------------------------------------ UiBadge */
 
@@ -407,7 +407,7 @@
   min-height: 42px;
   padding: 0 12px;
   border-radius: var(--radius-md, 10px);
-  border: 1px solid rgba(145, 158, 171, 0.32);
+  border: 1px solid var(--input-border);
   background: var(--bg-surface);
   font-family: inherit;
   font-size: var(--text-base, 13.5px);
@@ -424,11 +424,38 @@
   border-color: var(--brand);
 }
 
+/* Foco visible con teclado: un anillo de 2 px, no solo el cambio de color de
+   un borde de 1 px. Con ratón basta el borde. */
+.hrl-field__control:focus-visible,
+.hrl-field__wrap:has(.hrl-field__input:focus-visible) {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
 .hrl-field--error .hrl-field__control,
 .hrl-field--error .hrl-field__wrap {
   border-color: var(--danger);
   background: rgba(255, 86, 48, 0.04);
 }
+
+.hrl-field__ver {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  margin-right: -6px;
+  border: 0;
+  border-radius: var(--radius-sm, 6px);
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+
+.hrl-field__ver:hover { background: var(--muted); color: var(--foreground); }
+.hrl-field__ver:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; }
+.hrl-field__ver:disabled { cursor: not-allowed; opacity: 0.5; }
 
 .hrl-field__input {
   flex: 1;
@@ -449,7 +476,7 @@
   color: var(--danger-text);
 }
 
-.hrl-field__hint { font-size: var(--text-sm, 12.5px); color: var(--text-disabled); }
+.hrl-field__hint { font-size: var(--text-sm, 12.5px); color: var(--subtle-foreground); }
 
 /* ------------------------------------------------------------- UiPagination */
 
@@ -546,9 +573,32 @@
 .hrl-shell {
   display: flex;
   min-height: 100vh;
-  min-width: 1440px;
   background: var(--bg-app);
 }
+
+/* Enlace «Saltar al contenido»: invisible hasta que recibe el foco con el
+   teclado, que es lo primero que encuentra quien navega con Tab. */
+.hrl-saltar {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 100;
+  padding: 10px 16px;
+  border-radius: var(--radius-md, 10px);
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.hrl-saltar:focus-visible { transform: none; outline: 2px solid var(--ring); outline-offset: 2px; }
+
+/* El destino del enlace y del cambio de pantalla: recibe el foco por
+   programa, no es un control, así que no se le dibuja anillo. */
+.hrl-content:focus { outline: none; }
+
+.hrl-sidebar__velo { display: none; }
 
 /* Fijo, no sticky. Con `sticky` el menú quedaba atado al alto del contenido:
    al cambiar de módulo, desplegar una fila o abrir un diálogo, la página
@@ -601,7 +651,7 @@
   font-size: var(--text-xs, 11px);
   font-weight: 700;
   letter-spacing: 0.8px;
-  color: var(--text-disabled);
+  color: var(--subtle-foreground);
   text-transform: uppercase;
 }
 
@@ -688,6 +738,60 @@
 }
 
 .hrl-shell--plegado .hrl-main { margin-left: 76px; }
+
+/* Pantallas estrechas: el menú lateral deja de ocupar sitio y pasa a ser un
+   cajón que se abre con el botón del menú. Antes el shell exigía 1440 px de
+   ancho y en un teléfono toda la aplicación se desplazaba de lado. */
+@media (max-width: 899px) {
+  .hrl-sidebar,
+  .hrl-shell--plegado .hrl-sidebar {
+    width: 260px;
+    transform: translateX(-100%);
+    transition: transform 0.3s var(--ease);
+    box-shadow: var(--shadow-drawer);
+    /* Por encima de la barra superior (40): abierto, el cajón la cubre. */
+    z-index: 50;
+  }
+
+  .hrl-shell--menu-abierto .hrl-sidebar { transform: none; }
+
+  .hrl-main,
+  .hrl-shell--plegado .hrl-main { margin-left: 0; }
+
+  .hrl-sidebar__velo {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 45;
+    border: 0;
+    padding: 0;
+    /* El mismo velo que los cajones del kit (.hrl-overlay). */
+    background: rgba(28, 37, 46, 0.32);
+    cursor: pointer;
+  }
+
+  /* La barra superior cabe en un teléfono: menos relleno y el nombre del
+     sistema se acorta antes que empujar la campana y el perfil fuera de la
+     pantalla (a 375 px el avatar quedaba 30 px a la derecha del borde). */
+  .hrl-topbar .hrl-topbar__row { padding: 0 16px; }
+  .hrl-topbar__brand { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .hrl-topbar .hrl-topbar__acciones { margin-right: 4px; }
+
+  /* En un teléfono un botón sí parte su etiqueta, en vez de salirse de su
+     tarjeta: «Descargar la plantilla de agosto de 2026» no cabe en 375 px.
+     En escritorio sigue sin partirla (ver .hrl-btn). */
+  .hrl-nuevo .hrl-btn { white-space: normal; max-width: 100%; text-align: center; }
+
+  /* Con el cajón, el menú siempre se muestra desplegado. */
+  .hrl-shell--plegado .hrl-nav-item__label { display: inline; }
+  .hrl-shell--plegado .hrl-nav-item { justify-content: flex-start; gap: 14px; padding: 13px 20px; }
+  .hrl-shell--plegado .hrl-sidebar__logo .hrl-sidebar__logo-completo { display: block; }
+  .hrl-shell--plegado .hrl-sidebar__logo .hrl-sidebar__logo-escudo { display: none; }
+}
+
+@media (max-width: 899px) and (prefers-reduced-motion: reduce) {
+  .hrl-sidebar { transition: none; }
+}
 
 /* Reserva el canal de la barra de desplazamiento: sin esto, un panel que pasa
    de necesitar scroll a no necesitarlo desplaza todo el contenido a lo ancho. */
@@ -879,7 +983,7 @@ body { margin: 0; background: #f9fafb; }
   padding: 20px 16px 12px 24px;
 }
 
-.hrl-drawer__head h3 { margin: 0; flex: 1; font-size: var(--text-lg, 17px); font-weight: 700; }
+.hrl-drawer__head h2 { margin: 0; flex: 1; font-size: var(--text-lg, 17px); font-weight: 700; }
 
 .hrl-drawer__link {
   border: none;
@@ -1036,7 +1140,7 @@ body { margin: 0; background: #f9fafb; }
   transform: translateX(3px);
 }
 
-.hrl-profile__item svg { color: var(--text-disabled); }
+.hrl-profile__item svg { color: var(--subtle-foreground); }
 .hrl-profile__item span { flex: 1; text-align: left; }
 
 .hrl-profile__foot { padding: 16px 20px 22px; border-top: 1px dashed rgba(145, 158, 171, 0.24); }
@@ -1123,11 +1227,23 @@ body { margin: 0; background: #f9fafb; }
   color: var(--foreground);
 }
 
+.hrl-tip-objetivo {
+  /* Un texto con tooltip es un objetivo: se enfoca con Tab y se apunta para
+     leerlo. Su línea mide 15–16 px; esto lo lleva a 24 sin mover el texto. */
+  padding-block: 5px;
+  margin-block: -5px;
+  border-radius: 4px;
+}
+
+.hrl-tip-objetivo:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
 .hrl-table__sort {
   border: none;
   background: transparent;
-  padding: 0;
-  margin: 0;
+  /* 24 px de zona de clic (WCAG 2.5.8) sin mover la cabecera: el relleno
+     agranda la caja y el margen negativo devuelve ese espacio. */
+  padding: 5px 0;
+  margin: -5px 0;
   font: inherit;
   color: inherit;
   cursor: pointer;
@@ -1347,7 +1463,7 @@ body { margin: 0; background: #f9fafb; }
      mínimo del contrato, porque es un botón real de la tabla. */
   min-height: var(--touch-target);
   gap: 6px;
-  border: 1px solid rgba(145, 158, 171, 0.32);
+  border: 1px solid var(--input-border);
   background: var(--bg-surface);
   font-family: inherit;
   font-size: var(--text-sm, 12.5px);
@@ -1436,7 +1552,7 @@ body { margin: 0; background: #f9fafb; }
   min-height: var(--touch-target);
   padding: 0 10px;
   border-radius: 9px;
-  border: 1px solid rgba(145, 158, 171, 0.32);
+  border: 1px solid var(--input-border);
   background: var(--bg-surface);
   font-family: inherit;
   font-size: var(--text-base, 13.5px);
@@ -1446,12 +1562,13 @@ body { margin: 0; background: #f9fafb; }
 }
 
 .hrl-input-mini:focus { border-color: var(--brand); }
+.hrl-input-mini:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; }
 
 .hrl-select-mini {
   min-height: var(--touch-target);
   padding: 0 10px;
   border-radius: 9px;
-  border: 1px solid rgba(145, 158, 171, 0.32);
+  border: 1px solid var(--input-border);
   background: var(--bg-surface);
   font-family: inherit;
   font-size: var(--text-base, 13.5px);
@@ -1560,7 +1677,7 @@ body { margin: 0; background: #f9fafb; }
   flex-direction: column;
   justify-content: space-between;
   font-size: var(--text-xs, 11px);
-  color: var(--text-disabled);
+  color: var(--subtle-foreground);
   padding-bottom: 22px;
   flex: 0 0 auto;
   text-align: right;
@@ -1641,7 +1758,7 @@ body { margin: 0; background: #f9fafb; }
   text-align: center;
   font-family: var(--font-mono);
   font-size: var(--text-xs, 11px);
-  color: var(--text-disabled);
+  color: var(--subtle-foreground);
   padding: 6px;
 }
 
@@ -1750,7 +1867,7 @@ body { margin: 0; background: #f9fafb; }
   font-weight: 700;
   letter-spacing: 0.7px;
   text-transform: uppercase;
-  color: var(--text-disabled);
+  color: var(--subtle-foreground);
   margin-bottom: 4px;
 }
 
@@ -1845,11 +1962,11 @@ body { margin: 0; background: #f9fafb; }
 .hrl-hist__fecha {
   font-family: var(--font-mono);
   font-size: var(--text-xs, 11px);
-  color: var(--text-disabled);
+  color: var(--subtle-foreground);
 }
 
 .hrl-hist__texto { font-size: var(--text-base, 13.5px); line-height: 1.5; }
-.hrl-hist__autor { font-size: var(--text-xs, 11px); color: var(--text-disabled); }
+.hrl-hist__autor { font-size: var(--text-xs, 11px); color: var(--subtle-foreground); }
 
 .hrl-hist__marca {
   display: inline-flex;
@@ -1876,7 +1993,7 @@ body { margin: 0; background: #f9fafb; }
   gap: 2px;
   padding: 0 14px;
   flex: 0 0 auto;
-  color: var(--text-disabled);
+  color: var(--subtle-foreground);
 }
 
 .hrl-embudo__flecha span { font-size: var(--text-lg, 17px); }
@@ -1909,7 +2026,7 @@ body { margin: 0; background: #f9fafb; }
 
 .hrl-embudo__nombre { font-size: var(--text-base, 13.5px); color: var(--text-secondary); }
 .hrl-embudo__valor { font-size: var(--text-2xl, 30px); font-weight: 700; letter-spacing: -1.1px; line-height: 1.1; }
-.hrl-embudo__nota { font-size: var(--text-sm, 12.5px); color: var(--text-disabled); }
+.hrl-embudo__nota { font-size: var(--text-sm, 12.5px); color: var(--subtle-foreground); }
 
 /* ------------------------------------------------------------------ Ranking */
 
@@ -2001,7 +2118,7 @@ body { margin: 0; background: #f9fafb; }
   font-weight: 700;
   letter-spacing: 0.7px;
   text-transform: uppercase;
-  color: var(--text-disabled);
+  color: var(--subtle-foreground);
   margin-bottom: 3px;
 }
 
@@ -2019,7 +2136,7 @@ body { margin: 0; background: #f9fafb; }
   padding-top: 16px;
   border-top: 1px dashed var(--border);
   font-size: var(--text-sm, 12.5px);
-  color: var(--text-disabled);
+  color: var(--subtle-foreground);
   line-height: 1.5;
 }
 
@@ -2119,7 +2236,8 @@ body { margin: 0; background: #f9fafb; }
 
   /* Los semanticos que no se derivan solos de los de implementacion. */
   --primary-foreground: #06231b;
-  --input-border: rgba(145, 158, 171, 0.34);
+  --subtle-foreground: #8696a2;
+  --input-border: #66737f;
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.45);
   --shadow-overlay: 0 32px 64px -16px rgba(0, 0, 0, 0.66);
   --shadow-card: 0 0 2px rgba(0, 0, 0, 0.5), 0 12px 24px -4px rgba(0, 0, 0, 0.42);

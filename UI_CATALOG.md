@@ -68,14 +68,14 @@ tokensToCss();                    // el bloque CSS completo, para otro bundler
 |---|---|---|
 | `Button` | `@/core-ui` | `tone` cta·blue·ghost·danger·plain · `size` md·sm · `icon` · `loading` · `disabled` · `onClick` |
 | `IconButton` | `@/core-ui` | `icon` **(req.)** · `aria-label` **(req.)** · `tone` plain·action |
-| `Input` | `@/core-ui` | `label` **(req.)** · `kind` text·number·date·password·select · `value` · `onChange` · `options` `{value,label}[]` · `groups` · `error` · `info` · `required` · `searchIcon` · `disabled` · `labelHidden` · `autoFocus` |
+| `Input` | `@/core-ui` | `label` **(req.)** · `kind` text·number·date·password·select · `value` · `onChange` · `options` `{value,label}[]` · `groups` · `error` · `info` · `required` · `searchIcon` · `disabled` · `labelHidden` · `autoFocus` · `kind="password"` trae botón para mostrar/ocultar (`aria-pressed`). `error` y `hint` se asocian al control con `aria-describedby`; con `error`, `aria-invalid` |
 | `Badge` | `@/core-ui` | `label` · `tone` ok·warn·crit·info·none |
-| `Card` | `@/core-ui` | `title` · `subtitle` · `total` · `accent` · `flush` · `children` |
+| `Card` | `@/core-ui` | `title` · `subtitle` · `total` · `accent` · `flush` · `headingLevel` (2 por defecto: va bajo el `h1` de la página; 3 para una tarjeta dentro de otra sección) · `children` |
 | `StatCard` | `@/core-ui` | `label` · `value` · `note` · `severity` neutral·normal·suspect·abnormal·nodata · `percent` · `info` · `delay` |
 | `Alert` | `@/core-ui` | `tone` info·success·warning·error · `title` · `action` · `children` |
 | `Dialog` | `@/core-ui` | `title` **(req.)** · `subtitle` · `onClose` **(req.)** · `maxWidth` · `footer` · `children` |
 | `DetailDialog` | `@/core-ui` | `title` · `subtitle` · `badge` · `icon` · `tone` · `fields` · `block` · `aside` · `onClose` |
-| `Tooltip` | `@/core-ui` | `title` · `body` **(req.)** · `focusable` · `as` · `style` |
+| `Tooltip` | `@/core-ui` | `title` · `body` **(req.)** · `focusable` · `as` · `style` · Con `focusable`, el objetivo mide al menos 24 px de alto sin mover el texto |
 | `Tabs` | `@/core-ui` | `tabs` `{key,label}[]` · `active` · `onChange` · `alerts` · `style` |
 | `Toast` | `@/core-ui` | `message` · `onClose` **(req.)** · `duration` (3600 ms) |
 | `DropdownMenu` | `@/core-ui` | `trigger` **(req.)** · `items` `{id,label,icon,onSelect,tone,disabled,separator}[]` · `align` |
@@ -130,11 +130,11 @@ sale punteado y rotulado; los periodos vacíos del final se agrupan en un bloque
 
 | Componente | Props |
 |---|---|
-| `AppShell` | `navItems` `{id,label,icon,group?,badge?,href?}[]` · `active` · `onSelect` · `title` · `subtitle` · `breadcrumbs` · `actions` · `user` `{name,email?,role?,avatar?}` · `logo` (por defecto `HrlLogo`, que con el menú plegado queda en solo el escudo; `null` la deja sin marca) · `brand` (nombre del sistema; el kit no lo sabe) · `themeKey` · `notifications` · `onSignOut` · `children`. Plegado, los módulos conservan la altura que tienen con el menú abierto. |
+| `AppShell` | `navItems` `{id,label,icon,group?,badge?,href?}[]` · `active` · `onSelect` · `title` · `subtitle` · `breadcrumbs` · `actions` · `user` `{name,email?,role?,avatar?}` · `logo` (por defecto `HrlLogo`, que con el menú plegado queda en solo el escudo; `null` la deja sin marca) · `brand` (nombre del sistema; el kit no lo sabe) · `themeKey` · `notifications` · `onSignOut` · `children`. Plegado, los módulos conservan la altura que tienen con el menú abierto. · El contenido es `<main id={ID_CONTENIDO}>` (exportado; enfóquelo al cambiar de pantalla) con enlace «Saltar al contenido». Por debajo de 900 px el menú es un cajón |
 | `Stack` | `direction` column·row · `gap` 1…6 (escala `--space-*`) · `align` start·center·end·stretch·baseline · `justify` start·center·end·between · `wrap` · `as`. Una fila o columna con separación fija: reemplaza `style={{ display: 'flex', gap }}`. |
 | `Grid` | `min` (px, 240 por defecto: cuantas celdas quepan) · `columns` (número fijo; sustituye a `min`) · `gap` 1…6 · `as`. |
 | `HrlLogo` | `variant` full·mark · `width` (px o medida CSS) · `label`. El logo del Hospital Regional de Loreto, incluido en el paquete. `AppShell` lo pone solo en la barra lateral. |
-| `LoginScreen` | `systemName` · `onSubmit({username,password})` (async; si lanza, se muestra su mensaje) · `backdrop` auto·none·dawn·morning·afternoon·dusk·lit-night·night · `labels` · `footer`. Pantalla de ingreso con la fachada del hospital según la hora. Ocupa exactamente la ventana, sin scroll: si no cabe, se desplaza la tarjeta. No consulta nada. |
+| `LoginScreen` | `systemName` · `onSubmit({username,password})` (async; si lanza, se muestra su mensaje) · `backdrop` auto·none·dawn·morning·afternoon·dusk·lit-night·night · `labels` · `footer`. Pantalla de ingreso con la fachada del hospital según la hora. Ocupa exactamente la ventana, sin scroll: si no cabe, se desplaza la tarjeta. No consulta nada. · Campos con `autocomplete` (`username`, `current-password`, `new-password`): funcionan los gestores de contraseñas |
 | `ChangePasswordScreen` | `systemName` · `onSubmit({current,next})` · `minLength` · `backdrop` · `labels` · `footer`. Cambio obligatorio de contraseña, con el mismo fondo. |
 | `PageHeader` | `title` **(req.)** · `description` · `breadcrumbs` `{label,href?}[]` · `actions` |
 | `PageActions` | `children`. Lleva controles de la vista abierta (periodo, Exportar) a la ranura de `PageHeader`, junto al título, sin subir su estado al shell. |

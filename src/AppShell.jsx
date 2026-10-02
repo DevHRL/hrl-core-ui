@@ -109,7 +109,7 @@ function NotificationsDrawer({ items, tab, onTab, onMarkAllRead, onClose, leavin
       aria-label="Notificaciones"
     >
       <div className="hrl-drawer__head">
-        <h3>Notificaciones</h3>
+        <h2>Notificaciones</h2>
         <button type="button" className="hrl-drawer__link" onClick={onMarkAllRead} disabled={!noLeidas}>
           Marcar leídas
         </button>
@@ -264,6 +264,13 @@ function ProfileDrawer({ user, onClose, onSignOut, leaving, tema, onTema }) {
                Pasar `logo={null}` deja la barra lateral sin marca
      brand     nombre del sistema en la barra superior; el kit no lo sabe
      themeKey  clave con la que se recuerda el modo oscuro */
+/* El id del contenido principal: el destino del enlace «Saltar al contenido».
+   Exportado para que la aplicación lleve el foco ahí al cambiar de pantalla. */
+export const ID_CONTENIDO = 'contenido-principal';
+
+/* Por debajo de este ancho el menú lateral es un cajón (tokens.css). */
+const ANCHO_MOVIL = 899;
+
 export function AppShell({
   navItems = [],
   active,
@@ -288,6 +295,9 @@ export function AppShell({
   /* La preferencia se recuerda entre sesiones: quien trabaja en pantallas
      pequeñas deja el menú replegado y no quiere repetir el gesto cada vez. */
   const [plegado, setPlegado] = useState(() => localStorage.getItem('hrl_menu') === 'plegado');
+  /* En pantallas estrechas el menú no se pliega: es un cajón que se abre sobre
+     el contenido. Estado aparte, para no tocar la preferencia de escritorio. */
+  const [menuMovil, setMenuMovil] = useState(false);
   const [tema, setTema] = useState(() => readTheme(themeKey));
 
   /* Se aplica también en el primer render: el atributo vive en <html>, fuera
@@ -317,6 +327,23 @@ export function AppShell({
 
   const abierto = notifOpen || profileOpen;
 
+  useEffect(() => {
+    if (!menuMovil) return undefined;
+    const alTeclear = (e) => {
+      if (e.key === 'Escape') setMenuMovil(false);
+    };
+    window.addEventListener('keydown', alTeclear);
+    return () => window.removeEventListener('keydown', alTeclear);
+  }, [menuMovil]);
+
+  /* El enlace de salto mueve el foco al contenido sin tocar la URL: muchas
+     aplicaciones usan el hash para sus rutas, y `#contenido-principal` las
+     rompería. */
+  const saltarAlContenido = (e) => {
+    e.preventDefault();
+    document.getElementById(ID_CONTENIDO)?.focus();
+  };
+
   /* Antes del efecto que lo usa: `close` es una constante y no se iza. */
   const ocultar = useCallback(() => {
     setNotifOpen(false);
@@ -338,7 +365,13 @@ export function AppShell({
 
   const cambiarTema = (siguiente) => setTema(siguiente);
 
+  const esEstrecha = () => typeof window !== 'undefined' && window.matchMedia?.(`(max-width: ${ANCHO_MOVIL}px)`).matches;
+
   const alternarMenu = () => {
+    if (esEstrecha()) {
+      setMenuMovil((v) => !v);
+      return;
+    }
     setPlegado((v) => {
       localStorage.setItem('hrl_menu', v ? 'desplegado' : 'plegado');
       return !v;
@@ -348,11 +381,23 @@ export function AppShell({
   return (
     <div className="hrl-nuevo">
       <Sprite />
-      <div className={`hrl-shell${plegado ? ' hrl-shell--plegado' : ''}`}>
-        <aside className="hrl-sidebar">
+      <a className="hrl-saltar" href={`#${ID_CONTENIDO}`} onClick={saltarAlContenido}>
+        Saltar al contenido
+      </a>
+      <div className={`hrl-shell${plegado ? ' hrl-shell--plegado' : ''}${menuMovil ? ' hrl-shell--menu-abierto' : ''}`}>
+        <aside className="hrl-sidebar" aria-label="Menú principal">
           <div className="hrl-sidebar__logo">{logo === undefined ? LOGO_POR_DEFECTO : logo}</div>
-          <SidebarNav navItems={navItems} active={active} onSelect={onSelect} plegado={plegado} />
+          <SidebarNav
+            navItems={navItems}
+            active={active}
+            onSelect={(id) => {
+              setMenuMovil(false);
+              onSelect?.(id);
+            }}
+            plegado={plegado}
+          />
         </aside>
+        {menuMovil && <button type="button" className="hrl-sidebar__velo" onClick={() => setMenuMovil(false)} aria-label="Cerrar el menú" />}
 
         <div className="hrl-main">
           <header className="hrl-topbar" ref={topbarRef}>
@@ -364,7 +409,7 @@ export function AppShell({
                 className={`hrl-plegar${plegado ? ' hrl-plegar--plegado' : ''}`}
                 onClick={alternarMenu}
                 aria-label={plegado ? 'Mostrar el menú lateral' : 'Replegar el menú lateral'}
-                aria-expanded={!plegado}
+                aria-expanded={menuMovil || !plegado}
               >
                 <Icon name="sh-sidebar-collapse" size={18} />
               </button>
@@ -405,7 +450,11 @@ export function AppShell({
             <PageHeader title={title} description={subtitle} breadcrumbs={breadcrumbs} actions={actions} />
           </header>
 
-          <div className={`hrl-content${panelLeaving ? ' hrl-content--saliendo' : ''}`}>{children}</div>
+          {/* `main`, con id y enfocable: es el destino del enlace de salto y adonde la
+              aplicación debe llevar el foco al cambiar de pantalla. */}
+          <main id={ID_CONTENIDO} tabIndex={-1} className={`hrl-content${panelLeaving ? ' hrl-content--saliendo' : ''}`}>
+            {children}
+          </main>
         </div>
 
         {abierto && (

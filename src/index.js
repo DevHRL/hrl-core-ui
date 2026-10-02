@@ -49,7 +49,7 @@ export { GaugeArc, Sparkline, StackedBars, SeriesBars, Funnel, Ranking, SplitBar
 export { Calendar } from './Calendar.jsx';
 
 /* -------------------------------------------------------------- layout */
-export { AppShell } from './AppShell.jsx';
+export { AppShell, ID_CONTENIDO } from './AppShell.jsx';
 export { PageHeader } from './PageHeader.jsx';
 export { PageActions, PAGE_ACTIONS_ID } from './PageActions.jsx';
 export { FilterBar } from './FilterBar.jsx';

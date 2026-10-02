@@ -72,7 +72,7 @@ function DetailDialog({
             /* @__PURE__ */ jsx("span", { className: "hrl-detalle__sello", children: /* @__PURE__ */ jsx(Icon, { name: icon, size: 22 }) }),
             /* @__PURE__ */ jsxs("div", { style: { flex: 1, minWidth: 0 }, children: [
               /* @__PURE__ */ jsx(Badge, { label: badge.label, tone: badge.tone }),
-              /* @__PURE__ */ jsx("h3", { className: "hrl-detalle__titulo", children: title }),
+              /* @__PURE__ */ jsx("h2", { className: "hrl-detalle__titulo", children: title }),
               /* @__PURE__ */ jsx("p", { className: "hrl-detalle__sub", children: subtitle })
             ] })
           ] }),

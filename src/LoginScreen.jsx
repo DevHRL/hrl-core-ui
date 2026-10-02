@@ -58,7 +58,8 @@ function Pantalla({ backdrop, children }) {
   return (
     <div className={cx('hrl-nuevo', 'hrl-login', fondo && fondo !== 'none' && `hrl-login--${fondo}`)}>
       <Sprite />
-      <div className="hrl-login__tarjeta">{children}</div>
+      {/* La tarjeta es el contenido principal de la página de ingreso. */}
+      <main className="hrl-login__tarjeta">{children}</main>
     </div>
   );
 }
@@ -95,17 +96,18 @@ export function LoginScreen({ systemName, onSubmit, backdrop = 'auto', labels, f
     <Pantalla backdrop={backdrop}>
       <HrlLogo width={260} className="hrl-login__logo" />
       {systemName && <p className="hrl-login__subtitulo">{systemName}</p>}
+      {/* Sin autoComplete="off": impedía que un gestor de contraseñas llenara
+          el ingreso (WCAG 3.3.8, autenticación accesible). */}
       <form
         className="hrl-login__form"
-        autoComplete="off"
         onSubmit={(e) => {
           e.preventDefault();
           enviar(() => onSubmit({ username: username.trim(), password }));
         }}
       >
         {error && <Alert tone="error" title={t.errorTitle}>{error}</Alert>}
-        <Input label={t.username} required autoFocus value={username} onChange={(e) => setUsername(e.target.value)} />
-        <Input label={t.password} kind="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+        <Input label={t.username} required autoFocus autoComplete="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+        <Input label={t.password} kind="password" required autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <Button type="submit" tone="cta" loading={enviando} loadingText={t.submitting} className="hrl-login__enviar">
           {t.submit}
         </Button>
@@ -133,7 +135,6 @@ export function ChangePasswordScreen({ systemName, onSubmit, backdrop = 'auto', 
       <p className="hrl-login__intro">{t.changeIntro}</p>
       <form
         className="hrl-login__form"
-        autoComplete="off"
         onSubmit={(e) => {
           e.preventDefault();
           if (next !== repeat) {
@@ -144,9 +145,9 @@ export function ChangePasswordScreen({ systemName, onSubmit, backdrop = 'auto', 
         }}
       >
         {error && <Alert tone="error" title={t.changeErrorTitle}>{error}</Alert>}
-        <Input label={t.current} kind="password" required autoFocus value={current} onChange={(e) => setCurrent(e.target.value)} />
-        <Input label={`${t.next} (mínimo ${minLength} caracteres)`} kind="password" required value={next} onChange={(e) => setNext(e.target.value)} />
-        <Input label={t.repeat} kind="password" required value={repeat} onChange={(e) => setRepeat(e.target.value)} />
+        <Input label={t.current} kind="password" required autoFocus autoComplete="current-password" value={current} onChange={(e) => setCurrent(e.target.value)} />
+        <Input label={`${t.next} (mínimo ${minLength} caracteres)`} kind="password" required autoComplete="new-password" value={next} onChange={(e) => setNext(e.target.value)} />
+        <Input label={t.repeat} kind="password" required autoComplete="new-password" value={repeat} onChange={(e) => setRepeat(e.target.value)} />
         <Button type="submit" tone="cta" loading={enviando} loadingText={t.saving} className="hrl-login__enviar">
           {t.save}
         </Button>

@@ -30,7 +30,7 @@ export function Dialog({ title, subtitle, onClose, maxWidth = 960, children, foo
         </button>
         <div className="hrl-modal__head">
           <div style={{ minWidth: 0 }}>
-            <h3 className="hrl-modal__title">{title}</h3>
+            <h2 className="hrl-modal__title">{title}</h2>
             {subtitle && <p className="hrl-modal__subtitle">{subtitle}</p>}
           </div>
         </div>
