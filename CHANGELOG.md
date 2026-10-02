@@ -3,6 +3,20 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.9.0 — 02/10/2026
+
+Cambio de aspecto deliberado de `ProgressSteps`, recién salido en 1.8.0. Sin cambios de API.
+
+- **El check del círculo ya no se ve de otro color.** Usaba `sh-ok`, que dibuja un disco al 18 %
+  detrás del check: dentro del círculo verde se leía como un segundo círculo de otro tono. Ahora el
+  paso hecho lleva `sh-check`, un solo trazo. El paso con errores lleva un «!» de texto en lugar de
+  `sh-crit` (mismo motivo).
+- **Más minimalista.** Círculo de 28 px (antes 36) con borde de 1,5 px, línea de 1 px, sin halo en
+  el paso actual (lo marcan el contorno y el número en color de marca y el título en negrita) y
+  notas sin icono, en `--text-xs`: el estado ya lo dicen el círculo y el texto.
+- Las notas usan `--muted-foreground`, no `--subtle-foreground`: en `--text-xs` el gris de
+  deshabilitado no llega al contraste de texto normal.
+
 ## 1.8.0 — 02/10/2026
 
 Un componente nuevo. Sin cambios en los existentes.

@@ -13,15 +13,17 @@ import { Icon } from './icons.jsx';
    de cada paso, que dicen qué va a pasar. Un círculo pulsable que lleva a un
    paso que todavía no se puede hacer es una promesa falsa.
 
-   Cada estado se dice con el icono del círculo y con la nota en texto, nunca
-   solo con color. La línea que llega a un paso se pinta cuando el anterior
-   está listo (`ok`). El paso activo lleva `aria-current="step"`.
+   Minimalista a propósito: el círculo lleva el número, o un check de un solo
+   trazo (`sh-check`) cuando el paso está listo, o un «!» si tiene errores.
+   No usa `sh-ok` ni `sh-crit`: traen un disco tenue detrás que, dentro de un
+   círculo de color, se veía como un segundo círculo de otro tono. El estado
+   se dice además con la nota en texto, nunca solo con color. La línea que
+   llega a un paso se pinta cuando el anterior está listo (`ok`). El paso
+   activo lleva `aria-current="step"`.
 
      steps:  { key, title, note?, status }[]
      status: 'empty' | 'partial' | 'ok' | 'error'   (el mismo vocabulario que Steps)
      active: la `key` del paso en el que se está */
-
-const NOTA = { partial: 'sh-clock', error: 'sh-crit' };
 
 export function ProgressSteps({ steps = [], active, label = 'Pasos' }) {
   const activo = steps.findIndex((paso) => paso.key === active);
@@ -35,15 +37,10 @@ export function ProgressSteps({ steps = [], active, label = 'Pasos' }) {
         return (
           <li key={paso.key} className={clases.join(' ')} aria-current={i === activo ? 'step' : undefined}>
             <span className="hrl-trayecto__circulo" aria-hidden="true">
-              {estado === 'ok' ? <Icon name="sh-ok" size={18} /> : estado === 'error' ? <Icon name="sh-crit" size={18} /> : i + 1}
+              {estado === 'ok' ? <Icon name="sh-check" size={14} /> : estado === 'error' ? '!' : i + 1}
             </span>
             <span className="hrl-trayecto__titulo">{paso.title}</span>
-            {paso.note && (
-              <span className="hrl-trayecto__nota">
-                {NOTA[estado] && <Icon name={NOTA[estado]} size={13} />}
-                {paso.note}
-              </span>
-            )}
+            {paso.note && <span className="hrl-trayecto__nota">{paso.note}</span>}
           </li>
         );
       })}
