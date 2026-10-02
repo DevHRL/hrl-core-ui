@@ -85,6 +85,7 @@ tokensToCss();                    // el bloque CSS completo, para otro bundler
 | `Checkbox` | `@/core-ui` | `checked` · `onChange` (recibe el booleano) · `label` o `aria-label` **(req.)** · `disabled` |
 | `NumberCell` | `@/core-ui` | `value` (número o `null`) · `onChange` · `aria-label` **(req.)** · `width` · `suffix` · `error` · `disabled` |
 | `Steps` | `@/core-ui` | `steps` `{key,title,note,status}[]` · `active` · `onChange` · `label`. `status`: empty·partial·ok·error |
+| `ProgressSteps` | `@/core-ui` | `steps` `{key,title,note?,status}[]` · `active` · `label`. Círculos unidos por una línea para un recorrido corto que va hacia adelante; **no se pulsa** (para navegar un formulario largo, `Steps`). `status`: empty·partial·ok·error |
 | `SelectionStrip` | `@/core-ui` | `items` `{key,title,subtitle?,marked?,tip?,description?}[]` · `active` · `onChange` · `label` |
 | `Calendar` | `@/core-ui` | `year` · `month` · `selected` · `onSelect` · `statusOf(d)` full·partial·empty · `detailOf(d)` · `descriptionOf(d)` · `legend` |
 

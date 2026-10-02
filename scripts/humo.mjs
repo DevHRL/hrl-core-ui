@@ -40,6 +40,7 @@ const CASOS = [
   ['Tabs', { tabs: [{ key: 'a', label: 'A', icon: 'sh-gear' }], active: 'a', onChange: () => {} }],
   ['DropdownMenu', { trigger: 'x', items: [{ id: '1', label: 'Editar', onSelect: () => {} }] }],
   ['Steps', { steps: [{ key: 'a', title: 'Paso', note: 'faltan 2', status: 'partial' }], active: 'a', onChange: () => {} }],
+  ['ProgressSteps', { steps: [{ key: 'a', title: 'Subir', status: 'ok' }, { key: 'b', title: 'Revisar', note: '2 errores', status: 'error' }], active: 'b' }],
   ['SelectionStrip', { items: [{ key: '1', title: '1', subtitle: 'L', marked: true }], active: '1', onChange: () => {} }],
   ['Calendar', { year: 2026, month: 9, selected: 3, onSelect: () => {}, statusOf: (d) => (d % 3 ? 'empty' : 'full') }],
   ['EmptyState', { title: 'Sin datos', body: 'x' }],

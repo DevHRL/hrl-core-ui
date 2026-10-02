@@ -30,6 +30,7 @@ export { Toast } from './Toast.jsx';
 export { Checkbox } from './Checkbox.jsx';
 export { NumberCell } from './NumberCell.jsx';
 export { Steps } from './Steps.jsx';
+export { ProgressSteps } from './ProgressSteps.jsx';
 export { SelectionStrip } from './SelectionStrip.jsx';
 export { DropdownMenu } from './DropdownMenu.jsx';
 export { Skeleton, SkeletonRows } from './Skeleton.jsx';

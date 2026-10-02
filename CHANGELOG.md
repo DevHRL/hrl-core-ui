@@ -3,6 +3,20 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.8.0 — 02/10/2026
+
+Un componente nuevo. Sin cambios en los existentes.
+
+- **`ProgressSteps`: círculos unidos por una línea, para un recorrido corto que va hacia
+  adelante** (subir → revisar → enviar). Salió del módulo de carga de Excel de Reporte
+  Estadístico, donde las fichas de `Steps` no se leían como pasos sucesivos. Misma forma de
+  pasos y mismo vocabulario de estado que `Steps` (`empty`·`partial`·`ok`·`error`), así que
+  cambiar de uno a otro es cambiar el nombre. **No se pulsa**: dice dónde se está; moverse lo
+  hacen los botones de cada paso. El estado va con icono en el círculo y con la nota en texto;
+  el paso activo lleva `aria-current="step"` y un halo. Respeta `prefers-reduced-motion`.
+- `Steps` sigue siendo el de los formularios largos que se recorren en cualquier orden.
+- Catálogo: historias `Primitivos / ProgressSteps`.
+
 ## 1.7.1 — 28/09/2026
 
 - **`AppShell`: con el menú abierto se veían los dos logos, el extendido y el escudo, uno al lado del

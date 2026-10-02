@@ -2365,6 +2365,96 @@ body { margin: 0; background: #f9fafb; }
   color: var(--muted-foreground);
 }
 
+/* ------------------------------------------------------ Avance (ProgressSteps)
+
+   Círculos unidos por una línea, para un recorrido corto que va hacia adelante.
+   No se pulsa: dice dónde se está. La línea de cada paso es la que llega a él
+   desde el anterior, y se pinta cuando el anterior está listo. Como en `Steps`,
+   el estado va con icono en el círculo y con la nota en texto. */
+.hrl-trayecto {
+  --hrl-trayecto-circulo: 36px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--hrl-trayecto-pasos, 3), minmax(0, 1fr));
+}
+
+.hrl-trayecto__paso {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  padding: 0 8px;
+  text-align: center;
+}
+
+.hrl-trayecto__paso + .hrl-trayecto__paso::before {
+  content: '';
+  position: absolute;
+  top: calc(var(--hrl-trayecto-circulo) / 2 - 1px);
+  left: calc(-50% + var(--hrl-trayecto-circulo) / 2 + 8px);
+  right: calc(50% + var(--hrl-trayecto-circulo) / 2 + 8px);
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: var(--border);
+  transition: background var(--transition-slow);
+}
+
+.hrl-trayecto__paso--ok + .hrl-trayecto__paso::before { background: var(--primary); }
+
+.hrl-trayecto__circulo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--hrl-trayecto-circulo);
+  height: var(--hrl-trayecto-circulo);
+  margin-bottom: 4px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  color: var(--muted-foreground);
+  font-size: var(--text-md);
+  font-weight: var(--weight-bold);
+  transition: background var(--transition-base), border-color var(--transition-base), color var(--transition-base);
+}
+
+.hrl-trayecto__paso--ok .hrl-trayecto__circulo { background: var(--primary); border-color: var(--primary); color: var(--primary-foreground); }
+.hrl-trayecto__paso--error .hrl-trayecto__circulo { background: var(--destructive-soft); border-color: var(--destructive); color: var(--destructive-text); }
+.hrl-trayecto__paso--partial .hrl-trayecto__circulo { border-color: var(--warning); color: var(--warning-fg); }
+
+/* El paso en el que se está: un halo, además del título en color pleno. */
+.hrl-trayecto__paso--on .hrl-trayecto__circulo { outline: 4px solid var(--success-soft); }
+.hrl-trayecto__paso--on.hrl-trayecto__paso--empty .hrl-trayecto__circulo { border-color: var(--primary); color: var(--primary-text); }
+
+.hrl-trayecto__titulo {
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  color: var(--muted-foreground);
+}
+
+.hrl-trayecto__paso--on .hrl-trayecto__titulo { color: var(--foreground); }
+
+.hrl-trayecto__nota {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--muted-foreground);
+}
+
+.hrl-trayecto__paso--ok .hrl-trayecto__nota { color: var(--success-text); }
+.hrl-trayecto__paso--error .hrl-trayecto__nota { color: var(--destructive-text); }
+.hrl-trayecto__paso--partial .hrl-trayecto__nota { color: var(--warning-fg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .hrl-trayecto__circulo,
+  .hrl-trayecto__paso + .hrl-trayecto__paso::before { transition: none; }
+}
+
 /* Casilla numérica con error y deshabilitada. */
 .hrl-input-mini--error { border-color: var(--destructive); }
 .hrl-input-mini:disabled { background: var(--muted); color: var(--muted-foreground); cursor: not-allowed; }

@@ -17,6 +17,7 @@ import { Toast } from "./Toast.js";
 import { Checkbox } from "./Checkbox.js";
 import { NumberCell } from "./NumberCell.js";
 import { Steps } from "./Steps.js";
+import { ProgressSteps } from "./ProgressSteps.js";
 import { SelectionStrip } from "./SelectionStrip.js";
 import { DropdownMenu } from "./DropdownMenu.js";
 import { Skeleton, SkeletonRows } from "./Skeleton.js";
@@ -82,6 +83,7 @@ export {
   PaginatedTable,
   Pagination,
   Paginator,
+  ProgressSteps,
   ROWS_PER_PAGE,
   Ranking,
   SelectionStrip,
