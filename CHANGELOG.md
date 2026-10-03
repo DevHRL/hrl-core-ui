@@ -3,6 +3,12 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.10.0-redesign.8 — 03/10/2026 (prelanzamiento, rama `redesign`)
+
+- **`PageBanner` respeta el borde de la página.** Iba pegada al menú lateral y quedaba más ancha que las
+  tarjetas de debajo, que llevan 32 px a cada lado. Ahora tiene ese mismo margen (12 px por debajo de
+  720 px), configurable con `--hrl-banda-borde` para un sistema con otro borde.
+
 ## 1.10.0-redesign.7 — 03/10/2026 (prelanzamiento, rama `redesign`)
 
 La cabecera en banda, elegida en el laboratorio de cabeceras de Reporte Estadístico (la variante «Ondas»).

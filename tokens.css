@@ -2946,7 +2946,11 @@ body { margin: 0; background: #f9fafb; }
   align-items: center;
   justify-content: space-between;
   gap: var(--space-5);
-  margin-bottom: var(--space-5);
+  /* El mismo borde con el layout que las secciones de la página (32 px, el
+     de PageHeader): sin él, la banda quedaba pegada al menú y más ancha que
+     las tarjetas de debajo. Un sistema con otro borde lo fija con
+     --hrl-banda-borde. */
+  margin: 0 var(--hrl-banda-borde, var(--space-6)) var(--space-5);
   padding: var(--space-6) var(--space-6) calc(var(--space-6) + 30px);
   border-radius: var(--radius-card);
   background: linear-gradient(110deg, var(--banda-desde) 0%, var(--banda-hasta) 100%);
@@ -3000,7 +3004,10 @@ body { margin: 0; background: #f9fafb; }
 
 /* En pantallas angostas todo se apila y se alinea a la izquierda. */
 @media (max-width: 720px) {
-  .hrl-banda { padding: var(--space-5) var(--space-5) calc(var(--space-5) + 26px); }
+  .hrl-banda {
+    margin-inline: var(--hrl-banda-borde, var(--space-3));
+    padding: var(--space-5) var(--space-5) calc(var(--space-5) + 26px);
+  }
   .hrl-banda h1 { font-size: var(--text-xl, 22px); }
   .hrl-banda__lado { justify-items: start; text-align: left; }
   .hrl-banda__estado { justify-items: start; }
