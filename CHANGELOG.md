@@ -3,6 +3,23 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.10.0-redesign.6 — 03/10/2026 (prelanzamiento, rama `redesign`)
+
+La mascota del hospital entra al kit: es identidad, como el logo, y la comparten todos los sistemas.
+
+- **`Mascot` (nuevo): Dr. Mochi.** Un médico con forma de mochi —cuerpo redondo, bata blanca,
+  estetoscopio y espejo frontal—, elegido en el laboratorio de mascotas de Reporte Estadístico.
+  Estados `idle`, `thinking`, `done`, `problem` y `sleeping`; tamaños `sm` · `md` · `lg` · `xl` o px;
+  `mouth={false}` la dibuja sin boca; con `interactive` responde al clic y al teclado (se aplasta,
+  se aprieta y rebota, y con cinco clics seguidos se marea) y avisa por `onReact`.
+- **No sigue el cursor**: tiene su propia mirada en cada estado (curiosa en reposo, lee de lado a lado
+  al pensar, mira hacia abajo con un problema) y parpadea en todos. Un clic no suelta partículas.
+- **Movimiento**: respira (inhala más rápido de lo que exhala) conservando el volumen, rebota como
+  gelatina al aterrizar, se dobla al inclinarse y los accesorios se balancean con retraso. Con
+  `prefers-reduced-motion` conserva la expresión, la mirada y el parpadeo, sin desplazamientos.
+- **Tokens `--mascota-*`** (grupo de identidad, no cambian con el tema): el cuerpo es `#2fbfa0` y el
+  resto se deriva de él. Sin contorno y sin brillo en los ojos, por decisión de diseño.
+
 ## 1.10.0-redesign.5 — 03/10/2026 (prelanzamiento, rama `redesign`)
 
 Vuelve la medida de la tarjeta de antes; de redesign.4 queda la banda y el mosaico.

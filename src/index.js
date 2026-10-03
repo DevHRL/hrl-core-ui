@@ -18,6 +18,7 @@ export { Badge } from './Badge.jsx';
 export { Card } from './Card.jsx';
 export { Stack, Grid, Mosaic } from './Layout.jsx';
 export { HrlLogo } from './HrlLogo.jsx';
+export { Mascot, MASCOT_STATES } from './Mascot.jsx';
 export { LoginScreen, ChangePasswordScreen, backdropForHour, LOGIN_BACKDROPS } from './LoginScreen.jsx';
 export { StatCard } from './StatCard.jsx';
 export { Alert } from './Alert.jsx';

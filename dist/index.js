@@ -5,6 +5,7 @@ import { Badge } from "./Badge.js";
 import { Card } from "./Card.js";
 import { Stack, Grid, Mosaic } from "./Layout.js";
 import { HrlLogo } from "./HrlLogo.js";
+import { Mascot, MASCOT_STATES } from "./Mascot.js";
 import { LoginScreen, ChangePasswordScreen, backdropForHour, LOGIN_BACKDROPS } from "./LoginScreen.js";
 import { StatCard } from "./StatCard.js";
 import { Alert } from "./Alert.js";
@@ -76,6 +77,8 @@ export {
   Input,
   LOGIN_BACKDROPS,
   LoginScreen,
+  MASCOT_STATES,
+  Mascot,
   Mosaic,
   NumberCell,
   PAGE_ACTIONS_ID,

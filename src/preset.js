@@ -60,6 +60,22 @@ export const preset = {
     'marca-verde': '#3b5c38',
     'marca-tierra': '#8c3a10',
     'marca-naranja': '#963d0c',
+    /* Mascota del hospital (Mascot), Dr. Mochi. Son colores de una ilustración,
+     no de la interfaz: el cuerpo es mascota-cuerpo y el resto se deriva de él
+     (el claro de arriba, las solapas grises de su familia, el estetoscopio y
+     la tinta de la cara, muy oscuros para que se lea). No cambian con el tema:
+     la bata blanca y el cuerpo se leen sobre los dos fondos. */
+    'mascota-cuerpo': '#2fbfa0',
+    'mascota-cuerpo-claro': '#c5ede4',
+    'mascota-solapa': '#a4c4bd',
+    'mascota-estetoscopio': '#1c6e5c',
+    'mascota-tinta': '#12302a',
+    'mascota-blanco': '#ffffff',
+    'mascota-metal': '#d5dfe2',
+    'mascota-metal-sombra': '#93a3a9',
+    'mascota-cinta': '#4f6f69',
+    'mascota-espejo': '#6c7c82',
+    'mascota-espejo-centro': '#4d5c61',
     /* Paleta categórica. No es un semáforo: son colores de identidad, sin
      significado de estado. Cada serie mantiene el suyo en todos los paneles
      para que la misma categoría se reconozca de un vistazo. El orden es
