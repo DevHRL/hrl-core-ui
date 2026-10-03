@@ -82,11 +82,18 @@ function acomodar(contenedor) {
   }
   cerrar();
 }
-function Mosaic({ min = 420, gap = 4, as: Etiqueta = "div", className, style, children, ...rest }) {
+function Mosaic({ min = 420, gap = 4, stacked = false, as: Etiqueta = "div", className, style, children, ...rest }) {
   const ref = useRef(null);
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return void 0;
+    if (stacked) {
+      for (const hijo of el.children) {
+        hijo.style.removeProperty("--hrl-mosaico-span");
+        hijo.removeAttribute("data-mosaico");
+      }
+      return void 0;
+    }
     let pendiente = 0;
     const programar = () => {
       cancelAnimationFrame(pendiente);
@@ -102,12 +109,12 @@ function Mosaic({ min = 420, gap = 4, as: Etiqueta = "div", className, style, ch
       ro.disconnect();
       mo.disconnect();
     };
-  }, []);
+  }, [stacked]);
   return /* @__PURE__ */ jsx(
     Etiqueta,
     {
       ref,
-      className: cx("hrl-mosaico", className),
+      className: cx("hrl-mosaico", stacked && "hrl-mosaico--apilado", className),
       style: { "--hrl-gap": `var(--space-${gap})`, "--hrl-mosaico-min": `${min}px`, ...style },
       ...rest,
       children

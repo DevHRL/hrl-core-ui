@@ -22,6 +22,8 @@ import { cx } from './variants.js';
    Mosaic  las secciones de una página, acomodadas solas por su forma
      min        ancho mínimo de una columna en px (420 por defecto)
      gap        1…6, por defecto 4
+     stacked    una sección debajo de otra, aunque quepan lado a lado (una
+                pantalla que se lee de arriba abajo, como un paso a paso)
      Una tarjeta corta (Card sin contenido ancho) comparte fila con las tarjetas
      cortas que la rodean; una que trae algo ancho (tabla, calendario, pasos,
      tira de selección, otra rejilla) o `wide`, y todo lo que
@@ -125,12 +127,19 @@ function acomodar(contenedor) {
   cerrar();
 }
 
-export function Mosaic({ min = 420, gap = 4, as: Etiqueta = 'div', className, style, children, ...rest }) {
+export function Mosaic({ min = 420, gap = 4, stacked = false, as: Etiqueta = 'div', className, style, children, ...rest }) {
   const ref = useRef(null);
 
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return undefined;
+    if (stacked) {
+      for (const hijo of el.children) {
+        hijo.style.removeProperty('--hrl-mosaico-span');
+        hijo.removeAttribute('data-mosaico');
+      }
+      return undefined;
+    }
     let pendiente = 0;
     const programar = () => {
       cancelAnimationFrame(pendiente);
@@ -148,12 +157,12 @@ export function Mosaic({ min = 420, gap = 4, as: Etiqueta = 'div', className, st
       ro.disconnect();
       mo.disconnect();
     };
-  }, []);
+  }, [stacked]);
 
   return (
     <Etiqueta
       ref={ref}
-      className={cx('hrl-mosaico', className)}
+      className={cx('hrl-mosaico', stacked && 'hrl-mosaico--apilado', className)}
       style={{ '--hrl-gap': `var(--space-${gap})`, '--hrl-mosaico-min': `${min}px`, ...style }}
       {...rest}
     >

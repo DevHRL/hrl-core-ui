@@ -552,49 +552,59 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
 /* ------------------------------------------------------------ UiSectionCard */
 
 .hrl-section {
-  /* Una banda de cabecera y el cuerpo debajo, con un solo relleno: antes la
-     tarjeta ponía 24 px y la aplicación otros 16-24 dentro, y el contenido
-     quedaba a casi 50 px del borde. */
-  display: grid;
-  align-content: start;
-  gap: var(--space-3);
+  /* La medida de siempre: 24 px de relleno, esquina de tarjeta y su sombra.
+     En 1.10.0-redesign.4 se probó una tarjeta compacta (12 × 16, radio 10,
+     borde fino) y se volvió a esta: compacta se leía apretada. De aquella
+     prueba queda la cabecera en banda. */
+  display: block;
   background: var(--bg-surface);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--radius-md, 10px);
-  box-shadow: var(--shadow-sm);
-  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-card, 16px);
+  box-shadow: var(--shadow-card);
+  padding: 24px;
   min-width: 0;
   animation: hrl-riseIn 0.55s var(--ease) both;
 }
 
-/* El cuerpo de borde a borde (una tabla): la cabecera conserva su relleno. */
-.hrl-section--flush { padding: 0; gap: 0; overflow: hidden; }
-.hrl-section--flush > .hrl-section__head { padding: var(--space-3) var(--space-4); }
+.hrl-section--flush { padding: 0; overflow: hidden; }
+.hrl-section--flush > .hrl-section__head { padding: 20px 24px 12px; }
 
-/* La cabecera es una sola banda: icono, título y descripción, estado y acción
-   a la misma altura. En una tarjeta angosta, el estado y la acción bajan solos
-   a una segunda línea en vez de apretar el título. */
+/* La cabecera es una sola banda: barra, icono, título y descripción, estado y
+   acción a la misma altura. En una tarjeta angosta, el estado y la acción
+   bajan solos a una segunda línea en vez de apretar el título. */
 .hrl-section__head {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-2) var(--space-3);
+  gap: 12px 16px;
   min-width: 0;
 }
 
-.hrl-section__icono {
-  display: inline-flex;
-  align-self: flex-start;
+.hrl-section__accent {
+  width: 6px;
+  height: 22px;
+  border-radius: 4px;
+  background: var(--accent);
   flex: 0 0 auto;
-  margin-top: 1px;
-  color: var(--primary-text);
+  margin-right: -4px;
+}
+
+/* El icono en una baldosa del color de la barra: dice qué es la sección. */
+.hrl-section__icono {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md, 10px);
+  color: var(--accent, var(--primary-text));
+  background: color-mix(in srgb, var(--accent, var(--primary)) 12%, transparent);
 }
 
 .hrl-section__textos { flex: 1 1 240px; min-width: 0; }
 
-.hrl-section__title { margin: 0; font-size: var(--text-md, 14px); font-weight: var(--weight-bold); line-height: var(--leading-tight); color: var(--text-primary); }
-.hrl-section__subtitle { margin: 2px 0 0; font-size: var(--text-sm, 12.5px); line-height: var(--leading-normal); color: var(--text-secondary); }
-.hrl-section__total { font-weight: var(--weight-regular); color: var(--text-secondary); }
+.hrl-section__title { margin: 0; font-size: var(--text-lg, 17px); font-weight: 700; color: var(--text-primary); }
+.hrl-section__subtitle { margin: 6px 0 0; font-size: var(--text-base, 13.5px); color: var(--text-secondary); }
+.hrl-section__total { font-size: var(--text-base, 13.5px); font-weight: var(--weight-regular); color: var(--text-secondary); }
 
 .hrl-section__meta {
   display: flex;
@@ -863,7 +873,7 @@ body { margin: 0; background: #f9fafb; }
   align-items: center;
   gap: 10px;
   height: 52px;
-  padding: 0 var(--space-4);
+  padding: 0 32px;
   border-bottom: 1px solid rgba(145, 158, 171, 0.14);
 }
 
@@ -975,9 +985,7 @@ body { margin: 0; background: #f9fafb; }
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px 20px;
-  /* El mismo borde izquierdo que la barra y que el contenido (16 px): antes
-     eran 32 y la página entera quedaba metida hacia el centro. */
-  padding: var(--space-3) var(--space-4);
+  padding: 16px 32px 18px;
 }
 
 .hrl-pagehead h1 { margin: 0; font-size: var(--text-xl, 22px); font-weight: 700; letter-spacing: -0.4px; }
@@ -988,7 +996,7 @@ body { margin: 0; background: #f9fafb; }
 .hrl-content {
   flex: 1;
   min-width: 0;
-  padding-top: var(--space-4);
+  padding-top: 28px;
   animation: hrl-panelIn 0.34s var(--ease) both;
 }
 
@@ -2861,6 +2869,9 @@ body { margin: 0; background: #f9fafb; }
 
 .hrl-mosaico > * { grid-column: 1 / -1; min-width: 0; }
 .hrl-mosaico > [data-mosaico] { grid-column: span var(--hrl-mosaico-span, 1); }
+
+/* Apilado: una sección debajo de otra, aunque quepan lado a lado. */
+.hrl-mosaico--apilado { grid-template-columns: minmax(0, 1fr); }
 
 .hrl-grid {
   display: grid;

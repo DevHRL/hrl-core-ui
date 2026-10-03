@@ -4,6 +4,7 @@ function Card({
   title = "Secci\xF3n",
   subtitle,
   total,
+  accent,
   icon,
   meta,
   actions,
@@ -14,9 +15,10 @@ function Card({
 }) {
   const Titulo = `h${Math.min(6, Math.max(2, Number(headingLevel) || 2))}`;
   const clases = ["hrl-section", flush && "hrl-section--flush", wide && "hrl-section--ancha"].filter(Boolean).join(" ");
-  return /* @__PURE__ */ jsxs("section", { className: clases, children: [
+  return /* @__PURE__ */ jsxs("section", { className: clases, style: accent ? { "--accent": accent } : void 0, children: [
     /* @__PURE__ */ jsxs("div", { className: "hrl-section__head", children: [
-      icon && /* @__PURE__ */ jsx("span", { className: "hrl-section__icono", "aria-hidden": "true", children: /* @__PURE__ */ jsx(Icon, { name: icon, size: 16 }) }),
+      accent && /* @__PURE__ */ jsx("span", { className: "hrl-section__accent", "aria-hidden": "true" }),
+      icon && /* @__PURE__ */ jsx("span", { className: "hrl-section__icono", "aria-hidden": "true", children: /* @__PURE__ */ jsx(Icon, { name: icon, size: 20 }) }),
       /* @__PURE__ */ jsxs("div", { className: "hrl-section__textos", children: [
         /* @__PURE__ */ jsxs(Titulo, { className: "hrl-section__title", children: [
           title,

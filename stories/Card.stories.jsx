@@ -13,6 +13,7 @@ export const ConSubtituloYTotal = () => (
 /* La banda completa: icono, título, estado y acción a la misma altura. */
 export const EnBanda = () => (
   <Card
+    accent="var(--primary)"
     icon="sh-calendar"
     title="Reporte del mes"
     subtitle="Todavía no se cargó nada. Suba el archivo del mes."
@@ -25,6 +26,14 @@ export const ConAcciones = () => (
   <Card title="Producción" icon="sh-chart" actions={<Button size="sm" tone="ghost">Ver todo</Button>}>
     Contenido de la sección.
   </Card>
+);
+
+/* Apilado: lo mismo, una debajo de otra. */
+export const Apilado = () => (
+  <Mosaic stacked>
+    <Card accent="var(--primary)" icon="sh-calendar" title="Periodo en curso" meta={<Badge label="En llenado" />} />
+    <Card accent="var(--info)" icon="sh-chart" title="Sin meses enviados" subtitle="Aquí aparecerá el historial." />
+  </Mosaic>
 );
 
 /* El mosaico decide solo: las dos cortas lado a lado, la tabla a lo ancho, y

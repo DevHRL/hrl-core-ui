@@ -3,6 +3,17 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.10.0-redesign.5 — 03/10/2026 (prelanzamiento, rama `redesign`)
+
+Vuelve la medida de la tarjeta de antes; de redesign.4 queda la banda y el mosaico.
+
+- **`Card` recupera su tamaño**: 24 px de relleno, `--radius-card` (16) y `--shadow-card`, sin borde. El
+  título vuelve a `--text-lg`. Compacta se leía apretada.
+- **Vuelve la barra de color (`accent`)**, y el icono se suma a ella: va en una baldosa teñida con el
+  mismo color. Barra, icono, título, estado (`meta`) y acción (`actions`) siguen en una sola banda.
+- **Borde de la página como antes**: 32 px a los lados en la cabecera y la barra, 28 px sobre el contenido.
+- **`Mosaic stacked`** (nuevo): una sección debajo de otra, aunque quepan lado a lado.
+
 ## 1.10.0-redesign.4 — 03/10/2026 (prelanzamiento, rama `redesign`)
 
 Rediseño de las tarjetas y del borde de la página, elegido en el laboratorio de variantes de Reporte
