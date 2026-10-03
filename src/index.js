@@ -16,7 +16,7 @@ export { Input } from './Input.jsx';
 export { CompactSelect } from './CompactSelect.jsx';
 export { Badge } from './Badge.jsx';
 export { Card } from './Card.jsx';
-export { Stack, Grid } from './Layout.jsx';
+export { Stack, Grid, Mosaic } from './Layout.jsx';
 export { HrlLogo } from './HrlLogo.jsx';
 export { LoginScreen, ChangePasswordScreen, backdropForHour, LOGIN_BACKDROPS } from './LoginScreen.jsx';
 export { StatCard } from './StatCard.jsx';

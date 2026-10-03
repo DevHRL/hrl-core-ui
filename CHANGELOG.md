@@ -3,6 +3,27 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.10.0-redesign.4 — 03/10/2026 (prelanzamiento, rama `redesign`)
+
+Rediseño de las tarjetas y del borde de la página, elegido en el laboratorio de variantes de Reporte
+Estadístico (la «banda» con el icono de sección y la geometría de mosaico).
+
+- **`Card`: la cabecera es una banda.** Icono (`icon`), título y descripción, estado (`meta`, nuevo) y
+  acción (`actions`) a la misma altura; en una tarjeta angosta el estado y la acción bajan solos. Antes
+  iban en filas propias y dejaban un hueco largo entre el estado y el botón.
+- **Sin barra de color junto al título**: marcaba cada sección sin decir nada (verde en casi todas).
+  `accent` se acepta pero ya no se dibuja; la sección se reconoce por su icono, y el color queda para el
+  estado. Cambio de aspecto deliberado.
+- **Un solo relleno**: 12 × 16 en lugar de 24, radio 10 (`--radius-md`) en lugar de 16, borde fino y
+  sombra corta. El título baja a `--text-md`. Las aplicaciones no deben añadir relleno dentro.
+- **`Card wide`**: siempre a lo ancho dentro de un `Mosaic`.
+- **`Mosaic` (nuevo)**: las secciones de una página, acomodadas solas por su forma. Las tarjetas cortas
+  seguidas comparten fila; las que traen tabla, calendario, pasos, tira u otra rejilla, y lo que no es
+  tarjeta, ocupan la fila entera; si una fila queda incompleta, se reparte el ancho. Recalcula al cambiar
+  el ancho o el contenido.
+- **Borde de la página: 16 px.** La cabecera (`PageHeader`) y la barra superior pasan de 32 a 16 px a los
+  lados, y el contenido arranca a 16 px de la barra (antes 28): la página quedaba metida hacia el centro.
+
 ## 1.10.0-redesign.3 — 02/10/2026 (prelanzamiento, rama `redesign`)
 
 Salió de auditar Reporte Estadístico con la skill «impeccable» (técnica: accesibilidad, rendimiento,

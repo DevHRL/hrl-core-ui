@@ -27,6 +27,8 @@ const CASOS = [
   ['Badge', { label: 'Activo', tone: 'ok' }],
   ['Card', { title: 'Sección', children: 'x' }],
   ['Card', { title: 'Subsección', headingLevel: 3, children: 'x' }],
+  ['Card', { title: 'Banda', icon: 'sh-calendar', meta: 'Vencido', actions: 'Acción', wide: true, children: 'x' }],
+  ['Mosaic', { children: 'x' }],
   ['Stack', { direction: 'row', gap: 3, align: 'center', justify: 'between', wrap: true, children: 'x' }],
   ['Grid', { min: 200, gap: 5, children: 'x' }],
   ['Grid', { columns: 3, children: 'x' }],

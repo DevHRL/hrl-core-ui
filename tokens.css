@@ -552,44 +552,57 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
 /* ------------------------------------------------------------ UiSectionCard */
 
 .hrl-section {
-  display: block;
+  /* Una banda de cabecera y el cuerpo debajo, con un solo relleno: antes la
+     tarjeta ponía 24 px y la aplicación otros 16-24 dentro, y el contenido
+     quedaba a casi 50 px del borde. */
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
   background: var(--bg-surface);
-  border-radius: var(--radius-card, 16px);
-  box-shadow: var(--shadow-card);
-  padding: 24px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md, 10px);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-3) var(--space-4);
+  min-width: 0;
   animation: hrl-riseIn 0.55s var(--ease) both;
 }
 
-.hrl-section--flush { padding: 0; overflow: hidden; }
+/* El cuerpo de borde a borde (una tabla): la cabecera conserva su relleno. */
+.hrl-section--flush { padding: 0; gap: 0; overflow: hidden; }
+.hrl-section--flush > .hrl-section__head { padding: var(--space-3) var(--space-4); }
 
+/* La cabecera es una sola banda: icono, título y descripción, estado y acción
+   a la misma altura. En una tarjeta angosta, el estado y la acción bajan solos
+   a una segunda línea en vez de apretar el título. */
 .hrl-section__head {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
   flex-wrap: wrap;
-}
-
-.hrl-section--flush .hrl-section__head { padding: 20px 24px 12px; }
-
-.hrl-section__title-row {
-  display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-2) var(--space-3);
   min-width: 0;
 }
 
-.hrl-section__accent {
-  width: 6px;
-  height: 22px;
-  border-radius: 4px;
-  background: var(--accent);
+.hrl-section__icono {
+  display: inline-flex;
+  align-self: flex-start;
   flex: 0 0 auto;
+  margin-top: 1px;
+  color: var(--primary-text);
 }
 
-.hrl-section__title { margin: 0; font-size: var(--text-lg, 17px); font-weight: 700; color: var(--text-primary); }
-.hrl-section__subtitle { margin: 6px 0 0; font-size: var(--text-base, 13.5px); color: var(--text-secondary); }
-.hrl-section__total { font-size: var(--text-base, 13.5px); color: var(--text-secondary); }
+.hrl-section__textos { flex: 1 1 240px; min-width: 0; }
+
+.hrl-section__title { margin: 0; font-size: var(--text-md, 14px); font-weight: var(--weight-bold); line-height: var(--leading-tight); color: var(--text-primary); }
+.hrl-section__subtitle { margin: 2px 0 0; font-size: var(--text-sm, 12.5px); line-height: var(--leading-normal); color: var(--text-secondary); }
+.hrl-section__total { font-weight: var(--weight-regular); color: var(--text-secondary); }
+
+.hrl-section__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 0 1 auto;
+}
 
 .hrl-section__acciones {
   display: flex;
@@ -850,7 +863,7 @@ body { margin: 0; background: #f9fafb; }
   align-items: center;
   gap: 10px;
   height: 52px;
-  padding: 0 32px;
+  padding: 0 var(--space-4);
   border-bottom: 1px solid rgba(145, 158, 171, 0.14);
 }
 
@@ -962,7 +975,9 @@ body { margin: 0; background: #f9fafb; }
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px 20px;
-  padding: 16px 32px 18px;
+  /* El mismo borde izquierdo que la barra y que el contenido (16 px): antes
+     eran 32 y la página entera quedaba metida hacia el centro. */
+  padding: var(--space-3) var(--space-4);
 }
 
 .hrl-pagehead h1 { margin: 0; font-size: var(--text-xl, 22px); font-weight: 700; letter-spacing: -0.4px; }
@@ -973,7 +988,7 @@ body { margin: 0; background: #f9fafb; }
 .hrl-content {
   flex: 1;
   min-width: 0;
-  padding-top: 28px;
+  padding-top: var(--space-4);
   animation: hrl-panelIn 0.34s var(--ease) both;
 }
 
@@ -2832,6 +2847,20 @@ body { margin: 0; background: #f9fafb; }
 
 .hrl-stack--fila { flex-direction: row; }
 .hrl-stack--envuelta { flex-wrap: wrap; }
+
+.hrl-mosaico {
+  /* Columnas de al menos --hrl-mosaico-min; cuántas caben lo decide el ancho.
+     Cada hijo ocupa la fila entera salvo que Mosaic le asigne columnas
+     (tarjetas cortas que se acomodan lado a lado). */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--hrl-mosaico-min, 420px)), 1fr));
+  gap: var(--hrl-gap, var(--space-4));
+  align-items: stretch;
+  min-width: 0;
+}
+
+.hrl-mosaico > * { grid-column: 1 / -1; min-width: 0; }
+.hrl-mosaico > [data-mosaico] { grid-column: span var(--hrl-mosaico-span, 1); }
 
 .hrl-grid {
   display: grid;

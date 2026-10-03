@@ -3,7 +3,7 @@ import { Input } from "./Input.js";
 import { CompactSelect } from "./CompactSelect.js";
 import { Badge } from "./Badge.js";
 import { Card } from "./Card.js";
-import { Stack, Grid } from "./Layout.js";
+import { Stack, Grid, Mosaic } from "./Layout.js";
 import { HrlLogo } from "./HrlLogo.js";
 import { LoginScreen, ChangePasswordScreen, backdropForHour, LOGIN_BACKDROPS } from "./LoginScreen.js";
 import { StatCard } from "./StatCard.js";
@@ -76,6 +76,7 @@ export {
   Input,
   LOGIN_BACKDROPS,
   LoginScreen,
+  Mosaic,
   NumberCell,
   PAGE_ACTIONS_ID,
   PAGE_SIZES,
