@@ -68,6 +68,8 @@ const CASOS = [
   ['Ranking', { rows: [{ name: 'A', value: 1, color: 'var(--accent)' }] }],
   ['SplitBar', { value: 1, total: 2, color: 'var(--accent)' }],
   ['PageHeader', { title: 'Vista' }],
+  ['PageBanner', { title: 'Vista' }],
+  ['PageBanner', { title: 'Portada', description: 'Hoy', clock: true, mascot: 'idle', status: { icon: 'sh-clock', label: 'Pendiente', detail: 'Hasta el 5', tone: 'warning' } }],
   ['FilterBar', { children: 'x' }],
   ['IconSprite', {}],
   ['Icon', { name: 'sh-ok' }],
@@ -133,6 +135,10 @@ const ASERCIONES = [
   ['HrlLogo tiene texto alternativo', () => html('HrlLogo', {}).includes('aria-label="Hospital Regional de Loreto"')],
   ['AppShell sin logo dibuja el del hospital', () => html('AppShell', { navItems: [], title: 'x' }).includes('hrl-logo')],
   ['AppShell con logo={null} no dibuja ninguno', () => !html('AppShell', { navItems: [], title: 'x', logo: null }).includes('hrl-logo')],
+  ['AppShell con banner dibuja la banda y no la cabecera de la barra', () => {
+    const h = html('AppShell', { navItems: [], title: 'x', banner: { status: { label: 'Pendiente' } } });
+    return h.includes('hrl-banda') && !h.includes('hrl-pagehead');
+  }],
   ['Input con autoFocus lo declara', () => html('Input', { label: 'X', autoFocus: true }).length > 0],
 ];
 for (const [nombre, prueba] of ASERCIONES) {

@@ -4,6 +4,7 @@ import { Sprite, Icon } from "./icons.js";
 import { EmptyState } from "./EmptyState.js";
 import { HrlLogo } from "./HrlLogo.js";
 import { PageHeader } from "./PageHeader.js";
+import { PageBanner } from "./PageBanner.js";
 import { Tooltip } from "./Tooltip.js";
 import { readTheme, applyTheme } from "./theme.js";
 import { useExitAnimation } from "./useExitAnimation.js";
@@ -194,6 +195,7 @@ function AppShell({
   subtitle,
   breadcrumbs,
   actions,
+  banner,
   user,
   logo,
   brand,
@@ -224,7 +226,7 @@ function AppShell({
     const ro = new ResizeObserver(medir);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [title, subtitle, breadcrumbs]);
+  }, [title, subtitle, breadcrumbs, banner]);
   const abierto = notifOpen || profileOpen;
   useEffect(() => {
     if (!menuMovil) return void 0;
@@ -332,9 +334,26 @@ function AppShell({
               }
             )
           ] }),
-          /* @__PURE__ */ jsx(PageHeader, { title, description: subtitle, breadcrumbs, actions })
+          !banner && /* @__PURE__ */ jsx(PageHeader, { title, description: subtitle, breadcrumbs, actions })
         ] }),
-        /* @__PURE__ */ jsx("main", { id: ID_CONTENIDO, tabIndex: -1, className: `hrl-content${panelLeaving ? " hrl-content--saliendo" : ""}`, children })
+        /* @__PURE__ */ jsxs("main", { id: ID_CONTENIDO, tabIndex: -1, className: `hrl-content${panelLeaving ? " hrl-content--saliendo" : ""}`, children: [
+          banner && /* @__PURE__ */ jsx(
+            PageBanner,
+            {
+              title,
+              description: subtitle,
+              breadcrumbs,
+              clock: banner.clock,
+              status: banner.status,
+              mascot: banner.mascot,
+              actions: banner.actions || actions ? /* @__PURE__ */ jsxs(Fragment, { children: [
+                banner.actions,
+                actions
+              ] }) : null
+            }
+          ),
+          children
+        ] })
       ] }),
       abierto && /* @__PURE__ */ jsx(
         "button",

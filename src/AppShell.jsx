@@ -3,6 +3,7 @@ import { Sprite, Icon } from './icons.jsx';
 import { EmptyState } from './EmptyState.jsx';
 import { HrlLogo } from './HrlLogo.jsx';
 import { PageHeader } from './PageHeader.jsx';
+import { PageBanner } from './PageBanner.jsx';
 import { Tooltip } from './Tooltip.jsx';
 import { readTheme, applyTheme } from './theme.js';
 import { useExitAnimation } from './useExitAnimation.js';
@@ -263,7 +264,12 @@ function ProfileDrawer({ user, onClose, onSignOut, leaving, tema, onTema }) {
                que al plegar el menú queda en solo el escudo.
                Pasar `logo={null}` deja la barra lateral sin marca
      brand     nombre del sistema en la barra superior; el kit no lo sabe
-     themeKey  clave con la que se recuerda el modo oscuro */
+     themeKey  clave con la que se recuerda el modo oscuro
+     banner    { status?, mascot?, actions?, clock? }: la vista se presenta con
+               PageBanner (la cabecera en banda) al principio del contenido, en
+               vez de con PageHeader dentro de la barra superior. Usa el mismo
+               title, subtitle y breadcrumbs; `actions` de la barra se suma a
+               las de la banda */
 /* El id del contenido principal: el destino del enlace «Saltar al contenido».
    Exportado para que la aplicación lleve el foco ahí al cambiar de pantalla. */
 export const ID_CONTENIDO = 'contenido-principal';
@@ -279,6 +285,7 @@ export function AppShell({
   subtitle,
   breadcrumbs,
   actions,
+  banner,
   user,
   logo,
   brand,
@@ -323,7 +330,7 @@ export function AppShell({
     const ro = new ResizeObserver(medir);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [title, subtitle, breadcrumbs]);
+  }, [title, subtitle, breadcrumbs, banner]);
 
   const abierto = notifOpen || profileOpen;
 
@@ -447,12 +454,23 @@ export function AppShell({
                 )}
               </button>
             </div>
-            <PageHeader title={title} description={subtitle} breadcrumbs={breadcrumbs} actions={actions} />
+            {!banner && <PageHeader title={title} description={subtitle} breadcrumbs={breadcrumbs} actions={actions} />}
           </header>
 
           {/* `main`, con id y enfocable: es el destino del enlace de salto y adonde la
               aplicación debe llevar el foco al cambiar de pantalla. */}
           <main id={ID_CONTENIDO} tabIndex={-1} className={`hrl-content${panelLeaving ? ' hrl-content--saliendo' : ''}`}>
+            {banner && (
+              <PageBanner
+                title={title}
+                description={subtitle}
+                breadcrumbs={breadcrumbs}
+                clock={banner.clock}
+                status={banner.status}
+                mascot={banner.mascot}
+                actions={banner.actions || actions ? <>{banner.actions}{actions}</> : null}
+              />
+            )}
             {children}
           </main>
         </div>

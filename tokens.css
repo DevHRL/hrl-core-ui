@@ -115,6 +115,14 @@
   --mascota-espejo: #6c7c82;
   --mascota-espejo-centro: #4d5c61;
 
+  /* Cabecera en banda (PageBanner): un degradado del verde profundo al verde de
+     la marca, con texto claro. No cambian con el tema: en oscuro, --brand se
+     aclara y el texto blanco dejaría de leerse sobre él, así que la banda lleva
+     sus propios valores fijos. */
+  --banda-desde: #004b50;
+  --banda-hasta: #008659;
+  --banda-texto: #ffffff;
+
   /* Paleta categórica. No es un semáforo: son colores de identidad, sin
      significado de estado. Cada serie mantiene el suyo en todos los paneles para
      que la misma categoría se reconozca de un vistazo. El orden es estable:
@@ -2922,6 +2930,81 @@ body { margin: 0; background: #f9fafb; }
   background-color: #ffffff;
   background-origin: content-box;
   border-radius: var(--radius-sm);
+}
+
+/* ------------------------------------------------------- cabecera en banda */
+
+/* PageBanner (src/PageBanner.jsx). La banda y su texto usan --banda-*, que no
+   cambian con el tema; las ondas, los verdes agua de la mascota. Va al
+   principio del contenido (no en la barra fija) y deja aire con lo que sigue. */
+.hrl-banda {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  margin-bottom: var(--space-5);
+  padding: var(--space-6) var(--space-6) calc(var(--space-6) + 30px);
+  border-radius: var(--radius-card);
+  background: linear-gradient(110deg, var(--banda-desde) 0%, var(--banda-hasta) 100%);
+  color: var(--banda-texto);
+}
+
+.hrl-banda__ondas { position: absolute; inset: auto 0 0 0; z-index: -1; width: 100%; height: 72px; }
+.hrl-banda__ondas path:nth-child(1) { fill: color-mix(in srgb, var(--mascota-cuerpo) 35%, transparent); }
+.hrl-banda__ondas path:nth-child(2) { fill: color-mix(in srgb, var(--mascota-cuerpo-claro) 22%, transparent); }
+.hrl-banda__ondas path:nth-child(3) { fill: color-mix(in srgb, var(--mascota-estetoscopio) 70%, transparent); }
+
+.hrl-banda__titulo { flex: 1 1 340px; min-width: 0; }
+.hrl-banda__migas { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); margin-bottom: var(--space-2); font-size: var(--text-sm, 12.5px); font-weight: var(--weight-medium); }
+.hrl-banda__paso { display: inline-flex; align-items: center; gap: var(--space-1); opacity: 0.86; }
+.hrl-banda__paso [aria-current] { font-weight: var(--weight-bold); }
+.hrl-banda__paso:last-child { opacity: 1; }
+.hrl-banda__migas a { color: inherit; }
+.hrl-banda h1 { margin: 0; font-size: var(--text-2xl, 30px); font-weight: var(--weight-bold); letter-spacing: -0.03em; line-height: 1.15; }
+.hrl-banda__bajada { margin: var(--space-1) 0 0; max-width: 60ch; font-size: var(--text-base, 13.5px); line-height: 1.45; opacity: 0.9; }
+.hrl-banda__separador { margin: 0 var(--space-2); opacity: 0.7; }
+.hrl-banda__hora { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.hrl-banda__lado { flex: 0 1 460px; display: grid; gap: var(--space-3); justify-items: end; text-align: right; }
+.hrl-banda__estado-fila { display: flex; align-items: center; gap: var(--space-3); }
+.hrl-banda__estado { display: grid; gap: 2px; justify-items: end; }
+.hrl-banda__etiqueta { display: inline-flex; align-items: center; gap: var(--space-2); margin: 0; font-size: var(--text-md, 14px); font-weight: var(--weight-bold); }
+.hrl-banda__detalle { margin: 0; font-size: var(--text-sm, 12.5px); line-height: 1.45; opacity: 0.9; }
+.hrl-banda__acciones { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-2); }
+.hrl-banda__acciones:empty { display: none; }
+
+/* Un plazo que vence hoy: la etiqueta sobre amarillo, con texto oscuro. */
+.hrl-banda--aviso .hrl-banda__etiqueta {
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--warning);
+  color: var(--mascota-tinta);
+}
+
+/* Los botones del kit en su tono normal se pierden sobre el verde: el
+   principal va en blanco con texto verde profundo; el secundario, con borde
+   claro. */
+.hrl-banda .hrl-btn--cta { background: var(--banda-texto); border-color: var(--banda-texto); color: var(--banda-desde); }
+.hrl-banda .hrl-btn--cta:hover { background: color-mix(in srgb, var(--banda-texto) 88%, var(--banda-hasta)); }
+.hrl-banda .hrl-btn--ghost {
+  background: transparent;
+  color: var(--banda-texto);
+  border: 1px solid color-mix(in srgb, var(--banda-texto) 55%, transparent);
+}
+.hrl-banda .hrl-btn--ghost:hover { background: color-mix(in srgb, var(--banda-texto) 12%, transparent); }
+.hrl-banda .hrl-btn:focus-visible { outline-color: var(--banda-texto); }
+
+/* En pantallas angostas todo se apila y se alinea a la izquierda. */
+@media (max-width: 720px) {
+  .hrl-banda { padding: var(--space-5) var(--space-5) calc(var(--space-5) + 26px); }
+  .hrl-banda h1 { font-size: var(--text-xl, 22px); }
+  .hrl-banda__lado { justify-items: start; text-align: left; }
+  .hrl-banda__estado { justify-items: start; }
+  .hrl-banda__acciones { justify-content: flex-start; }
 }
 
 /* ----------------------------------------------------------------- mascota */

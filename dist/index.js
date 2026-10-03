@@ -33,6 +33,7 @@ import { GaugeArc, Sparkline, StackedBars, SeriesBars, Funnel, Ranking, SplitBar
 import { Calendar } from "./Calendar.js";
 import { AppShell, ID_CONTENIDO } from "./AppShell.js";
 import { PageHeader } from "./PageHeader.js";
+import { PageBanner } from "./PageBanner.js";
 import { PageActions, PAGE_ACTIONS_ID } from "./PageActions.js";
 import { FilterBar } from "./FilterBar.js";
 import { Icon, IconSprite, Sprite } from "./icons.js";
@@ -84,6 +85,7 @@ export {
   PAGE_ACTIONS_ID,
   PAGE_SIZES,
   PageActions,
+  PageBanner,
   PageHeader,
   PaginatedTable,
   Pagination,

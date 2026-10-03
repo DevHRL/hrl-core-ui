@@ -57,6 +57,13 @@ const preset = {
     "mascota-cinta": "#4f6f69",
     "mascota-espejo": "#6c7c82",
     "mascota-espejo-centro": "#4d5c61",
+    /* Cabecera en banda (PageBanner): un degradado del verde profundo al verde
+     de la marca, con texto claro. No cambian con el tema: en oscuro, --brand
+     se aclara y el texto blanco dejaría de leerse sobre él, así que la banda
+     lleva sus propios valores fijos. */
+    "banda-desde": "#004b50",
+    "banda-hasta": "#008659",
+    "banda-texto": "#ffffff",
     /* Paleta categórica. No es un semáforo: son colores de identidad, sin
      significado de estado. Cada serie mantiene el suyo en todos los paneles
      para que la misma categoría se reconozca de un vistazo. El orden es

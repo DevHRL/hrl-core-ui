@@ -3,6 +3,22 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.10.0-redesign.7 — 03/10/2026 (prelanzamiento, rama `redesign`)
+
+La cabecera en banda, elegida en el laboratorio de cabeceras de Reporte Estadístico (la variante «Ondas»).
+
+- **`PageBanner` (nuevo).** La vista en una tarjeta con degradado del verde profundo al de la marca y ondas
+  verde agua en la base. A un lado, migas, título y descripción; con `clock`, la hora tras la descripción
+  («Sábado, 3 de octubre de 2026 | 5:36 p. m.»), que se actualiza sola. Al otro, el estado dicho una sola
+  vez (`status`: icono, etiqueta y detalle; `tone="warning"` pone la etiqueta sobre amarillo), la mascota
+  si se quiere (`mascot`) y las acciones: `Button tone="cta"` sale en blanco y `ghost` con borde claro.
+- **`AppShell banner`.** Con `banner={{ status, mascot, actions, clock }}` la vista se presenta con
+  `PageBanner` al principio del contenido, con el mismo `title`, `subtitle` y `breadcrumbs`. No va en la
+  barra superior fija: es alta y fija se comería la pantalla. Sin `banner`, todo sigue igual.
+- **Tokens `--banda-desde`, `--banda-hasta` y `--banda-texto`**, fijos en los dos temas: en oscuro `--brand`
+  se aclara y el texto blanco dejaría de leerse. `npm run contrast` mide ahora la banda (4.61:1 en el
+  extremo más claro) y la etiqueta de aviso.
+
 ## 1.10.0-redesign.6 — 03/10/2026 (prelanzamiento, rama `redesign`)
 
 La mascota del hospital entra al kit: es identidad, como el logo, y la comparten todos los sistemas.

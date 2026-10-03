@@ -52,6 +52,7 @@ export { Calendar } from './Calendar.jsx';
 /* -------------------------------------------------------------- layout */
 export { AppShell, ID_CONTENIDO } from './AppShell.jsx';
 export { PageHeader } from './PageHeader.jsx';
+export { PageBanner } from './PageBanner.jsx';
 export { PageActions, PAGE_ACTIONS_ID } from './PageActions.jsx';
 export { FilterBar } from './FilterBar.jsx';
 

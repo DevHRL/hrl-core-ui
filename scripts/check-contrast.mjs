@@ -67,6 +67,12 @@ const SOBRE_SI_MISMO = [
   ['primary-foreground', 'primary'],
   ['accent-foreground', 'accent'],
   ['destructive-foreground', 'destructive'],
+  // La cabecera en banda (PageBanner): texto claro en los dos extremos del
+  // degradado, el botón principal (verde sobre blanco) y la etiqueta de aviso.
+  ['banda-texto', 'banda-desde'],
+  ['banda-texto', 'banda-hasta'],
+  ['banda-desde', 'banda-texto'],
+  ['mascota-tinta', 'warning'],
 ];
 
 function evaluarTema(tema, etiqueta) {
