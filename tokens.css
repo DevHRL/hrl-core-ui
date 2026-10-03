@@ -167,6 +167,8 @@
   /* Bordes, campos y foco */
   --input: var(--bg-surface);
   --input-border: #8493a1;
+  --selection: rgba(0, 134, 89, 0.18);
+  --scrim: rgba(28, 37, 46, 0.32);
   --ring: var(--brand);
 
   /* --------------------------------------------------- escala de radios */
@@ -233,6 +235,44 @@
 
 .hrl-nuevo { background: var(--bg-app); }
 
+/* Las superficies que no dibuja ningún componente también llevan el sistema:
+   sin esto, la selección de texto, el cursor de escritura, las casillas
+   nativas y las barras de desplazamiento salían con los colores por defecto
+   del navegador (azul de sistema, gris de Windows), ajenos al tema y al modo
+   oscuro. */
+.hrl-nuevo ::selection,
+.hrl-portal ::selection { background: var(--selection); color: inherit; }
+
+.hrl-nuevo,
+.hrl-portal {
+  caret-color: var(--primary);
+  accent-color: var(--primary);
+  scrollbar-color: var(--input-border) transparent;
+}
+
+/* La página la desplaza <html>, fuera de los tokens: un gris translúcido que
+   se lee en claro y en oscuro. */
+html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
+
+.hrl-nuevo a { text-underline-offset: 0.18em; text-decoration-thickness: from-font; }
+
+/* El anillo de foco del sistema para todo lo enfocable: los botones y el menú
+   mostraban el del navegador, que cambia de un navegador a otro y no sigue el
+   tema. Cada componente puede dibujar el suyo (van más abajo y lo pisan). */
+.hrl-nuevo :focus-visible,
+.hrl-portal :focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
+/* El campo de texto dibuja el anillo en su contenedor (.hrl-field__wrap). */
+.hrl-nuevo .hrl-field__input:focus-visible,
+.hrl-portal .hrl-field__input:focus-visible { outline: none; }
+
+/* Cifras de ancho fijo donde se comparan: en una columna, un 1 y un 8 deben
+   ocupar lo mismo para que las cifras se alineen por posición. */
+.hrl-table td,
+.hrl-input-mini,
+.hrl-stat__value,
+.hrl-mono { font-variant-numeric: tabular-nums; }
+
 .hrl-nuevo *,
 .hrl-nuevo *::before,
 .hrl-nuevo *::after,
@@ -268,16 +308,6 @@
   95% { transform: rotate(5deg); }
 }
 
-/* El handoff pide respetarlo explícitamente; los prototipos no lo hacían. */
-@media (prefers-reduced-motion: reduce) {
-  .hrl-nuevo *,
-  .hrl-nuevo *::before,
-  .hrl-nuevo *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
 
 /* ---------------------------------------------------------------- UiStatCard */
 
@@ -766,7 +796,7 @@
     border: 0;
     padding: 0;
     /* El mismo velo que los cajones del kit (.hrl-overlay). */
-    background: rgba(28, 37, 46, 0.32);
+    background: var(--scrim);
     cursor: pointer;
   }
 
@@ -952,7 +982,7 @@ body { margin: 0; background: #f9fafb; }
 .hrl-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(28, 37, 46, 0.32);
+  background: var(--scrim);
   backdrop-filter: blur(2px);
   z-index: 80;
   border: none;
@@ -1451,6 +1481,22 @@ body { margin: 0; background: #f9fafb; }
 .hrl-btn--blue { background: var(--action-blue); color: #fff; }
 .hrl-btn--blue:hover { background: #0c68e9; }
 .hrl-btn--ghost { background: rgba(145, 158, 171, 0.12); color: var(--text-primary); }
+
+/* Acción con aspecto de enlace: abre un registro desde su celda. Mide 24 px de
+   alto (WCAG 2.5.8) en lugar de los 42 de un botón, para caber en una fila. */
+.hrl-btn.hrl-btn--enlace {
+  min-height: 24px;
+  padding: 2px 6px;
+  margin: 0 -6px;
+  background: transparent;
+  color: var(--accent-text);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  text-align: left;
+  white-space: normal;
+}
+
+.hrl-btn.hrl-btn--enlace:hover { background: var(--info-soft); text-decoration: underline; }
 .hrl-btn--ghost:hover { background: rgba(145, 158, 171, 0.22); }
 .hrl-btn--peligro { background: rgba(255, 86, 48, 0.14); color: var(--danger-text); }
 .hrl-btn--peligro:hover { background: rgba(255, 86, 48, 0.26); }
@@ -1686,6 +1732,9 @@ body { margin: 0; background: #f9fafb; }
 
 .hrl-barras__lienzo {
   flex: 1;
+  /* Sin esto, el lienzo no se encoge por debajo de su contenido y en un
+     teléfono empujaba la página 35 px a la derecha. */
+  min-width: 0;
   display: flex;
   align-items: flex-end;
   gap: 10px;
@@ -1744,7 +1793,7 @@ body { margin: 0; background: #f9fafb; }
   padding-top: 4px;
 }
 
-.hrl-barras__col--vacia { flex: 0 0 auto; width: 90px; }
+.hrl-barras__col--vacia { flex: 0 1 90px; min-width: 48px; }
 
 .hrl-barras__vacio {
   width: 100%;
@@ -2238,6 +2287,8 @@ body { margin: 0; background: #f9fafb; }
   --primary-foreground: #06231b;
   --subtle-foreground: #8696a2;
   --input-border: #66737f;
+  --selection: rgba(0, 167, 111, 0.34);
+  --scrim: rgba(0, 0, 0, 0.55);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.45);
   --shadow-overlay: 0 32px 64px -16px rgba(0, 0, 0, 0.66);
   --shadow-card: 0 0 2px rgba(0, 0, 0, 0.5), 0 12px 24px -4px rgba(0, 0, 0, 0.42);
@@ -2917,4 +2968,59 @@ body { margin: 0; background: #f9fafb; }
 
   .hrl-nuevo { background: var(--surface) !important; }
   .hrl-section { box-shadow: none !important; break-inside: avoid; margin-bottom: 16px; }
+}
+
+/* Movimiento reducido: una alternativa, no un apagado. Va al final del
+   archivo a propósito: un @keyframes con el mismo nombre lo gana el último
+   del documento, y estos deben ganarles a los originales.
+
+   Antes todo se cortaba a 0,01 ms. Eso quitaba también lo que el movimiento
+   comunicaba: un diálogo aparecía de golpe, el esqueleto de carga se quedaba
+   quieto y no decía «cargando», y un aviso nuevo no se distinguía del fondo.
+   Y solo alcanzaba a `.hrl-nuevo`: los diálogos, avisos y tooltips viven en
+   `.hrl-portal`, montados en <body>, y seguían animándose.
+
+   Ahora se redefinen los keyframes: lo que entra o sale conserva su fundido
+   pero no se desplaza ni escala; lo que dice «cargando» (spinner, barra
+   indeterminada, esqueleto) pasa a un pulso de opacidad en el sitio; lo que
+   era adorno en bucle (la campana, el anillo de alerta) se queda quieto. Las
+   transiciones de color siguen, más cortas; las de posición las anula cada
+   componente que se desplaza (ver el menú en cajón). */
+@media (prefers-reduced-motion: reduce) {
+  .hrl-nuevo *,
+  .hrl-nuevo *::before,
+  .hrl-nuevo *::after,
+  .hrl-portal,
+  .hrl-portal *,
+  .hrl-portal *::before,
+  .hrl-portal *::after {
+    transition-duration: 120ms !important;
+  }
+
+  @keyframes hrl-riseIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes hrl-rowIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes hrl-panelIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes hrl-slideInRight { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes hrl-panelOut { to { opacity: 0; } }
+  @keyframes hrl-modalOut { to { opacity: 0; } }
+  @keyframes hrl-slideOutRight { to { opacity: 0; } }
+  @keyframes hrl-rowOut { to { opacity: 0; } }
+  /* El aviso se centra con translateX(-50%): eso se conserva. */
+  @keyframes hrl-toastIn { from { opacity: 0; transform: translateX(-50%); } to { opacity: 1; transform: translateX(-50%); } }
+  @keyframes hrl-toastOut { to { opacity: 0; transform: translateX(-50%); } }
+  @keyframes hrl-tipIn { from { opacity: 0; transform: translateY(-50%); } to { opacity: 1; transform: translateY(-50%); } }
+  @keyframes hrl-tipInIzquierda { from { opacity: 0; transform: translate(-100%, -50%); } to { opacity: 1; transform: translate(-100%, -50%); } }
+  @keyframes hrl-modalIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes hrl-menuIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes hrl-menuInArriba { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes hrl-barGrowX { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes hrl-barGrow { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes hrl-gaugeIn { from { opacity: 0; } to { opacity: 1; } }
+  /* Cargando: pulso en el sitio en lugar de giro, barrido o vaivén. */
+  @keyframes hrl-gira { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
+  @keyframes hrl-skeleton { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+  @keyframes hrl-vaiven { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
+  /* Adornos: quietos. */
+  @keyframes hrl-bellRing { from, to { transform: none; } }
+  @keyframes hrl-pulsa { from, to { box-shadow: none; } }
 }

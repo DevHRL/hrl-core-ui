@@ -14,6 +14,7 @@ import * as kit from '../dist/index.js';
 
 const CASOS = [
   ['Button', { children: 'Aceptar' }],
+  ['Button', { tone: 'link', children: 'Abrir' }],
   ['Button', { tone: 'danger', size: 'sm', icon: 'sh-close', children: 'Eliminar' }],
   ['IconButton', { icon: 'sh-eye', 'aria-label': 'Ver' }],
   ['Input', { label: 'Campo' }],

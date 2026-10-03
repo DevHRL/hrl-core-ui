@@ -93,6 +93,8 @@ const preset = {
     /* Bordes, campos y foco */
     input: "#ffffff",
     "input-border": "#8493a1",
+    selection: "rgba(0, 134, 89, 0.18)",
+    scrim: "rgba(28, 37, 46, 0.32)",
     ring: "#008659"
   },
   /* Equivalentes del tema oscuro. Solo los que cambian. */
@@ -126,6 +128,8 @@ const preset = {
     "primary-foreground": "#06231b",
     "subtle-foreground": "#8696a2",
     "input-border": "#66737f",
+    selection: "rgba(0, 167, 111, 0.34)",
+    scrim: "rgba(0, 0, 0, 0.55)",
     /* El verde oscurecido en claro (para que el texto blanco del botón llegue a
      4.5:1) deja muy poco margen para el texto casi negro que usa este tema: se
      conserva aquí el verde original, que ya funcionaba bien con ese texto

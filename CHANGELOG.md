@@ -3,6 +3,25 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.10.0-redesign.3 — 02/10/2026 (prelanzamiento, rama `redesign`)
+
+Salió de auditar Reporte Estadístico con la skill «impeccable» (técnica: accesibilidad, rendimiento,
+adaptación, tema, integridad).
+
+- **Movimiento reducido: una alternativa, no un apagado.** Todo se cortaba a 0,01 ms y solo dentro de
+  `.hrl-nuevo`, así que los diálogos, avisos y tooltips (`.hrl-portal`) seguían animándose y el esqueleto
+  de carga dejaba de decir «cargando». Ahora se redefinen los keyframes: entradas y salidas conservan el
+  fundido sin desplazarse; spinner, barra indeterminada y esqueleto pulsan en el sitio; la campana y el
+  anillo de alerta se quedan quietos. Va al final de `tokens.css`, porque gana el último `@keyframes`.
+- **Superficies del navegador con el sistema**: selección de texto (`--selection`), cursor y casillas
+  nativas en el color de marca, barras de desplazamiento con el tema, subrayado separado del texto y
+  cifras tabulares en tablas, `NumberCell`, `StatCard` y `.hrl-mono`.
+- **Anillo de foco del sistema** para todo lo enfocable (los botones y el menú mostraban el del navegador).
+- **`--scrim`** para los velos de cajones y del menú en el teléfono: en oscuro el velo anterior casi no se veía.
+- **`SeriesBars` ya no desborda en un teléfono**: el lienzo no tenía `min-width: 0` y el bloque de meses vacíos medía 90 px fijos.
+- **`Button tone="link"`**: la acción que se lee como enlace dentro de una celda. Las aplicaciones la
+  escribían con un `<button>` propio.
+
 ## 1.10.0-redesign.2 — 02/10/2026 (prelanzamiento, rama `redesign`)
 
 - **`doctor` y `upgrade` aceptan tags de prelanzamiento** (`#v1.10.0-redesign.1`). `doctor` avisaba

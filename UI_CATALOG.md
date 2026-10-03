@@ -66,7 +66,7 @@ tokensToCss();                    // el bloque CSS completo, para otro bundler
 
 | Componente | Import | Props principales |
 |---|---|---|
-| `Button` | `@/core-ui` | `tone` cta·blue·ghost·danger·plain · `size` md·sm · `icon` · `loading` · `disabled` · `onClick` |
+| `Button` | `@/core-ui` | `tone` cta·blue·ghost·danger·plain·link (`link`: acción que se lee como enlace, p. ej. abrir un registro desde su celda; 24 px de alto) · `size` md·sm · `icon` · `loading` · `disabled` · `onClick` |
 | `IconButton` | `@/core-ui` | `icon` **(req.)** · `aria-label` **(req.)** · `tone` plain·action |
 | `Input` | `@/core-ui` | `label` **(req.)** · `kind` text·number·date·password·select · `value` · `onChange` · `options` `{value,label}[]` · `groups` · `error` · `info` · `required` · `searchIcon` · `disabled` · `labelHidden` · `autoFocus` · `kind="password"` trae botón para mostrar/ocultar (`aria-pressed`). `error` y `hint` se asocian al control con `aria-describedby`; con `error`, `aria-invalid` |
 | `Badge` | `@/core-ui` | `label` · `tone` ok·warn·crit·info·none |

@@ -10,7 +10,8 @@ const clase = variants(
       blue: "hrl-btn--blue",
       ghost: "hrl-btn--ghost",
       danger: "hrl-btn--peligro",
-      plain: ""
+      plain: "",
+      link: "hrl-btn--enlace"
     },
     size: { md: "", sm: "hrl-btn--mini" }
   },

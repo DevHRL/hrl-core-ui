@@ -5,7 +5,10 @@ import { aliasObsoleto, PROP_ALIASES } from './deprecated.js';
 /* Botón del sistema. Único punto de entrada: en la aplicación no se escribe
    <button> a mano (ver design.md).
 
-   - `tone`   cta | blue | ghost | danger | plain
+   - `tone`   cta | blue | ghost | danger | plain | link
+              `link` es la acción que se lee como enlace dentro de un texto o de
+              una celda (abrir un registro): sin él, cada aplicación escribía su
+              propio <button> con aspecto de enlace.
    - `size` md (40px, objetivo táctil mínimo) | sm
    - `icon`  nombre del registro de iconos, a la izquierda del texto
    - `loading` bloquea el botón y sustituye el texto por el de `loadingText` */
@@ -18,6 +21,7 @@ const clase = variants(
       ghost: 'hrl-btn--ghost',
       danger: 'hrl-btn--peligro',
       plain: '',
+      link: 'hrl-btn--enlace',
     },
     size: { md: '', sm: 'hrl-btn--mini' },
   },
