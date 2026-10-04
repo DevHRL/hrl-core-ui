@@ -10,11 +10,23 @@ export function cargarTokens(ruta = 'tokens.json') {
   for (const grupo of data.light) Object.assign(lightFlat, grupo.tokens);
   const darkFlat = {};
   for (const grupo of data.dark.groups) Object.assign(darkFlat, grupo.tokens);
+  /* Alto contraste: dos capas que solo sobrescriben lo que cambia. El claro
+     alto cae en el claro; el oscuro alto, en el oscuro y luego en el claro. */
+  const lightHighFlat = {};
+  for (const grupo of data.lightHigh?.groups ?? []) Object.assign(lightHighFlat, grupo.tokens);
+  const darkHighFlat = {};
+  for (const grupo of data.darkHigh?.groups ?? []) Object.assign(darkHighFlat, grupo.tokens);
+  const CAPAS = {
+    light: [lightFlat],
+    dark: [darkFlat, lightFlat],
+    lightHigh: [lightHighFlat, lightFlat],
+    darkHigh: [darkHighFlat, darkFlat, lightFlat],
+  };
 
   function valorCrudo(nombre, tema) {
-    const v = (tema === 'dark' && nombre in darkFlat) ? darkFlat[nombre] : lightFlat[nombre];
-    if (v === undefined) throw new Error(`Token no declarado: --${nombre}`);
-    return v;
+    const capa = (CAPAS[tema] ?? CAPAS.light).find((c) => nombre in c);
+    if (!capa) throw new Error(`Token no declarado: --${nombre}`);
+    return capa[nombre];
   }
 
   /* Resuelve TODAS las referencias `var(--x)` dentro de un valor hasta dejar
@@ -31,5 +43,5 @@ export function cargarTokens(ruta = 'tokens.json') {
     return resolverValor(valorCrudo(nombre, tema), tema, new Set([nombre]));
   }
 
-  return { data, lightFlat, darkFlat, resolver };
+  return { data, lightFlat, darkFlat, lightHighFlat, darkHighFlat, resolver };
 }

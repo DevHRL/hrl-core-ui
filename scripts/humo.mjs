@@ -69,6 +69,8 @@ const CASOS = [
   ['SplitBar', { value: 1, total: 2, color: 'var(--accent)' }],
   ['PageHeader', { title: 'Vista' }],
   ['PageBanner', { title: 'Vista' }],
+  ['Switch', { label: 'Subrayar enlaces', checked: true, onChange: () => {} }],
+  ['SegmentedControl', { label: 'Contraste', options: [{ value: 'a', label: 'A' }, { value: 'b', label: 'B' }], value: 'b', onChange: () => {} }],
   ['PageBanner', { title: 'Portada', description: 'Hoy', clock: true, mascot: 'idle', status: { icon: 'sh-clock', label: 'Pendiente', detail: 'Hasta el 5', tone: 'warning' } }],
   ['FilterBar', { children: 'x' }],
   ['IconSprite', {}],
@@ -135,6 +137,24 @@ const ASERCIONES = [
   ['HrlLogo tiene texto alternativo', () => html('HrlLogo', {}).includes('aria-label="Hospital Regional de Loreto"')],
   ['AppShell sin logo dibuja el del hospital', () => html('AppShell', { navItems: [], title: 'x' }).includes('hrl-logo')],
   ['AppShell con logo={null} no dibuja ninguno', () => !html('AppShell', { navItems: [], title: 'x', logo: null }).includes('hrl-logo')],
+  ['AppShell trae en el perfil las preferencias (se dibuja cerrado, sin lanzar)', () => html('AppShell', { navItems: [], title: 'x', preferencesKey: 'k' }).includes('hrl-shell')],
+  ['SegmentedControl es un grupo de radios con el elegido marcado', () => {
+    const h = html('SegmentedControl', { label: 'Tamaño', options: [{ value: 1, label: 'A' }, { value: 2, label: 'B' }], value: 2 });
+    return h.includes('role="radiogroup"') && h.includes('aria-checked="true"') && (h.match(/tabindex="0"/g) ?? []).length === 1;
+  }],
+  ['las preferencias descartan solo el valor desconocido', () => {
+    const guardado = JSON.stringify({ contrast: 'high', textScale: 9, underlineLinks: 'si' });
+    globalThis.localStorage = { getItem: () => guardado, setItem: () => {}, removeItem: () => {} };
+    const p = kit.readPreferences('k');
+    globalThis.localStorage = { getItem: () => null, setItem: () => {}, removeItem: () => {} };
+    return p.contrast === 'high' && p.textScale === 1 && p.underlineLinks === false;
+  }],
+  ['un JSON roto vuelve a las preferencias por defecto', () => {
+    globalThis.localStorage = { getItem: () => '{roto', setItem: () => {}, removeItem: () => {} };
+    const p = kit.readPreferences('k');
+    globalThis.localStorage = { getItem: () => null, setItem: () => {}, removeItem: () => {} };
+    return JSON.stringify(p) === JSON.stringify(kit.PREFERENCE_DEFAULTS);
+  }],
   ['AppShell con banner dibuja la banda y no la cabecera de la barra', () => {
     const h = html('AppShell', { navItems: [], title: 'x', banner: { status: { label: 'Pendiente' } } });
     return h.includes('hrl-banda') && !h.includes('hrl-pagehead');
@@ -153,7 +173,8 @@ for (const [nombre, prueba] of ASERCIONES) {
 const esperados = ['Button', 'Input', 'DataTable', 'AppShell', 'PageActions', 'usePagination',
   'useExitAnimation', 'useExpandedRows', 'ICON_ALIASES', 'DEPRECATED', 'useFloatingTip', 'readTheme', 'applyTheme',
   'memoize', 'invalidate', 'sortRows', 'nextSort', 'variants', 'cx', 'preset', 'token', 'ICONS',
-  'Stack', 'Grid', 'HrlLogo', 'LoginScreen', 'ChangePasswordScreen', 'backdropForHour', 'LOGIN_BACKDROPS'];
+  'Stack', 'Grid', 'HrlLogo', 'LoginScreen', 'ChangePasswordScreen', 'backdropForHour', 'LOGIN_BACKDROPS',
+  'readPreferences', 'applyPreferences', 'usePreferences', 'PREFERENCE_DEFAULTS', 'Switch', 'SegmentedControl'];
 const faltan = esperados.filter((n) => !(n in kit));
 if (faltan.length) {
   fallos += 1;

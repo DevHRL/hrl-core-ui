@@ -16,6 +16,8 @@ import { TruncatedText } from "./TruncatedText.js";
 import { Tabs } from "./Tabs.js";
 import { Toast } from "./Toast.js";
 import { Checkbox } from "./Checkbox.js";
+import { Switch } from "./Switch.js";
+import { SegmentedControl } from "./SegmentedControl.js";
 import { NumberCell } from "./NumberCell.js";
 import { Steps } from "./Steps.js";
 import { ProgressSteps } from "./ProgressSteps.js";
@@ -44,6 +46,7 @@ import { preset, token, literalColor, tokensToCss } from "./preset.js";
 import { useExitAnimation, useMountedWhile, useExpandedRows, EXIT_MS } from "./useExitAnimation.js";
 import { useFloatingTip } from "./useFloatingTip.js";
 import { readTheme, applyTheme } from "./theme.js";
+import { readPreferences, applyPreferences, usePreferences, resolveContrast, PREFERENCE_DEFAULTS, PREFERENCE_OPTIONS } from "./preferences.js";
 import { memoize, invalidate } from "./cache.js";
 export {
   Alert,
@@ -84,6 +87,8 @@ export {
   NumberCell,
   PAGE_ACTIONS_ID,
   PAGE_SIZES,
+  PREFERENCE_DEFAULTS,
+  PREFERENCE_OPTIONS,
   PageActions,
   PageBanner,
   PageHeader,
@@ -93,6 +98,7 @@ export {
   ProgressSteps,
   ROWS_PER_PAGE,
   Ranking,
+  SegmentedControl,
   SelectionStrip,
   SeriesBars,
   Skeleton,
@@ -105,11 +111,13 @@ export {
   StackedBars,
   StatCard,
   Steps,
+  Switch,
   Tabs,
   Timeline,
   Toast,
   Tooltip,
   TruncatedText,
+  applyPreferences,
   applyTheme,
   backdropForHour,
   cx,
@@ -118,7 +126,9 @@ export {
   memoize,
   nextSort,
   preset,
+  readPreferences,
   readTheme,
+  resolveContrast,
   sortRows,
   token,
   tokensToCss,
@@ -127,6 +137,7 @@ export {
   useFloatingTip,
   useMountedWhile,
   usePagination,
+  usePreferences,
   variants
 };
 //# sourceMappingURL=index.js.map

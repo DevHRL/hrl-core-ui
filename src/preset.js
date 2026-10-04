@@ -202,13 +202,13 @@ export const preset = {
   },
 
   text: {
-    xs: '11px',
-    sm: '12.5px',
-    base: '13.5px',
-    md: '14px',
-    lg: '17px',
-    xl: '22px',
-    '2xl': '30px',
+    xs: 'calc(0.6875rem * var(--hrl-escala-texto, 1))',
+    sm: 'calc(0.78125rem * var(--hrl-escala-texto, 1))',
+    base: 'calc(0.84375rem * var(--hrl-escala-texto, 1))',
+    md: 'calc(0.875rem * var(--hrl-escala-texto, 1))',
+    lg: 'calc(1.0625rem * var(--hrl-escala-texto, 1))',
+    xl: 'calc(1.375rem * var(--hrl-escala-texto, 1))',
+    '2xl': 'calc(1.875rem * var(--hrl-escala-texto, 1))',
   },
 
   weight: {

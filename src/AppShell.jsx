@@ -6,6 +6,10 @@ import { PageHeader } from './PageHeader.jsx';
 import { PageBanner } from './PageBanner.jsx';
 import { Tooltip } from './Tooltip.jsx';
 import { readTheme, applyTheme } from './theme.js';
+import { usePreferences, PREFERENCE_DEFAULTS } from './preferences.js';
+import { SegmentedControl } from './SegmentedControl.jsx';
+import { Switch } from './Switch.jsx';
+import { Button } from './Button.jsx';
 import { useExitAnimation } from './useExitAnimation.js';
 
 const TABS_NOTIF = ['Todas', 'No leídas', 'Archivadas'];
@@ -216,7 +220,91 @@ function InterruptorTema({ tema, onCambiar }) {
   );
 }
 
-function ProfileDrawer({ user, onClose, onSignOut, leaving, tema, onTema }) {
+const CONTRASTES = [
+  { value: 'system', label: 'Sistema', ariaLabel: 'Como el sistema' },
+  { value: 'standard', label: 'Estándar' },
+  { value: 'high', label: 'Alto' },
+];
+const NOMBRE_CONTRASTE = { system: 'como el sistema', standard: 'estándar', high: 'alto' };
+const TAMANOS_TEXTO = [1, 1.15, 1.3, 1.5];
+const porcentaje = (n) => `${Math.round(n * 100)} %`;
+
+/* Apariencia y accesibilidad: modo oscuro, contraste, tamaño del texto y
+   subrayado de enlaces. Todo se aplica al instante —el cambio es su propia
+   vista previa— y una región aria-live dice qué cambió sin mover el foco. */
+function Preferencias({ tema, onTema, prefs, onPrefs, onRestablecer }) {
+  const [anuncio, setAnuncio] = useState('');
+  const cambiado = Object.keys(PREFERENCE_DEFAULTS).some((k) => prefs[k] !== PREFERENCE_DEFAULTS[k]);
+
+  return (
+    <section className="hrl-pref" aria-labelledby="hrl-pref-titulo">
+      <h2 className="hrl-pref__seccion" id="hrl-pref-titulo">Apariencia y accesibilidad</h2>
+
+      <InterruptorTema tema={tema} onCambiar={onTema} />
+
+      <div className="hrl-pref__opcion">
+        <p className="hrl-pref__nombre">Contraste</p>
+        <p className="hrl-pref__ayuda">Texto y bordes más marcados. Útil con poca vista o con una pantalla con reflejos.</p>
+        <SegmentedControl
+          label="Contraste"
+          options={CONTRASTES}
+          value={prefs.contrast}
+          onChange={(v) => {
+            onPrefs({ contrast: v });
+            setAnuncio(`Contraste ${NOMBRE_CONTRASTE[v]}`);
+          }}
+        />
+      </div>
+
+      <div className="hrl-pref__opcion">
+        <p className="hrl-pref__nombre">
+          Tamaño del texto <span className="hrl-pref__valor">{porcentaje(prefs.textScale)}</span>
+        </p>
+        <p className="hrl-pref__ayuda">Agranda el texto de toda la interfaz. Para agrandar también los controles, use el zoom del navegador.</p>
+        <SegmentedControl
+          label="Tamaño del texto"
+          options={TAMANOS_TEXTO.map((n) => ({
+            value: n,
+            ariaLabel: `Texto al ${porcentaje(n)}`,
+            /* Cada «A» se ve al tamaño que produce, sin importar el actual. */
+            label: <span aria-hidden="true" style={{ fontSize: `calc(var(--text-md, 14px) * ${n} / var(--hrl-escala-texto, 1))` }}>A</span>,
+          }))}
+          value={prefs.textScale}
+          onChange={(v) => {
+            onPrefs({ textScale: v });
+            setAnuncio(`Texto al ${porcentaje(v)}`);
+          }}
+        />
+      </div>
+
+      <Switch
+        label="Subrayar enlaces"
+        description={prefs.underlineLinks ? 'Los enlaces se subrayan' : 'Los enlaces se distinguen por su color'}
+        checked={prefs.underlineLinks}
+        onChange={(v) => {
+          onPrefs({ underlineLinks: v });
+          setAnuncio(v ? 'Enlaces subrayados' : 'Enlaces sin subrayar');
+        }}
+      />
+
+      {cambiado && (
+        <Button
+          tone="link"
+          className="hrl-pref__restablecer"
+          onClick={() => {
+            onRestablecer();
+            setAnuncio('Apariencia restablecida');
+          }}
+        >
+          Restablecer
+        </Button>
+      )}
+      <p className="hrl-oculto-visual" aria-live="polite">{anuncio}</p>
+    </section>
+  );
+}
+
+function ProfileDrawer({ user, onClose, onSignOut, leaving, tema, onTema, prefs, onPrefs, onRestablecer }) {
   return (
     <aside
       className={`hrl-drawer hrl-drawer--profile${leaving ? ' hrl-drawer--saliendo' : ''}`}
@@ -242,7 +330,7 @@ function ProfileDrawer({ user, onClose, onSignOut, leaving, tema, onTema }) {
       </div>
 
       <div className="hrl-perfil__cuerpo">
-        <InterruptorTema tema={tema} onCambiar={onTema} />
+        <Preferencias tema={tema} onTema={onTema} prefs={prefs} onPrefs={onPrefs} onRestablecer={onRestablecer} />
       </div>
 
       <div className="hrl-profile__foot">
@@ -265,6 +353,9 @@ function ProfileDrawer({ user, onClose, onSignOut, leaving, tema, onTema }) {
                Pasar `logo={null}` deja la barra lateral sin marca
      brand     nombre del sistema en la barra superior; el kit no lo sabe
      themeKey  clave con la que se recuerda el modo oscuro
+     preferencesKey  clave con la que se recuerdan contraste, tamaño del texto y
+               subrayado de enlaces (usePreferences); por defecto, la de
+               themeKey con «_prefs»
      banner    { status?, mascot?, actions?, clock? }: la vista se presenta con
                PageBanner (la cabecera en banda) al principio del contenido, en
                vez de con PageHeader dentro de la barra superior. Usa el mismo
@@ -290,6 +381,7 @@ export function AppShell({
   logo,
   brand,
   themeKey,
+  preferencesKey,
   notifications = [],
   onSignOut,
   panelLeaving,
@@ -306,6 +398,7 @@ export function AppShell({
      el contenido. Estado aparte, para no tocar la preferencia de escritorio. */
   const [menuMovil, setMenuMovil] = useState(false);
   const [tema, setTema] = useState(() => readTheme(themeKey));
+  const [prefs, cambiarPrefs, restablecerPrefs] = usePreferences(preferencesKey ?? `${themeKey ?? 'hrl_theme'}_prefs`);
 
   /* Se aplica también en el primer render: el atributo vive en <html>, fuera
      del árbol de React. */
@@ -503,6 +596,9 @@ export function AppShell({
             leaving={leaving}
             tema={tema}
             onTema={cambiarTema}
+            prefs={prefs}
+            onPrefs={cambiarPrefs}
+            onRestablecer={restablecerPrefs}
           />
         )}
       </div>

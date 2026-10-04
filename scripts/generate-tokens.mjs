@@ -81,6 +81,22 @@ cssNuevo = reemplazarEntre(
   bloqueGrupos(data.dark.groups),
 );
 
+/* Alto contraste. El claro excluye el oscuro con :not(): con la misma
+   especificidad que el bloque oscuro, sin eso pisaría sus valores en el modo
+   oscuro de alto contraste. */
+cssNuevo = reemplazarEntre(
+  cssNuevo,
+  ":root[data-contraste-hrl='alto']:not([data-tema-hrl='oscuro']) .hrl-nuevo," + LF + ":root[data-contraste-hrl='alto']:not([data-tema-hrl='oscuro']) .hrl-portal {" + LF,
+  LF + LF + '  /* fin del alto contraste claro */',
+  bloqueGrupos(data.lightHigh?.groups ?? []),
+);
+cssNuevo = reemplazarEntre(
+  cssNuevo,
+  ":root[data-tema-hrl='oscuro'][data-contraste-hrl='alto'] .hrl-nuevo," + LF + ":root[data-tema-hrl='oscuro'][data-contraste-hrl='alto'] .hrl-portal {" + LF,
+  LF + LF + '  /* fin del alto contraste oscuro */',
+  bloqueGrupos(data.darkHigh?.groups ?? []),
+);
+
 writeFileSync('tokens.css', cssNuevo.split(LF).join(finDeLinea));
 
 // --------------------------------------------------------------------------

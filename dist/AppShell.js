@@ -7,6 +7,10 @@ import { PageHeader } from "./PageHeader.js";
 import { PageBanner } from "./PageBanner.js";
 import { Tooltip } from "./Tooltip.js";
 import { readTheme, applyTheme } from "./theme.js";
+import { usePreferences, PREFERENCE_DEFAULTS } from "./preferences.js";
+import { SegmentedControl } from "./SegmentedControl.js";
+import { Switch } from "./Switch.js";
+import { Button } from "./Button.js";
 import { useExitAnimation } from "./useExitAnimation.js";
 const TABS_NOTIF = ["Todas", "No le\xEDdas", "Archivadas"];
 const LOGO_POR_DEFECTO = /* @__PURE__ */ jsxs(Fragment, { children: [
@@ -165,7 +169,88 @@ function InterruptorTema({ tema, onCambiar }) {
     }
   );
 }
-function ProfileDrawer({ user, onClose, onSignOut, leaving, tema, onTema }) {
+const CONTRASTES = [
+  { value: "system", label: "Sistema", ariaLabel: "Como el sistema" },
+  { value: "standard", label: "Est\xE1ndar" },
+  { value: "high", label: "Alto" }
+];
+const NOMBRE_CONTRASTE = { system: "como el sistema", standard: "est\xE1ndar", high: "alto" };
+const TAMANOS_TEXTO = [1, 1.15, 1.3, 1.5];
+const porcentaje = (n) => `${Math.round(n * 100)} %`;
+function Preferencias({ tema, onTema, prefs, onPrefs, onRestablecer }) {
+  const [anuncio, setAnuncio] = useState("");
+  const cambiado = Object.keys(PREFERENCE_DEFAULTS).some((k) => prefs[k] !== PREFERENCE_DEFAULTS[k]);
+  return /* @__PURE__ */ jsxs("section", { className: "hrl-pref", "aria-labelledby": "hrl-pref-titulo", children: [
+    /* @__PURE__ */ jsx("h2", { className: "hrl-pref__seccion", id: "hrl-pref-titulo", children: "Apariencia y accesibilidad" }),
+    /* @__PURE__ */ jsx(InterruptorTema, { tema, onCambiar: onTema }),
+    /* @__PURE__ */ jsxs("div", { className: "hrl-pref__opcion", children: [
+      /* @__PURE__ */ jsx("p", { className: "hrl-pref__nombre", children: "Contraste" }),
+      /* @__PURE__ */ jsx("p", { className: "hrl-pref__ayuda", children: "Texto y bordes m\xE1s marcados. \xDAtil con poca vista o con una pantalla con reflejos." }),
+      /* @__PURE__ */ jsx(
+        SegmentedControl,
+        {
+          label: "Contraste",
+          options: CONTRASTES,
+          value: prefs.contrast,
+          onChange: (v) => {
+            onPrefs({ contrast: v });
+            setAnuncio(`Contraste ${NOMBRE_CONTRASTE[v]}`);
+          }
+        }
+      )
+    ] }),
+    /* @__PURE__ */ jsxs("div", { className: "hrl-pref__opcion", children: [
+      /* @__PURE__ */ jsxs("p", { className: "hrl-pref__nombre", children: [
+        "Tama\xF1o del texto ",
+        /* @__PURE__ */ jsx("span", { className: "hrl-pref__valor", children: porcentaje(prefs.textScale) })
+      ] }),
+      /* @__PURE__ */ jsx("p", { className: "hrl-pref__ayuda", children: "Agranda el texto de toda la interfaz. Para agrandar tambi\xE9n los controles, use el zoom del navegador." }),
+      /* @__PURE__ */ jsx(
+        SegmentedControl,
+        {
+          label: "Tama\xF1o del texto",
+          options: TAMANOS_TEXTO.map((n) => ({
+            value: n,
+            ariaLabel: `Texto al ${porcentaje(n)}`,
+            /* Cada «A» se ve al tamaño que produce, sin importar el actual. */
+            label: /* @__PURE__ */ jsx("span", { "aria-hidden": "true", style: { fontSize: `calc(var(--text-md, 14px) * ${n} / var(--hrl-escala-texto, 1))` }, children: "A" })
+          })),
+          value: prefs.textScale,
+          onChange: (v) => {
+            onPrefs({ textScale: v });
+            setAnuncio(`Texto al ${porcentaje(v)}`);
+          }
+        }
+      )
+    ] }),
+    /* @__PURE__ */ jsx(
+      Switch,
+      {
+        label: "Subrayar enlaces",
+        description: prefs.underlineLinks ? "Los enlaces se subrayan" : "Los enlaces se distinguen por su color",
+        checked: prefs.underlineLinks,
+        onChange: (v) => {
+          onPrefs({ underlineLinks: v });
+          setAnuncio(v ? "Enlaces subrayados" : "Enlaces sin subrayar");
+        }
+      }
+    ),
+    cambiado && /* @__PURE__ */ jsx(
+      Button,
+      {
+        tone: "link",
+        className: "hrl-pref__restablecer",
+        onClick: () => {
+          onRestablecer();
+          setAnuncio("Apariencia restablecida");
+        },
+        children: "Restablecer"
+      }
+    ),
+    /* @__PURE__ */ jsx("p", { className: "hrl-oculto-visual", "aria-live": "polite", children: anuncio })
+  ] });
+}
+function ProfileDrawer({ user, onClose, onSignOut, leaving, tema, onTema, prefs, onPrefs, onRestablecer }) {
   return /* @__PURE__ */ jsxs(
     "aside",
     {
@@ -179,7 +264,7 @@ function ProfileDrawer({ user, onClose, onSignOut, leaving, tema, onTema }) {
           /* @__PURE__ */ jsx("strong", { className: "hrl-profile__name", children: user?.name ?? "Sin sesi\xF3n" }),
           /* @__PURE__ */ jsx("span", { className: "hrl-profile__mail", children: user?.email ?? user?.role ?? "\u2014" })
         ] }),
-        /* @__PURE__ */ jsx("div", { className: "hrl-perfil__cuerpo", children: /* @__PURE__ */ jsx(InterruptorTema, { tema, onCambiar: onTema }) }),
+        /* @__PURE__ */ jsx("div", { className: "hrl-perfil__cuerpo", children: /* @__PURE__ */ jsx(Preferencias, { tema, onTema, prefs, onPrefs, onRestablecer }) }),
         /* @__PURE__ */ jsx("div", { className: "hrl-profile__foot", children: /* @__PURE__ */ jsx("button", { type: "button", className: "hrl-signout", onClick: onSignOut, children: "Cerrar sesi\xF3n" }) })
       ]
     }
@@ -200,6 +285,7 @@ function AppShell({
   logo,
   brand,
   themeKey,
+  preferencesKey,
   notifications = [],
   onSignOut,
   panelLeaving,
@@ -212,6 +298,7 @@ function AppShell({
   const [plegado, setPlegado] = useState(() => localStorage.getItem("hrl_menu") === "plegado");
   const [menuMovil, setMenuMovil] = useState(false);
   const [tema, setTema] = useState(() => readTheme(themeKey));
+  const [prefs, cambiarPrefs, restablecerPrefs] = usePreferences(preferencesKey ?? `${themeKey ?? "hrl_theme"}_prefs`);
   useEffect(() => {
     applyTheme(tema, themeKey);
   }, [tema, themeKey]);
@@ -383,7 +470,10 @@ function AppShell({
           onSignOut,
           leaving,
           tema,
-          onTema: cambiarTema
+          onTema: cambiarTema,
+          prefs,
+          onPrefs: cambiarPrefs,
+          onRestablecer: restablecerPrefs
         }
       )
     ] })

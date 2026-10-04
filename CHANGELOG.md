@@ -3,6 +3,28 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.10.0-redesign.9 — 03/10/2026 (prelanzamiento, rama `redesign`)
+
+Preferencias de lectura, la primera parte del plan de personalización: **contraste**, **tamaño del texto** y
+**subrayar enlaces**, en el cajón del perfil del `AppShell`, junto al modo oscuro. Se aplican al instante y una
+región `aria-live` dice qué cambió.
+
+- **Contraste** (Como el sistema · Estándar · Alto). «Como el sistema» lee `prefers-contrast: more` y sigue sus
+  cambios en vivo. El alto contraste son dos capas nuevas de `tokens.json` (`lightHigh`, `darkHigh`) que solo
+  sobrescriben lo que cambia: texto a 7:1 (AAA), bordes sólidos de 3:1 o más, acciones más oscuras. Además, las
+  tarjetas cambian la sombra por un borde, el foco pasa a 3 px y los enlaces se subrayan siempre.
+- **Tamaño del texto** (100 · 115 · 130 · 150 %). La escala `--text-*` pasa a `rem` y se multiplica por
+  `--hrl-escala-texto`; al 100 % mide lo mismo que antes. Las seis alturas fijas que tenían texto dentro (barra
+  superior, ver contraseña, número de avisos, número de paso, sello del detalle, valor de las barras) pasan a
+  altura mínima para no cortarlo.
+- **Subrayar enlaces**: los enlaces de texto y `Button tone="link"` dejan de depender solo del color.
+- **Nuevos**: `Switch` y `SegmentedControl` como primitivos; `usePreferences`, `readPreferences`,
+  `applyPreferences` (para aplicar antes del primer render) y `AppShell preferencesKey`.
+- **`npm run contrast` mide cuatro modos**: AA en claro y oscuro estándar; en alto contraste, 7:1 para el texto,
+  3:1 para bordes y foco, y nada translúcido salvo los velos.
+- Queda pendiente del plan: los colores escritos a mano dentro de las reglas (85, casi todos grises de
+  separadores) aún no cambian con el contraste, y el espaciado del texto y el movimiento como preferencias.
+
 ## 1.10.0-redesign.8 — 03/10/2026 (prelanzamiento, rama `redesign`)
 
 - **`PageBanner` respeta el borde de la página.** Iba pegada al menú lateral y quedaba más ancha que las

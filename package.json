@@ -1,6 +1,6 @@
 {
   "name": "@hrl/core-ui",
-  "version": "1.10.0-redesign.8",
+  "version": "1.10.0-redesign.9",
   "description": "Sistema de diseño del Hospital Regional de Loreto: componentes React y tokens CSS, sin dependencias.",
   "license": "UNLICENSED",
   "repository": {
