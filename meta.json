@@ -1,0 +1,1273 @@
+{
+  "about": {
+    "homepage": "https://www.ladle.dev",
+    "github": "https://github.com/tajo/ladle",
+    "version": 1
+  },
+  "stories": {
+    "primitivos--alert--con-accion": {
+      "name": "Con accion",
+      "levels": [
+        "Primitivos",
+        "Alert"
+      ],
+      "locStart": 14,
+      "locEnd": 18,
+      "filePath": "stories/Alert.stories.jsx",
+      "namedExport": "ConAccion",
+      "meta": {}
+    },
+    "primitivos--alert--tonos": {
+      "name": "Tonos",
+      "levels": [
+        "Primitivos",
+        "Alert"
+      ],
+      "locStart": 5,
+      "locEnd": 12,
+      "filePath": "stories/Alert.stories.jsx",
+      "namedExport": "Tonos",
+      "meta": {}
+    },
+    "layout--appshell--basico": {
+      "name": "Basico",
+      "levels": [
+        "Layout",
+        "Appshell"
+      ],
+      "locStart": 20,
+      "locEnd": 38,
+      "filePath": "stories/AppShell.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {
+        "fullscreen": true
+      }
+    },
+    "layout--appshell--menu-plegado": {
+      "name": "Menu plegado",
+      "levels": [
+        "Layout",
+        "Appshell"
+      ],
+      "locStart": 44,
+      "locEnd": 72,
+      "filePath": "stories/AppShell.stories.jsx",
+      "namedExport": "MenuPlegado",
+      "meta": {
+        "fullscreen": true
+      }
+    },
+    "primitivos--badge--tonos": {
+      "name": "Tonos",
+      "levels": [
+        "Primitivos",
+        "Badge"
+      ],
+      "locStart": 5,
+      "locEnd": 13,
+      "filePath": "stories/Badge.stories.jsx",
+      "namedExport": "Tonos",
+      "meta": {}
+    },
+    "primitivos--button--con-icono-y-estados": {
+      "name": "Con icono y estados",
+      "levels": [
+        "Primitivos",
+        "Button"
+      ],
+      "locStart": 22,
+      "locEnd": 29,
+      "filePath": "stories/Button.stories.jsx",
+      "namedExport": "ConIconoYEstados",
+      "meta": {}
+    },
+    "primitivos--button--icono": {
+      "name": "Icono",
+      "levels": [
+        "Primitivos",
+        "Button"
+      ],
+      "locStart": 31,
+      "locEnd": 36,
+      "filePath": "stories/Button.stories.jsx",
+      "namedExport": "Icono",
+      "meta": {}
+    },
+    "primitivos--button--tamanos": {
+      "name": "Tamanos",
+      "levels": [
+        "Primitivos",
+        "Button"
+      ],
+      "locStart": 15,
+      "locEnd": 20,
+      "filePath": "stories/Button.stories.jsx",
+      "namedExport": "Tamanos",
+      "meta": {}
+    },
+    "primitivos--button--tonos": {
+      "name": "Tonos",
+      "levels": [
+        "Primitivos",
+        "Button"
+      ],
+      "locStart": 5,
+      "locEnd": 13,
+      "filePath": "stories/Button.stories.jsx",
+      "namedExport": "Tonos",
+      "meta": {}
+    },
+    "gráficos--calendar--basico": {
+      "name": "Basico",
+      "levels": [
+        "Gráficos",
+        "Calendar"
+      ],
+      "locStart": 6,
+      "locEnd": 19,
+      "filePath": "stories/Calendar.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "primitivos--card--apilado": {
+      "name": "Apilado",
+      "levels": [
+        "Primitivos",
+        "Card"
+      ],
+      "locStart": 32,
+      "locEnd": 37,
+      "filePath": "stories/Card.stories.jsx",
+      "namedExport": "Apilado",
+      "meta": {}
+    },
+    "primitivos--card--basica": {
+      "name": "Basica",
+      "levels": [
+        "Primitivos",
+        "Card"
+      ],
+      "locStart": 5,
+      "locEnd": 5,
+      "filePath": "stories/Card.stories.jsx",
+      "namedExport": "Basica",
+      "meta": {}
+    },
+    "primitivos--card--con-acciones": {
+      "name": "Con acciones",
+      "levels": [
+        "Primitivos",
+        "Card"
+      ],
+      "locStart": 25,
+      "locEnd": 29,
+      "filePath": "stories/Card.stories.jsx",
+      "namedExport": "ConAcciones",
+      "meta": {}
+    },
+    "primitivos--card--con-subtitulo-y-total": {
+      "name": "Con subtitulo y total",
+      "levels": [
+        "Primitivos",
+        "Card"
+      ],
+      "locStart": 7,
+      "locEnd": 11,
+      "filePath": "stories/Card.stories.jsx",
+      "namedExport": "ConSubtituloYTotal",
+      "meta": {}
+    },
+    "primitivos--card--en-banda": {
+      "name": "En banda",
+      "levels": [
+        "Primitivos",
+        "Card"
+      ],
+      "locStart": 14,
+      "locEnd": 23,
+      "filePath": "stories/Card.stories.jsx",
+      "namedExport": "EnBanda",
+      "meta": {}
+    },
+    "primitivos--card--en-mosaico": {
+      "name": "En mosaico",
+      "levels": [
+        "Primitivos",
+        "Card"
+      ],
+      "locStart": 41,
+      "locEnd": 50,
+      "filePath": "stories/Card.stories.jsx",
+      "namedExport": "EnMosaico",
+      "meta": {}
+    },
+    "gráficos--charts--apiladas": {
+      "name": "Apiladas",
+      "levels": [
+        "Gráficos",
+        "Charts"
+      ],
+      "locStart": 15,
+      "locEnd": 23,
+      "filePath": "stories/Charts.stories.jsx",
+      "namedExport": "Apiladas",
+      "meta": {}
+    },
+    "gráficos--charts--division": {
+      "name": "Division",
+      "levels": [
+        "Gráficos",
+        "Charts"
+      ],
+      "locStart": 59,
+      "locEnd": 59,
+      "filePath": "stories/Charts.stories.jsx",
+      "namedExport": "Division",
+      "meta": {}
+    },
+    "gráficos--charts--embudo-de-etapas": {
+      "name": "Embudo de etapas",
+      "levels": [
+        "Gráficos",
+        "Charts"
+      ],
+      "locStart": 39,
+      "locEnd": 47,
+      "filePath": "stories/Charts.stories.jsx",
+      "namedExport": "EmbudoDeEtapas",
+      "meta": {}
+    },
+    "gráficos--charts--gauge": {
+      "name": "Gauge",
+      "levels": [
+        "Gráficos",
+        "Charts"
+      ],
+      "locStart": 5,
+      "locEnd": 11,
+      "filePath": "stories/Charts.stories.jsx",
+      "namedExport": "Gauge",
+      "meta": {}
+    },
+    "gráficos--charts--linea-mini": {
+      "name": "Linea mini",
+      "levels": [
+        "Gráficos",
+        "Charts"
+      ],
+      "locStart": 13,
+      "locEnd": 13,
+      "filePath": "stories/Charts.stories.jsx",
+      "namedExport": "LineaMini",
+      "meta": {}
+    },
+    "gráficos--charts--ranking-basico": {
+      "name": "Ranking basico",
+      "levels": [
+        "Gráficos",
+        "Charts"
+      ],
+      "locStart": 49,
+      "locEnd": 57,
+      "filePath": "stories/Charts.stories.jsx",
+      "namedExport": "RankingBasico",
+      "meta": {}
+    },
+    "gráficos--charts--serie-con-meses-sin-dato": {
+      "name": "Serie con meses sin dato",
+      "levels": [
+        "Gráficos",
+        "Charts"
+      ],
+      "locStart": 25,
+      "locEnd": 37,
+      "filePath": "stories/Charts.stories.jsx",
+      "namedExport": "SerieConMesesSinDato",
+      "meta": {}
+    },
+    "primitivos--checkbox--basico": {
+      "name": "Basico",
+      "levels": [
+        "Primitivos",
+        "Checkbox"
+      ],
+      "locStart": 6,
+      "locEnd": 9,
+      "filePath": "stories/Checkbox.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "primitivos--checkbox--deshabilitado": {
+      "name": "Deshabilitado",
+      "levels": [
+        "Primitivos",
+        "Checkbox"
+      ],
+      "locStart": 11,
+      "locEnd": 11,
+      "filePath": "stories/Checkbox.stories.jsx",
+      "namedExport": "Deshabilitado",
+      "meta": {}
+    },
+    "primitivos--compactselect--basico": {
+      "name": "Basico",
+      "levels": [
+        "Primitivos",
+        "Compactselect"
+      ],
+      "locStart": 6,
+      "locEnd": 16,
+      "filePath": "stories/CompactSelect.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "primitivos--compactselect--deshabilitado": {
+      "name": "Deshabilitado",
+      "levels": [
+        "Primitivos",
+        "Compactselect"
+      ],
+      "locStart": 18,
+      "locEnd": 20,
+      "filePath": "stories/CompactSelect.stories.jsx",
+      "namedExport": "Deshabilitado",
+      "meta": {}
+    },
+    "datos--datatable--basico": {
+      "name": "Basico",
+      "levels": [
+        "Datos",
+        "Datatable"
+      ],
+      "locStart": 32,
+      "locEnd": 32,
+      "filePath": "stories/DataTable.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "datos--datatable--cargando": {
+      "name": "Cargando",
+      "levels": [
+        "Datos",
+        "Datatable"
+      ],
+      "locStart": 61,
+      "locEnd": 61,
+      "filePath": "stories/DataTable.stories.jsx",
+      "namedExport": "Cargando",
+      "meta": {}
+    },
+    "datos--datatable--con-grupos": {
+      "name": "Con grupos",
+      "levels": [
+        "Datos",
+        "Datatable"
+      ],
+      "locStart": 34,
+      "locEnd": 44,
+      "filePath": "stories/DataTable.stories.jsx",
+      "namedExport": "ConGrupos",
+      "meta": {}
+    },
+    "datos--datatable--ordenable": {
+      "name": "Ordenable",
+      "levels": [
+        "Datos",
+        "Datatable"
+      ],
+      "locStart": 46,
+      "locEnd": 59,
+      "filePath": "stories/DataTable.stories.jsx",
+      "namedExport": "Ordenable",
+      "meta": {}
+    },
+    "datos--datatable--vacio": {
+      "name": "Vacio",
+      "levels": [
+        "Datos",
+        "Datatable"
+      ],
+      "locStart": 63,
+      "locEnd": 65,
+      "filePath": "stories/DataTable.stories.jsx",
+      "namedExport": "Vacio",
+      "meta": {}
+    },
+    "capas-flotantes--detaildialog--basico": {
+      "name": "Basico",
+      "levels": [
+        "Capas flotantes",
+        "Detaildialog"
+      ],
+      "locStart": 6,
+      "locEnd": 42,
+      "filePath": "stories/DetailDialog.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "capas-flotantes--dialog--basico": {
+      "name": "Basico",
+      "levels": [
+        "Capas flotantes",
+        "Dialog"
+      ],
+      "locStart": 9,
+      "locEnd": 21,
+      "filePath": "stories/Dialog.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "capas-flotantes--dialog--destructivo": {
+      "name": "Destructivo",
+      "levels": [
+        "Capas flotantes",
+        "Dialog"
+      ],
+      "locStart": 23,
+      "locEnd": 45,
+      "filePath": "stories/Dialog.stories.jsx",
+      "namedExport": "Destructivo",
+      "meta": {}
+    },
+    "capas-flotantes--dropdownmenu--basico": {
+      "name": "Basico",
+      "levels": [
+        "Capas flotantes",
+        "Dropdownmenu"
+      ],
+      "locStart": 5,
+      "locEnd": 15,
+      "filePath": "stories/DropdownMenu.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "capas-flotantes--dropdownmenu--esquina-inferior-derecha": {
+      "name": "Esquina inferior derecha",
+      "levels": [
+        "Capas flotantes",
+        "Dropdownmenu"
+      ],
+      "locStart": 33,
+      "locEnd": 33,
+      "filePath": "stories/DropdownMenu.stories.jsx",
+      "namedExport": "EsquinaInferiorDerecha",
+      "meta": {}
+    },
+    "capas-flotantes--dropdownmenu--esquina-inferior-izquierda": {
+      "name": "Esquina inferior izquierda",
+      "levels": [
+        "Capas flotantes",
+        "Dropdownmenu"
+      ],
+      "locStart": 34,
+      "locEnd": 34,
+      "filePath": "stories/DropdownMenu.stories.jsx",
+      "namedExport": "EsquinaInferiorIzquierda",
+      "meta": {}
+    },
+    "capas-flotantes--dropdownmenu--esquina-superior-derecha": {
+      "name": "Esquina superior derecha",
+      "levels": [
+        "Capas flotantes",
+        "Dropdownmenu"
+      ],
+      "locStart": 35,
+      "locEnd": 35,
+      "filePath": "stories/DropdownMenu.stories.jsx",
+      "namedExport": "EsquinaSuperiorDerecha",
+      "meta": {}
+    },
+    "estados--emptystate--basico": {
+      "name": "Basico",
+      "levels": [
+        "Estados",
+        "Emptystate"
+      ],
+      "locStart": 5,
+      "locEnd": 10,
+      "filePath": "stories/EmptyState.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "estados--emptystate--con-accion": {
+      "name": "Con accion",
+      "levels": [
+        "Estados",
+        "Emptystate"
+      ],
+      "locStart": 12,
+      "locEnd": 16,
+      "filePath": "stories/EmptyState.stories.jsx",
+      "namedExport": "ConAccion",
+      "meta": {}
+    },
+    "layout--filterbar--basico": {
+      "name": "Basico",
+      "levels": [
+        "Layout",
+        "Filterbar"
+      ],
+      "locStart": 6,
+      "locEnd": 23,
+      "filePath": "stories/FilterBar.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "primitivos--hrllogo--completo": {
+      "name": "Completo",
+      "levels": [
+        "Primitivos",
+        "Hrllogo"
+      ],
+      "locStart": 5,
+      "locEnd": 5,
+      "filePath": "stories/HrlLogo.stories.jsx",
+      "namedExport": "Completo",
+      "meta": {}
+    },
+    "primitivos--hrllogo--escudo": {
+      "name": "Escudo",
+      "levels": [
+        "Primitivos",
+        "Hrllogo"
+      ],
+      "locStart": 7,
+      "locEnd": 7,
+      "filePath": "stories/HrlLogo.stories.jsx",
+      "namedExport": "Escudo",
+      "meta": {}
+    },
+    "primitivos--hrllogo--tamanos": {
+      "name": "Tamanos",
+      "levels": [
+        "Primitivos",
+        "Hrllogo"
+      ],
+      "locStart": 9,
+      "locEnd": 15,
+      "filePath": "stories/HrlLogo.stories.jsx",
+      "namedExport": "Tamanos",
+      "meta": {}
+    },
+    "iconos--icon--catalogo": {
+      "name": "Catalogo",
+      "levels": [
+        "Iconos",
+        "Icon"
+      ],
+      "locStart": 7,
+      "locEnd": 18,
+      "filePath": "stories/Icon.stories.jsx",
+      "namedExport": "Catalogo",
+      "meta": {}
+    },
+    "primitivos--input--busqueda": {
+      "name": "Busqueda",
+      "levels": [
+        "Primitivos",
+        "Input"
+      ],
+      "locStart": 34,
+      "locEnd": 34,
+      "filePath": "stories/Input.stories.jsx",
+      "namedExport": "Busqueda",
+      "meta": {}
+    },
+    "primitivos--input--con-ayuda-y-requerido": {
+      "name": "Con ayuda y requerido",
+      "levels": [
+        "Primitivos",
+        "Input"
+      ],
+      "locStart": 26,
+      "locEnd": 28,
+      "filePath": "stories/Input.stories.jsx",
+      "namedExport": "ConAyudaYRequerido",
+      "meta": {}
+    },
+    "primitivos--input--con-error": {
+      "name": "Con error",
+      "levels": [
+        "Primitivos",
+        "Input"
+      ],
+      "locStart": 30,
+      "locEnd": 32,
+      "filePath": "stories/Input.stories.jsx",
+      "namedExport": "ConError",
+      "meta": {}
+    },
+    "primitivos--input--numero": {
+      "name": "Numero",
+      "levels": [
+        "Primitivos",
+        "Input"
+      ],
+      "locStart": 24,
+      "locEnd": 24,
+      "filePath": "stories/Input.stories.jsx",
+      "namedExport": "Numero",
+      "meta": {}
+    },
+    "primitivos--input--select": {
+      "name": "Select",
+      "levels": [
+        "Primitivos",
+        "Input"
+      ],
+      "locStart": 11,
+      "locEnd": 22,
+      "filePath": "stories/Input.stories.jsx",
+      "namedExport": "Select",
+      "meta": {}
+    },
+    "primitivos--input--texto": {
+      "name": "Texto",
+      "levels": [
+        "Primitivos",
+        "Input"
+      ],
+      "locStart": 6,
+      "locEnd": 9,
+      "filePath": "stories/Input.stories.jsx",
+      "namedExport": "Texto",
+      "meta": {}
+    },
+    "composición--layout--columna": {
+      "name": "Columna",
+      "levels": [
+        "Composición",
+        "Layout"
+      ],
+      "locStart": 9,
+      "locEnd": 15,
+      "filePath": "stories/Layout.stories.jsx",
+      "namedExport": "Columna",
+      "meta": {}
+    },
+    "composición--layout--columnas-fijas": {
+      "name": "Columnas fijas",
+      "levels": [
+        "Composición",
+        "Layout"
+      ],
+      "locStart": 36,
+      "locEnd": 41,
+      "filePath": "stories/Layout.stories.jsx",
+      "namedExport": "ColumnasFijas",
+      "meta": {}
+    },
+    "composición--layout--fila-con-separacion": {
+      "name": "Fila con separacion",
+      "levels": [
+        "Composición",
+        "Layout"
+      ],
+      "locStart": 17,
+      "locEnd": 25,
+      "filePath": "stories/Layout.stories.jsx",
+      "namedExport": "FilaConSeparacion",
+      "meta": {}
+    },
+    "composición--layout--rejilla-automatica": {
+      "name": "Rejilla automatica",
+      "levels": [
+        "Composición",
+        "Layout"
+      ],
+      "locStart": 27,
+      "locEnd": 34,
+      "filePath": "stories/Layout.stories.jsx",
+      "namedExport": "RejillaAutomatica",
+      "meta": {}
+    },
+    "composición--pantallas-de-acceso--cambio-de-contrasena": {
+      "name": "Cambio de contrasena",
+      "levels": [
+        "Composición",
+        "Pantallas de acceso"
+      ],
+      "locStart": 24,
+      "locEnd": 26,
+      "filePath": "stories/LoginScreen.stories.jsx",
+      "namedExport": "CambioDeContrasena",
+      "meta": {}
+    },
+    "composición--pantallas-de-acceso--fachadas": {
+      "name": "Fachadas",
+      "levels": [
+        "Composición",
+        "Pantallas de acceso"
+      ],
+      "locStart": 16,
+      "locEnd": 22,
+      "filePath": "stories/LoginScreen.stories.jsx",
+      "namedExport": "Fachadas",
+      "meta": {}
+    },
+    "composición--pantallas-de-acceso--por-hora": {
+      "name": "Por hora",
+      "levels": [
+        "Composición",
+        "Pantallas de acceso"
+      ],
+      "locStart": 11,
+      "locEnd": 11,
+      "filePath": "stories/LoginScreen.stories.jsx",
+      "namedExport": "PorHora",
+      "meta": {}
+    },
+    "composición--pantallas-de-acceso--sin-fondo": {
+      "name": "Sin fondo",
+      "levels": [
+        "Composición",
+        "Pantallas de acceso"
+      ],
+      "locStart": 13,
+      "locEnd": 13,
+      "filePath": "stories/LoginScreen.stories.jsx",
+      "namedExport": "SinFondo",
+      "meta": {}
+    },
+    "primitivos--mascot--banco": {
+      "name": "Banco",
+      "levels": [
+        "Primitivos",
+        "Mascot"
+      ],
+      "locStart": 73,
+      "locEnd": 95,
+      "filePath": "stories/Mascot.stories.jsx",
+      "namedExport": "Banco",
+      "meta": {}
+    },
+    "primitivos--mascot--en-una-tarjeta": {
+      "name": "En una tarjeta",
+      "levels": [
+        "Primitivos",
+        "Mascot"
+      ],
+      "locStart": 98,
+      "locEnd": 105,
+      "filePath": "stories/Mascot.stories.jsx",
+      "namedExport": "EnUnaTarjeta",
+      "meta": {}
+    },
+    "primitivos--mascot--estados": {
+      "name": "Estados",
+      "levels": [
+        "Primitivos",
+        "Mascot"
+      ],
+      "locStart": 26,
+      "locEnd": 34,
+      "filePath": "stories/Mascot.stories.jsx",
+      "namedExport": "Estados",
+      "meta": {}
+    },
+    "primitivos--mascot--interactiva": {
+      "name": "Interactiva",
+      "levels": [
+        "Primitivos",
+        "Mascot"
+      ],
+      "locStart": 62,
+      "locEnd": 70,
+      "filePath": "stories/Mascot.stories.jsx",
+      "namedExport": "Interactiva",
+      "meta": {}
+    },
+    "primitivos--mascot--sin-boca": {
+      "name": "Sin boca",
+      "levels": [
+        "Primitivos",
+        "Mascot"
+      ],
+      "locStart": 48,
+      "locEnd": 56,
+      "filePath": "stories/Mascot.stories.jsx",
+      "namedExport": "SinBoca",
+      "meta": {}
+    },
+    "primitivos--mascot--tamanos": {
+      "name": "Tamanos",
+      "levels": [
+        "Primitivos",
+        "Mascot"
+      ],
+      "locStart": 37,
+      "locEnd": 45,
+      "filePath": "stories/Mascot.stories.jsx",
+      "namedExport": "Tamanos",
+      "meta": {}
+    },
+    "primitivos--numbercell--basico": {
+      "name": "Basico",
+      "levels": [
+        "Primitivos",
+        "Numbercell"
+      ],
+      "locStart": 6,
+      "locEnd": 9,
+      "filePath": "stories/NumberCell.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "primitivos--numbercell--con-error": {
+      "name": "Con error",
+      "levels": [
+        "Primitivos",
+        "Numbercell"
+      ],
+      "locStart": 11,
+      "locEnd": 11,
+      "filePath": "stories/NumberCell.stories.jsx",
+      "namedExport": "ConError",
+      "meta": {}
+    },
+    "layout--pageactions--basico": {
+      "name": "Basico",
+      "levels": [
+        "Layout",
+        "Pageactions"
+      ],
+      "locStart": 8,
+      "locEnd": 15,
+      "filePath": "stories/PageActions.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "layout--pagebanner--aviso": {
+      "name": "Aviso",
+      "levels": [
+        "Layout",
+        "Pagebanner"
+      ],
+      "locStart": 27,
+      "locEnd": 37,
+      "filePath": "stories/PageBanner.stories.jsx",
+      "namedExport": "Aviso",
+      "meta": {}
+    },
+    "layout--pagebanner--portada": {
+      "name": "Portada",
+      "levels": [
+        "Layout",
+        "Pagebanner"
+      ],
+      "locStart": 9,
+      "locEnd": 24,
+      "filePath": "stories/PageBanner.stories.jsx",
+      "namedExport": "Portada",
+      "meta": {}
+    },
+    "layout--pagebanner--solo-titulo": {
+      "name": "Solo titulo",
+      "levels": [
+        "Layout",
+        "Pagebanner"
+      ],
+      "locStart": 51,
+      "locEnd": 53,
+      "filePath": "stories/PageBanner.stories.jsx",
+      "namedExport": "SoloTitulo",
+      "meta": {}
+    },
+    "layout--pagebanner--vista": {
+      "name": "Vista",
+      "levels": [
+        "Layout",
+        "Pagebanner"
+      ],
+      "locStart": 40,
+      "locEnd": 48,
+      "filePath": "stories/PageBanner.stories.jsx",
+      "namedExport": "Vista",
+      "meta": {}
+    },
+    "layout--pageheader--basico": {
+      "name": "Basico",
+      "levels": [
+        "Layout",
+        "Pageheader"
+      ],
+      "locStart": 5,
+      "locEnd": 5,
+      "filePath": "stories/PageHeader.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "layout--pageheader--completo": {
+      "name": "Completo",
+      "levels": [
+        "Layout",
+        "Pageheader"
+      ],
+      "locStart": 7,
+      "locEnd": 14,
+      "filePath": "stories/PageHeader.stories.jsx",
+      "namedExport": "Completo",
+      "meta": {}
+    },
+    "datos--paginatedtable--basico": {
+      "name": "Basico",
+      "levels": [
+        "Datos",
+        "Paginatedtable"
+      ],
+      "locStart": 17,
+      "locEnd": 17,
+      "filePath": "stories/PaginatedTable.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "datos--paginatedtable--con-selector-de-tamano": {
+      "name": "Con selector de tamano",
+      "levels": [
+        "Datos",
+        "Paginatedtable"
+      ],
+      "locStart": 19,
+      "locEnd": 19,
+      "filePath": "stories/PaginatedTable.stories.jsx",
+      "namedExport": "ConSelectorDeTamano",
+      "meta": {}
+    },
+    "datos--pagination--basico": {
+      "name": "Basico",
+      "levels": [
+        "Datos",
+        "Pagination"
+      ],
+      "locStart": 6,
+      "locEnd": 9,
+      "filePath": "stories/Pagination.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "datos--pagination--con-selector-de-filas": {
+      "name": "Con selector de filas",
+      "levels": [
+        "Datos",
+        "Pagination"
+      ],
+      "locStart": 11,
+      "locEnd": 24,
+      "filePath": "stories/Pagination.stories.jsx",
+      "namedExport": "ConSelectorDeFilas",
+      "meta": {}
+    },
+    "fundamentos--preferencias--en-vivo": {
+      "name": "En vivo",
+      "levels": [
+        "Fundamentos",
+        "Preferencias"
+      ],
+      "locStart": 20,
+      "locEnd": 73,
+      "filePath": "stories/Preferencias.stories.jsx",
+      "namedExport": "EnVivo",
+      "meta": {}
+    },
+    "fundamentos--preferencias--interruptor-y-segmentos": {
+      "name": "Interruptor y segmentos",
+      "levels": [
+        "Fundamentos",
+        "Preferencias"
+      ],
+      "locStart": 75,
+      "locEnd": 89,
+      "filePath": "stories/Preferencias.stories.jsx",
+      "namedExport": "InterruptorYSegmentos",
+      "meta": {}
+    },
+    "primitivos--progresssteps--con-errores-y-pendientes": {
+      "name": "Con errores y pendientes",
+      "levels": [
+        "Primitivos",
+        "Progresssteps"
+      ],
+      "locStart": 39,
+      "locEnd": 48,
+      "filePath": "stories/ProgressSteps.stories.jsx",
+      "namedExport": "ConErroresYPendientes",
+      "meta": {}
+    },
+    "primitivos--progresssteps--recorrido": {
+      "name": "Recorrido",
+      "levels": [
+        "Primitivos",
+        "Progresssteps"
+      ],
+      "locStart": 9,
+      "locEnd": 33,
+      "filePath": "stories/ProgressSteps.stories.jsx",
+      "namedExport": "Recorrido",
+      "meta": {}
+    },
+    "primitivos--selectionstrip--basico": {
+      "name": "Basico",
+      "levels": [
+        "Primitivos",
+        "Selectionstrip"
+      ],
+      "locStart": 6,
+      "locEnd": 16,
+      "filePath": "stories/SelectionStrip.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "estados--skeleton--basico": {
+      "name": "Basico",
+      "levels": [
+        "Estados",
+        "Skeleton"
+      ],
+      "locStart": 5,
+      "locEnd": 11,
+      "filePath": "stories/Skeleton.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "estados--skeleton--filas": {
+      "name": "Filas",
+      "levels": [
+        "Estados",
+        "Skeleton"
+      ],
+      "locStart": 13,
+      "locEnd": 19,
+      "filePath": "stories/Skeleton.stories.jsx",
+      "namedExport": "Filas",
+      "meta": {}
+    },
+    "estados--spinner--basico": {
+      "name": "Basico",
+      "levels": [
+        "Estados",
+        "Spinner"
+      ],
+      "locStart": 5,
+      "locEnd": 5,
+      "filePath": "stories/Spinner.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "primitivos--statcard--con-barra-y-clic": {
+      "name": "Con barra y clic",
+      "levels": [
+        "Primitivos",
+        "Statcard"
+      ],
+      "locStart": 15,
+      "locEnd": 17,
+      "filePath": "stories/StatCard.stories.jsx",
+      "namedExport": "ConBarraYClic",
+      "meta": {}
+    },
+    "primitivos--statcard--severidades": {
+      "name": "Severidades",
+      "levels": [
+        "Primitivos",
+        "Statcard"
+      ],
+      "locStart": 5,
+      "locEnd": 13,
+      "filePath": "stories/StatCard.stories.jsx",
+      "namedExport": "Severidades",
+      "meta": {}
+    },
+    "primitivos--steps--basico": {
+      "name": "Basico",
+      "levels": [
+        "Primitivos",
+        "Steps"
+      ],
+      "locStart": 6,
+      "locEnd": 20,
+      "filePath": "stories/Steps.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "primitivos--tabs--basico": {
+      "name": "Basico",
+      "levels": [
+        "Primitivos",
+        "Tabs"
+      ],
+      "locStart": 6,
+      "locEnd": 19,
+      "filePath": "stories/Tabs.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "primitivos--tabs--con-aviso": {
+      "name": "Con aviso",
+      "levels": [
+        "Primitivos",
+        "Tabs"
+      ],
+      "locStart": 21,
+      "locEnd": 34,
+      "filePath": "stories/Tabs.stories.jsx",
+      "namedExport": "ConAviso",
+      "meta": {}
+    },
+    "capas-flotantes--toast--basico": {
+      "name": "Basico",
+      "levels": [
+        "Capas flotantes",
+        "Toast"
+      ],
+      "locStart": 6,
+      "locEnd": 14,
+      "filePath": "stories/Toast.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "capas-flotantes--tooltip--basico": {
+      "name": "Basico",
+      "levels": [
+        "Capas flotantes",
+        "Tooltip"
+      ],
+      "locStart": 5,
+      "locEnd": 9,
+      "filePath": "stories/Tooltip.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "capas-flotantes--tooltip--con-titulo": {
+      "name": "Con titulo",
+      "levels": [
+        "Capas flotantes",
+        "Tooltip"
+      ],
+      "locStart": 11,
+      "locEnd": 15,
+      "filePath": "stories/Tooltip.stories.jsx",
+      "namedExport": "ConTitulo",
+      "meta": {}
+    },
+    "capas-flotantes--tooltip--en-las-esquinas": {
+      "name": "En las esquinas",
+      "levels": [
+        "Capas flotantes",
+        "Tooltip"
+      ],
+      "locStart": 27,
+      "locEnd": 34,
+      "filePath": "stories/Tooltip.stories.jsx",
+      "namedExport": "EnLasEsquinas",
+      "meta": {}
+    },
+    "primitivos--truncatedtext--basico": {
+      "name": "Basico",
+      "levels": [
+        "Primitivos",
+        "Truncatedtext"
+      ],
+      "locStart": 5,
+      "locEnd": 13,
+      "filePath": "stories/TruncatedText.stories.jsx",
+      "namedExport": "Basico",
+      "meta": {}
+    },
+    "primitivos--truncatedtext--vacio": {
+      "name": "Vacio",
+      "levels": [
+        "Primitivos",
+        "Truncatedtext"
+      ],
+      "locStart": 15,
+      "locEnd": 19,
+      "filePath": "stories/TruncatedText.stories.jsx",
+      "namedExport": "Vacio",
+      "meta": {}
+    },
+    "composición--personalizar--tema-en-vivo": {
+      "name": "Tema en vivo",
+      "levels": [
+        "Composición",
+        "Personalizar"
+      ],
+      "locStart": 30,
+      "locEnd": 68,
+      "filePath": "stories/composicion/Personalizar.stories.jsx",
+      "namedExport": "TemaEnVivo",
+      "meta": {}
+    },
+    "composición--vista-de-ejemplo--resumen-del-periodo": {
+      "name": "Resumen del periodo",
+      "levels": [
+        "Composición",
+        "Vista de ejemplo"
+      ],
+      "locStart": 5,
+      "locEnd": 9,
+      "filePath": "stories/composicion/Vista.stories.jsx",
+      "namedExport": "ResumenDelPeriodo",
+      "meta": {}
+    },
+    "fundamentos--colores--paleta": {
+      "name": "Paleta",
+      "levels": [
+        "Fundamentos",
+        "Colores"
+      ],
+      "locStart": 58,
+      "locEnd": 87,
+      "filePath": "stories/fundamentos/Colores.stories.jsx",
+      "namedExport": "Paleta",
+      "meta": {}
+    },
+    "fundamentos--forma-y-elevación--escalas": {
+      "name": "Escalas",
+      "levels": [
+        "Fundamentos",
+        "Forma y elevación"
+      ],
+      "locStart": 11,
+      "locEnd": 57,
+      "filePath": "stories/fundamentos/Forma.stories.jsx",
+      "namedExport": "Escalas",
+      "meta": {}
+    },
+    "fundamentos--introducción--portada": {
+      "name": "Portada",
+      "levels": [
+        "Fundamentos",
+        "Introducción"
+      ],
+      "locStart": 19,
+      "locEnd": 100,
+      "filePath": "stories/fundamentos/Introduccion.stories.jsx",
+      "namedExport": "Portada",
+      "meta": {}
+    },
+    "fundamentos--tipografía--escala": {
+      "name": "Escala",
+      "levels": [
+        "Fundamentos",
+        "Tipografía"
+      ],
+      "locStart": 18,
+      "locEnd": 81,
+      "filePath": "stories/fundamentos/Tipografia.stories.jsx",
+      "namedExport": "Escala",
+      "meta": {}
+    },
+    "fundamentos--tipografía--probador": {
+      "name": "Probador",
+      "levels": [
+        "Fundamentos",
+        "Tipografía"
+      ],
+      "locStart": 85,
+      "locEnd": 101,
+      "filePath": "stories/fundamentos/Tipografia.stories.jsx",
+      "namedExport": "Probador",
+      "meta": {}
+    }
+  }
+}

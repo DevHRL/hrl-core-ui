@@ -1,0 +1,1 @@
+import{r as n}from"./index-Dffaw1nM.js";function p(){const[s,e]=n.useState(null),a=n.useCallback((t,l,o)=>{e({title:l,body:o,x:t.clientX,y:t.clientY})},[]),i=n.useCallback((t,l,o)=>{const c=t.getBoundingClientRect();e({title:l,body:o,x:c.right,y:c.top+c.height/2,gap:8})},[]),r=n.useCallback(()=>e(null),[]);return{tip:s,follow:a,anchor:i,hide:r}}export{p as u};

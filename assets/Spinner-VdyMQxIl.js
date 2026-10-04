@@ -1,0 +1,1 @@
+import{j as a}from"./index-Dffaw1nM.js";function n({text:r="Cargando…",height:s=220}){return a.jsxs("div",{className:"hrl-cargando",style:{minHeight:s},role:"status","aria-live":"polite",children:[a.jsx("span",{className:"hrl-cargando__aro","aria-hidden":"true"}),a.jsx("span",{className:"hrl-cargando__texto",children:r})]})}export{n as S};

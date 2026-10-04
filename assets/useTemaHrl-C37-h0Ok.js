@@ -1,0 +1,1 @@
+import{r as e}from"./index-Dffaw1nM.js";function n(){const[r,a]=e.useState(()=>document.documentElement.dataset.temaHrl??"claro");return e.useEffect(()=>{const t=new MutationObserver(()=>{a(document.documentElement.dataset.temaHrl??"claro")});return t.observe(document.documentElement,{attributes:!0,attributeFilter:["data-tema-hrl"]}),()=>t.disconnect()},[]),r}export{n as u};
