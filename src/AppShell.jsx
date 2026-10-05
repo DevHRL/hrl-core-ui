@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Sprite, Icon } from './icons.jsx';
 import { EmptyState } from './EmptyState.jsx';
 import { HrlLogo } from './HrlLogo.jsx';
@@ -55,7 +55,9 @@ function agrupar(navItems) {
   return grupos;
 }
 
-function SidebarNav({ navItems, active, onSelect, plegado }) {
+/* Memorizado: el AppShell se vuelve a pintar por cosas que no son del menú
+   (abrir un cajón, plegar) y el menú solo cambia con sus propias props. */
+const SidebarNav = memo(function SidebarNav({ navItems, active, onSelect, plegado }) {
   return (
     <nav className="hrl-sidebar__nav">
       {agrupar(navItems).map((sec, i) => (
@@ -100,6 +102,28 @@ function SidebarNav({ navItems, active, onSelect, plegado }) {
       ))}
     </nav>
   );
+});
+
+/* Ni la banda ni la cabecera dependen de que el menú esté plegado: sin memo,
+   cada plegado las volvía a pintar enteras (con la mascota y el reloj). */
+const BandaMemo = memo(PageBanner);
+const CabeceraMemo = memo(PageHeader);
+
+/* El menú cambia de ancho por CSS; el contenido no se anima con su margen
+   (ver .hrl-main en tokens.css) sino deslizándose: el margen ya cambió de
+   golpe, y el contenido arranca desplazado lo que cambió el menú y vuelve a su
+   sitio. Solo `transform`, que el navegador compone sin recolocar nada.
+   La animación no deja estilo al terminar (sin `fill`): un `transform` que se
+   quedara puesto convertiría al contenido en bloque contenedor de cualquier
+   `position: fixed` de dentro (§ 3.1 del contrato). */
+function deslizarContenido(main, desde) {
+  if (!main || !desde || typeof main.animate !== 'function') return;
+  if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+  const estilo = getComputedStyle(main);
+  const duracion = parseFloat(estilo.getPropertyValue('--hrl-menu-duracion')) || 280;
+  const curva = estilo.getPropertyValue('--ease').trim() || 'ease-out';
+  main.getAnimations?.().forEach((a) => a.cancel());
+  main.animate([{ transform: `translateX(${desde}px)` }, { transform: 'none' }], { duration: duracion, easing: curva });
 }
 
 function NotificationsDrawer({ items, tab, onTab, onMarkAllRead, onClose, leaving }) {
@@ -413,6 +437,17 @@ export function AppShell({
      ocupa dos líneas o el módulo no trae subtítulo. Vive en <html>, fuera del
      árbol de React, igual que el atributo del tema. */
   const topbarRef = useRef(null);
+  const mainRef = useRef(null);
+  /* Dónde empezaba el contenido antes de plegar o desplegar: se mide en el
+     momento del clic, así vale aunque un sistema cambie el ancho del menú. */
+  const inicioContenido = useRef(null);
+  useLayoutEffect(() => {
+    const main = mainRef.current;
+    if (inicioContenido.current == null || !main) return;
+    const desde = inicioContenido.current - main.getBoundingClientRect().left;
+    inicioContenido.current = null;
+    deslizarContenido(main, desde);
+  }, [plegado]);
   useEffect(() => {
     const el = topbarRef.current;
     if (!el) return undefined;
@@ -472,11 +507,27 @@ export function AppShell({
       setMenuMovil((v) => !v);
       return;
     }
+    inicioContenido.current = mainRef.current?.getBoundingClientRect().left ?? null;
     setPlegado((v) => {
       localStorage.setItem('hrl_menu', v ? 'desplegado' : 'plegado');
       return !v;
     });
   };
+
+  /* Estable entre pintadas, para que el menú memorizado no se repinte. */
+  const alElegir = useCallback(
+    (id) => {
+      setMenuMovil(false);
+      onSelect?.(id);
+    },
+    [onSelect],
+  );
+
+  /* Un fragmento nuevo en cada pintada anularía el memo de la banda. */
+  const accionesBanda = useMemo(
+    () => (banner && (banner.actions || actions) ? <>{banner.actions}{actions}</> : null),
+    [banner, actions],
+  );
 
   return (
     <div className="hrl-nuevo">
@@ -487,19 +538,11 @@ export function AppShell({
       <div className={`hrl-shell${plegado ? ' hrl-shell--plegado' : ''}${menuMovil ? ' hrl-shell--menu-abierto' : ''}`}>
         <aside className="hrl-sidebar" aria-label="Menú principal">
           <div className="hrl-sidebar__logo">{logo === undefined ? LOGO_POR_DEFECTO : logo}</div>
-          <SidebarNav
-            navItems={navItems}
-            active={active}
-            onSelect={(id) => {
-              setMenuMovil(false);
-              onSelect?.(id);
-            }}
-            plegado={plegado}
-          />
+          <SidebarNav navItems={navItems} active={active} onSelect={alElegir} plegado={plegado} />
         </aside>
         {menuMovil && <button type="button" className="hrl-sidebar__velo" onClick={() => setMenuMovil(false)} aria-label="Cerrar el menú" />}
 
-        <div className="hrl-main">
+        <div className="hrl-main" ref={mainRef}>
           <header className="hrl-topbar" ref={topbarRef}>
             <div className="hrl-topbar__row">
               {/* Sin tooltip a propósito: el gesto se explica solo y el aviso
@@ -547,21 +590,21 @@ export function AppShell({
                 )}
               </button>
             </div>
-            {!banner && <PageHeader title={title} description={subtitle} breadcrumbs={breadcrumbs} actions={actions} />}
+            {!banner && <CabeceraMemo title={title} description={subtitle} breadcrumbs={breadcrumbs} actions={actions} />}
           </header>
 
           {/* `main`, con id y enfocable: es el destino del enlace de salto y adonde la
               aplicación debe llevar el foco al cambiar de pantalla. */}
           <main id={ID_CONTENIDO} tabIndex={-1} className={`hrl-content${panelLeaving ? ' hrl-content--saliendo' : ''}`}>
             {banner && (
-              <PageBanner
+              <BandaMemo
                 title={title}
                 description={subtitle}
                 breadcrumbs={breadcrumbs}
                 clock={banner.clock}
                 status={banner.status}
                 mascot={banner.mascot}
-                actions={banner.actions || actions ? <>{banner.actions}{actions}</> : null}
+                actions={accionesBanda}
               />
             )}
             {children}

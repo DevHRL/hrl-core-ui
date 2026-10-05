@@ -655,6 +655,12 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   display: flex;
   min-height: 100vh;
   background: var(--bg-app);
+  /* Lo que dura plegar o desplegar el menú. Lo leen el CSS (el ancho del menú)
+     y AppShell (el deslizamiento del contenido), para que vayan a la par. */
+  --hrl-menu-duracion: 280ms;
+  /* Mientras el contenido se desliza al desplegar, su borde derecho asoma
+     fuera de la ventana: sin esto aparecería una barra horizontal un instante. */
+  overflow-x: clip;
 }
 
 /* Enlace «Saltar al contenido»: invisible hasta que recibe el foco con el
@@ -692,7 +698,12 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   z-index: 30;
   height: 100vh;
   width: 260px;
-  transition: width 0.42s var(--ease);
+  transition: width var(--hrl-menu-duracion) var(--ease);
+  /* El ancho se anima, y sin esto cada cuadro recolocaba el documento entero.
+     Con ancho y alto explícitos, el menú es un límite de recolocación: solo se
+     recoloca él. Sin `paint`, que recortaría la sombra del cajón en móvil; y
+     no tiene descendientes `fixed` (los tooltips van por portal a <body>). */
+  contain: size layout;
   overflow: hidden;
   background: var(--bg-surface);
   border-right: 1px solid var(--border-soft);
@@ -734,6 +745,9 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   letter-spacing: 0.8px;
   color: var(--subtle-foreground);
   text-transform: uppercase;
+  /* Una línea siempre: mientras el menú cambia de ancho, un rótulo que se
+     partiera en dos haría saltar de alto a todos los módulos de debajo. */
+  white-space: nowrap;
 }
 
 .hrl-sidebar__section-label { padding: 12px 20px 6px; }
@@ -806,16 +820,21 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
 }
 
 .hrl-nav-item svg { flex: 0 0 auto; }
-.hrl-nav-item__label { flex: 1; text-align: left; }
+.hrl-nav-item__label { flex: 1; text-align: left; white-space: nowrap; }
 
 .hrl-main {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
-  /* El menú está fuera de flujo: el hueco lo deja este margen. */
+  /* El menú está fuera de flujo: el hueco lo deja este margen.
+
+     El margen cambia de golpe, sin transición. Animarlo obligaba al navegador
+     a recolocar todo el contenido —tablas, gráficos, la banda— en cada cuadro
+     de la animación, y en las PC del hospital el menú daba tirones y tardaba en
+     responder. Ahora el contenido se recoloca una sola vez y lo que se anima es
+     un desplazamiento (`transform`, en AppShell), que no recoloca nada. */
   margin-left: 260px;
-  transition: margin-left 0.42s var(--ease);
 }
 
 .hrl-shell--plegado .hrl-main { margin-left: 76px; }

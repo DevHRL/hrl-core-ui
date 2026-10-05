@@ -14,10 +14,14 @@
      <Icon name="sh-eye" size={16} />
 */
 
+import { memo } from 'react';
 import { ICONS, ICON_ALIASES } from './icon-catalog.js';
 import { aliasObsoleto } from './deprecated.js';
 
-export function IconSprite() {
+/* Memorizado: no recibe nada y no cambia nunca, pero el AppShell lo monta y
+   cada vez que el shell se repintaba (plegar el menú, abrir un cajón) React
+   recorría de nuevo los cientos de nodos de todos los iconos. */
+export const IconSprite = memo(function IconSprite() {
   return (
     <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
       <symbol id="sh-diamond" viewBox="0 0 24 24">
@@ -261,7 +265,7 @@ export function IconSprite() {
       </symbol>
     </svg>
   );
-}
+});
 
 export function Icon({ name: nombrePedido, size = 19, className, style, title }) {
   const name = aliasObsoleto(ICON_ALIASES, nombrePedido, 'Icon');

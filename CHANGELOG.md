@@ -3,6 +3,29 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.10.0-redesign.10 — 05/10/2026 (prelanzamiento, rama `redesign`)
+
+**Plegar y desplegar el menú lateral ya no da tirones.** En todos los sistemas el menú tardaba en responder y la
+animación se veía a saltos. Medido en Reporte Estadístico (compilación de producción, cuatro pantallas, plegar
+y desplegar): el tiempo de bloqueo baja de 2,25 s a 0,76 s (−66 %) y los cuadros por animación suben un 40 %.
+
+- **El contenido ya no se anima con su margen.** `.hrl-main` animaba `margin-left`, y el navegador recolocaba
+  todo el contenido —tablas, gráficos, la banda— en cada cuadro; `Mosaic`, además, reacomodaba sus tarjetas en
+  cada uno. Ahora el margen cambia de golpe (una sola recolocación) y `AppShell` desliza el contenido con un
+  `transform` (técnica FLIP, Web Animations), que no recoloca nada. La animación no deja estilo al terminar, así
+  que no convierte al contenido en bloque contenedor de un `fixed`. Con `prefers-reduced-motion` no se desliza.
+- **El menú es un límite de recolocación** (`contain: size layout`): animar su ancho ya no recoloca el documento.
+- **Más corto: 280 ms** (antes 420). Una sola variable, `--hrl-menu-duracion` en `.hrl-shell`, la leen el CSS y
+  el JavaScript, para que menú y contenido vayan a la par.
+- **Menos trabajo de React al plegar**: `IconSprite`, el menú, `PageBanner` y `PageHeader` están memorizados.
+  Antes cada plegado volvía a recorrer los nodos de todos los iconos y repintaba la banda con la mascota.
+- **Los rótulos del menú van en una línea** (`white-space: nowrap`): al desplegar, un rótulo partido en dos
+  hacía saltar de alto a los módulos de debajo.
+- `.hrl-shell` lleva `overflow-x: clip`, para que el borde del contenido que se desliza no saque una barra de
+  desplazamiento horizontal.
+
+Sin cambios de API.
+
 ## 1.10.0-redesign.9 — 03/10/2026 (prelanzamiento, rama `redesign`)
 
 Preferencias de lectura, la primera parte del plan de personalización: **contraste**, **tamaño del texto** y

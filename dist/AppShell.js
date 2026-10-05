@@ -1,5 +1,5 @@
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Sprite, Icon } from "./icons.js";
 import { EmptyState } from "./EmptyState.js";
 import { HrlLogo } from "./HrlLogo.js";
@@ -35,7 +35,7 @@ function agrupar(navItems) {
   }
   return grupos;
 }
-function SidebarNav({ navItems, active, onSelect, plegado }) {
+const SidebarNav = memo(function SidebarNav2({ navItems, active, onSelect, plegado }) {
   return /* @__PURE__ */ jsx("nav", { className: "hrl-sidebar__nav", children: agrupar(navItems).map((sec, i) => /* @__PURE__ */ jsxs("div", { className: "hrl-sidebar__group", children: [
     sec.title && /* @__PURE__ */ jsx("div", { className: "hrl-sidebar__group-label", children: sec.title }),
     sec.items.map((item) => {
@@ -71,6 +71,17 @@ function SidebarNav({ navItems, active, onSelect, plegado }) {
       ) : boton;
     })
   ] }, sec.title || `g-${i}`)) });
+});
+const BandaMemo = memo(PageBanner);
+const CabeceraMemo = memo(PageHeader);
+function deslizarContenido(main, desde) {
+  if (!main || !desde || typeof main.animate !== "function") return;
+  if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+  const estilo = getComputedStyle(main);
+  const duracion = parseFloat(estilo.getPropertyValue("--hrl-menu-duracion")) || 280;
+  const curva = estilo.getPropertyValue("--ease").trim() || "ease-out";
+  main.getAnimations?.().forEach((a) => a.cancel());
+  main.animate([{ transform: `translateX(${desde}px)` }, { transform: "none" }], { duration: duracion, easing: curva });
 }
 function NotificationsDrawer({ items, tab, onTab, onMarkAllRead, onClose, leaving }) {
   const noLeidas = items.filter((n) => n.unread).length;
@@ -303,6 +314,15 @@ function AppShell({
     applyTheme(tema, themeKey);
   }, [tema, themeKey]);
   const topbarRef = useRef(null);
+  const mainRef = useRef(null);
+  const inicioContenido = useRef(null);
+  useLayoutEffect(() => {
+    const main = mainRef.current;
+    if (inicioContenido.current == null || !main) return;
+    const desde = inicioContenido.current - main.getBoundingClientRect().left;
+    inicioContenido.current = null;
+    deslizarContenido(main, desde);
+  }, [plegado]);
   useEffect(() => {
     const el = topbarRef.current;
     if (!el) return void 0;
@@ -349,32 +369,36 @@ function AppShell({
       setMenuMovil((v) => !v);
       return;
     }
+    inicioContenido.current = mainRef.current?.getBoundingClientRect().left ?? null;
     setPlegado((v) => {
       localStorage.setItem("hrl_menu", v ? "desplegado" : "plegado");
       return !v;
     });
   };
+  const alElegir = useCallback(
+    (id) => {
+      setMenuMovil(false);
+      onSelect?.(id);
+    },
+    [onSelect]
+  );
+  const accionesBanda = useMemo(
+    () => banner && (banner.actions || actions) ? /* @__PURE__ */ jsxs(Fragment, { children: [
+      banner.actions,
+      actions
+    ] }) : null,
+    [banner, actions]
+  );
   return /* @__PURE__ */ jsxs("div", { className: "hrl-nuevo", children: [
     /* @__PURE__ */ jsx(Sprite, {}),
     /* @__PURE__ */ jsx("a", { className: "hrl-saltar", href: `#${ID_CONTENIDO}`, onClick: saltarAlContenido, children: "Saltar al contenido" }),
     /* @__PURE__ */ jsxs("div", { className: `hrl-shell${plegado ? " hrl-shell--plegado" : ""}${menuMovil ? " hrl-shell--menu-abierto" : ""}`, children: [
       /* @__PURE__ */ jsxs("aside", { className: "hrl-sidebar", "aria-label": "Men\xFA principal", children: [
         /* @__PURE__ */ jsx("div", { className: "hrl-sidebar__logo", children: logo === void 0 ? LOGO_POR_DEFECTO : logo }),
-        /* @__PURE__ */ jsx(
-          SidebarNav,
-          {
-            navItems,
-            active,
-            onSelect: (id) => {
-              setMenuMovil(false);
-              onSelect?.(id);
-            },
-            plegado
-          }
-        )
+        /* @__PURE__ */ jsx(SidebarNav, { navItems, active, onSelect: alElegir, plegado })
       ] }),
       menuMovil && /* @__PURE__ */ jsx("button", { type: "button", className: "hrl-sidebar__velo", onClick: () => setMenuMovil(false), "aria-label": "Cerrar el men\xFA" }),
-      /* @__PURE__ */ jsxs("div", { className: "hrl-main", children: [
+      /* @__PURE__ */ jsxs("div", { className: "hrl-main", ref: mainRef, children: [
         /* @__PURE__ */ jsxs("header", { className: "hrl-topbar", ref: topbarRef, children: [
           /* @__PURE__ */ jsxs("div", { className: "hrl-topbar__row", children: [
             /* @__PURE__ */ jsx(
@@ -421,11 +445,11 @@ function AppShell({
               }
             )
           ] }),
-          !banner && /* @__PURE__ */ jsx(PageHeader, { title, description: subtitle, breadcrumbs, actions })
+          !banner && /* @__PURE__ */ jsx(CabeceraMemo, { title, description: subtitle, breadcrumbs, actions })
         ] }),
         /* @__PURE__ */ jsxs("main", { id: ID_CONTENIDO, tabIndex: -1, className: `hrl-content${panelLeaving ? " hrl-content--saliendo" : ""}`, children: [
           banner && /* @__PURE__ */ jsx(
-            PageBanner,
+            BandaMemo,
             {
               title,
               description: subtitle,
@@ -433,10 +457,7 @@ function AppShell({
               clock: banner.clock,
               status: banner.status,
               mascot: banner.mascot,
-              actions: banner.actions || actions ? /* @__PURE__ */ jsxs(Fragment, { children: [
-                banner.actions,
-                actions
-              ] }) : null
+              actions: accionesBanda
             }
           ),
           children

@@ -1,7 +1,8 @@
 import { jsx, jsxs } from "react/jsx-runtime";
+import { memo } from "react";
 import { ICONS, ICON_ALIASES } from "./icon-catalog.js";
 import { aliasObsoleto } from "./deprecated.js";
-function IconSprite() {
+const IconSprite = memo(function IconSprite2() {
   return /* @__PURE__ */ jsxs("svg", { width: "0", height: "0", style: { position: "absolute" }, "aria-hidden": "true", children: [
     /* @__PURE__ */ jsxs("symbol", { id: "sh-diamond", viewBox: "0 0 24 24", children: [
       /* @__PURE__ */ jsx("path", { d: "M12 4l8 8-8 8-8-8z", fill: "none", stroke: "currentColor", strokeWidth: "1.6" }),
@@ -216,7 +217,7 @@ function IconSprite() {
       /* @__PURE__ */ jsx("path", { d: "M3.5 7.6L12 11.8l8.5-4.2M12 11.8v8.8", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinejoin: "round" })
     ] })
   ] });
-}
+});
 function Icon({ name: nombrePedido, size = 19, className, style, title }) {
   const name = aliasObsoleto(ICON_ALIASES, nombrePedido, "Icon");
   if (import.meta.env?.DEV && !ICONS.includes(name)) {
