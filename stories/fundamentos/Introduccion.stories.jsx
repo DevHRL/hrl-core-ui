@@ -1,6 +1,6 @@
 import { linkTo } from '@ladle/react';
 import * as kit from '../../src/index.js';
-import { Alert, Badge, Button, Card, ICONS, StatCard } from '../../src/index.js';
+import { Alert, Badge, Button, Card, ICONS, Mascot, PageBanner, StatCard } from '../../src/index.js';
 import tokens from '../../tokens.json';
 import pkg from '../../package.json';
 
@@ -13,6 +13,36 @@ const componentes = new Set(
     .filter(([nombre, valor]) => typeof valor === 'function' && /^[A-Z]/.test(nombre))
     .map(([, valor]) => valor),
 ).size;
+
+/* Lo que trajo el rediseño, con la historia donde se ve cada pieza. Va en la
+   portada para que quien abre el catálogo lo encuentre sin buscarlo. */
+const NOVEDADES = [
+  {
+    titulo: 'Cabecera en banda',
+    icono: 'sh-table',
+    acento: 'var(--primary)',
+    texto: 'La vista se presenta con PageBanner: el título a un lado y el estado del módulo —dicho una vez— con sus acciones al otro. En AppShell, con la prop banner.',
+    historia: 'layout--appshell--con-banda',
+    boton: 'Ver en una aplicación',
+  },
+  {
+    titulo: 'Dr. Mochi, la mascota',
+    icono: 'sh-ok',
+    acento: 'var(--success)',
+    texto: 'Mascot acompaña lo que el sistema está haciendo: espera, trabaja, termina bien o encontró algo. Siempre va junto a un texto que lo dice.',
+    historia: 'primitivos--mascot--estados',
+    boton: 'Ver sus estados',
+    mascota: true,
+  },
+  {
+    titulo: 'Preferencias de lectura',
+    icono: 'sh-gear',
+    acento: 'var(--info)',
+    texto: 'Contraste (como el sistema, estándar o alto), tamaño del texto (100 a 150 %) y subrayar enlaces, en el cajón del perfil, junto al modo oscuro.',
+    historia: 'fundamentos--preferencias--en-vivo',
+    boton: 'Probarlas en vivo',
+  },
+];
 
 const cantidadTokens = tokens.light.reduce((suma, grupo) => suma + Object.keys(grupo.tokens).length, 0);
 
@@ -30,6 +60,32 @@ export const Portada = () => (
         <Badge label={`v${pkg.version}`} tone="none" />
       </div>
     </header>
+
+    <section className="showroom-novedades" aria-labelledby="showroom-novedades-titulo">
+      <h2 id="showroom-novedades-titulo" className="showroom-novedades__titulo">
+        Novedades del rediseño <Badge label="Nuevo" tone="info" />
+      </h2>
+      <PageBanner
+        title="Departamento de ejemplo"
+        description="Así se presenta una vista en la portada de un área"
+        breadcrumbs={[{ label: 'Área' }, { label: 'Inicio' }]}
+        clock
+        mascot="idle"
+        status={{ icon: 'sh-clock', label: 'Pendiente de envío', detail: 'Reporte de septiembre · quedan 2 días' }}
+        actions={<Button tone="cta" icon="sh-eye" onClick={linkTo('layout--appshell--con-banda')}>Verla en una aplicación</Button>}
+      />
+      <div className="showroom-principios">
+        {NOVEDADES.map((n) => (
+          <Card key={n.titulo} title={n.titulo} icon={n.icono} accent={n.acento}>
+            <div className="showroom-principio showroom-novedad">
+              {n.mascota && <Mascot state="done" size="sm" />}
+              <p>{n.texto}</p>
+              <Button tone="ghost" icon="sh-eye" onClick={linkTo(n.historia)}>{n.boton}</Button>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </section>
 
     <section className="showroom-cifras" aria-label="El sistema en cifras">
       <div className="showroom-cifra">

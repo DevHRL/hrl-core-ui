@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AppShell, Card } from '../src/index.js';
+import { AppShell, Button, Card, Tooltip } from '../src/index.js';
 
 export default { title: 'Layout / AppShell', meta: { fullscreen: true } };
 
@@ -68,5 +68,83 @@ export const MenuPlegado = () => {
         </AppShell>
       </div>
     )
+  );
+};
+
+/* La cabecera en banda (`banner`): la vista se presenta con `PageBanner` al
+   principio del contenido, en vez de `PageHeader` en la barra fija. En la
+   portada lleva la mascota y la hora; el estado se dice una vez, con sus
+   acciones. El avatar abre el cajón del perfil, donde están el modo oscuro y
+   las preferencias de lectura (contraste, tamaño del texto, subrayar enlaces).
+   Claves propias de la demo: lo que se elija aquí no se lleva a las demás
+   historias. */
+export const ConBanda = () => {
+  const [activo, setActivo] = useState('resumen');
+  return (
+    <div style={{ height: '100vh' }}>
+      <AppShell
+        navItems={NAV}
+        active={activo}
+        onSelect={setActivo}
+        title="Departamento de ejemplo"
+        subtitle="Sábado, 3 de octubre de 2026"
+        breadcrumbs={[{ label: 'Área' }, { label: 'Inicio' }]}
+        brand="Sistema de ejemplo"
+        themeKey="hrl_catalogo_theme"
+        preferencesKey="hrl_catalogo_prefs"
+        banner={{
+          clock: true,
+          mascot: 'idle',
+          status: { icon: 'sh-clock', label: 'Pendiente de envío', detail: 'Reporte de septiembre · hasta el lunes 5 de octubre (quedan 2 días)' },
+          actions: (
+            <>
+              <Tooltip title="Subir el archivo" body="Suba la plantilla del mes, llena, para que se revise.">
+                <Button tone="cta" icon="sh-upload">Subir el archivo</Button>
+              </Tooltip>
+              <Tooltip title="Llenar a mano" body="Digite las cifras en los cuadros, sin archivo.">
+                <Button tone="ghost" icon="sh-pencil">Llenar a mano</Button>
+              </Tooltip>
+            </>
+          ),
+        }}
+        user={{ name: 'Persona de prueba', email: 'persona@ejemplo.pe', role: 'Jefatura de área' }}
+        notifications={NOTIFICACIONES}
+        onSignOut={() => {}}
+      >
+        <Card icon="sh-gear" accent="var(--primary)" title="Apariencia y accesibilidad">
+          Abra el perfil (el avatar, arriba a la derecha) para cambiar el modo oscuro, el contraste, el tamaño del texto y
+          el subrayado de los enlaces: la banda y el contenido cambian al instante.
+        </Card>
+      </AppShell>
+    </div>
+  );
+};
+
+/* Fuera de la portada, la banda dice solo el estado del módulo: sin mascota
+   ni hora, y con una advertencia la etiqueta va sobre amarillo. */
+export const ConBandaAviso = () => {
+  const [activo, setActivo] = useState('indicadores');
+  return (
+    <div style={{ height: '100vh' }}>
+      <AppShell
+        navItems={NAV}
+        active={activo}
+        onSelect={setActivo}
+        title="Cumplimiento del mes"
+        subtitle="Qué áreas entregaron su reporte y cuáles faltan"
+        breadcrumbs={[{ label: 'Análisis' }, { label: 'Indicadores' }]}
+        brand="Sistema de ejemplo"
+        themeKey="hrl_catalogo_theme"
+        preferencesKey="hrl_catalogo_prefs"
+        banner={{
+          status: { icon: 'sh-warn', tone: 'warning', label: '7 de 10 áreas entregaron', detail: 'Septiembre de 2026 · 2 áreas tienen el plazo vencido' },
+        }}
+        user={{ name: 'Persona de prueba', role: 'Administración' }}
+        notifications={NOTIFICACIONES}
+        onSignOut={() => {}}
+      >
+        <Card title="Contenido de la vista">Aquí va el panel que corresponda a cada módulo.</Card>
+      </AppShell>
+    </div>
   );
 };

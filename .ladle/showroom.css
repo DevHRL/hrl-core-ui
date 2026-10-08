@@ -96,6 +96,27 @@
   color: var(--text-secondary);
 }
 
+/* Novedades del rediseño, en la portada. */
+.showroom-novedades {
+  display: grid;
+  gap: 16px;
+}
+
+.showroom-novedades__titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+}
+
+.showroom-novedad {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+}
+
 .showroom-fila {
   display: flex;
   flex-wrap: wrap;
