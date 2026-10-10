@@ -5,7 +5,7 @@ import {
   FilterBar,
   IconButton,
   Input,
-  PageHeader,
+  PageBanner,
   PaginatedTable,
   SeriesBars,
   StatCard,
@@ -51,11 +51,13 @@ const MESES = [
 export function PanelEjemplo() {
   return (
     <div style={{ display: 'grid', gap: 24 }}>
-      <PageHeader
+      <PageBanner
         title="Resumen del periodo"
         description="Una vista de ejemplo construida solo con componentes del sistema de diseño."
         breadcrumbs={[{ label: 'Inicio', href: '#' }, { label: 'Resumen' }]}
-        actions={<Button icon="sh-export">Exportar</Button>}
+        mascot="done"
+        status={{ icon: 'sh-ok', label: '5 de 6 registros completos', detail: 'Septiembre de 2026 · uno por revisar' }}
+        actions={<Button tone="cta" icon="sh-export">Exportar</Button>}
       />
 
       <FilterBar

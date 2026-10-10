@@ -26,7 +26,11 @@ export const Basico = () => {
         active={activo}
         onSelect={setActivo}
         title="Resumen"
+        breadcrumbs={[{ label: 'Inicio' }, { label: 'Resumen' }]}
         brand="Sistema de ejemplo"
+        themeKey="hrl_catalogo_theme"
+        preferencesKey="hrl_catalogo_prefs"
+        banner={{ status: { icon: 'sh-ok', label: 'Todo al día', detail: 'Septiembre de 2026 · sin pendientes' } }}
         user={{ name: 'Persona de prueba', role: 'Administración' }}
         notifications={NOTIFICACIONES}
         onSignOut={() => {}}
@@ -59,7 +63,11 @@ export const MenuPlegado = () => {
           active={activo}
           onSelect={setActivo}
           title="Indicadores"
+          breadcrumbs={[{ label: 'Análisis' }, { label: 'Indicadores' }]}
           brand="Sistema de ejemplo"
+          themeKey="hrl_catalogo_theme"
+          preferencesKey="hrl_catalogo_prefs"
+          banner={{ status: { icon: 'sh-ok', label: 'Menú plegado', detail: 'Cada módulo conserva su altura' } }}
           user={{ name: 'Persona de prueba', role: 'Administración' }}
           notifications={NOTIFICACIONES}
           onSignOut={() => {}}
@@ -147,4 +155,52 @@ export const ConBandaAviso = () => {
       </AppShell>
     </div>
   );
+};
+
+/* Banco de pruebas de la banda: desde los controles de la barra lateral se
+   cambia el estado de la mascota, el tono del estado y la hora. Con el avatar
+   se prueban, además, el modo oscuro, el contraste, el tamaño del texto y el
+   subrayado de los enlaces sobre la misma pantalla. */
+export const BancoDeLaBanda = ({ mascota, aviso, reloj, acciones }) => {
+  const [activo, setActivo] = useState('resumen');
+  return (
+    <div style={{ height: '100vh' }}>
+      <AppShell
+        navItems={NAV}
+        active={activo}
+        onSelect={setActivo}
+        title="Departamento de ejemplo"
+        subtitle="Sábado, 3 de octubre de 2026"
+        breadcrumbs={[{ label: 'Área' }, { label: 'Inicio' }]}
+        brand="Sistema de ejemplo"
+        themeKey="hrl_catalogo_theme"
+        preferencesKey="hrl_catalogo_prefs"
+        banner={{
+          clock: reloj,
+          mascot: mascota === 'ninguna' ? undefined : mascota,
+          status: aviso
+            ? { icon: 'sh-warn', tone: 'warning', label: 'Vence hoy', detail: 'Reporte de septiembre · último día del plazo' }
+            : { icon: 'sh-clock', label: 'Pendiente de envío', detail: 'Reporte de septiembre · quedan 2 días' },
+          actions: acciones && (
+            <>
+              <Button tone="cta" icon="sh-upload">Subir el archivo</Button>
+              <Button tone="ghost" icon="sh-pencil">Llenar a mano</Button>
+            </>
+          ),
+        }}
+        user={{ name: 'Persona de prueba', email: 'persona@ejemplo.pe', role: 'Jefatura de área' }}
+        notifications={NOTIFICACIONES}
+        onSignOut={() => {}}
+      >
+        <Card icon="sh-gear" accent="var(--primary)" title="Apariencia y accesibilidad">
+          Abra el perfil (el avatar) para cambiar el modo oscuro, el contraste, el tamaño del texto y el subrayado de enlaces.
+        </Card>
+      </AppShell>
+    </div>
+  );
+};
+
+BancoDeLaBanda.args = { mascota: 'idle', aviso: false, reloj: true, acciones: true };
+BancoDeLaBanda.argTypes = {
+  mascota: { control: { type: 'select' }, options: ['ninguna', 'idle', 'thinking', 'done', 'problem', 'sleeping'] },
 };

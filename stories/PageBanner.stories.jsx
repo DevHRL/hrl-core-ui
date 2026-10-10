@@ -51,3 +51,32 @@ export const Vista = () => (
 export const SoloTitulo = () => (
   <PageBanner title="Matriz de destinos" description="Qué oficina recibe el reporte de cada área, y por qué" breadcrumbs={[{ label: 'Estadística' }, { label: 'Matriz' }]} />
 );
+
+/* Para probarla: estado de la mascota, tono del estado, hora y acciones. */
+export const Banco = ({ mascota, aviso, reloj, acciones }) => (
+  <PageBanner
+    title="Departamento de ejemplo"
+    description="Sábado, 3 de octubre de 2026"
+    breadcrumbs={MIGAS}
+    clock={reloj}
+    mascot={mascota === 'ninguna' ? undefined : mascota}
+    status={
+      aviso
+        ? { icon: 'sh-warn', label: 'Vence hoy', detail: 'Reporte de septiembre · último día del plazo', tone: 'warning' }
+        : { icon: 'sh-clock', label: 'Pendiente de envío', detail: 'Reporte de septiembre · quedan 2 días' }
+    }
+    actions={
+      acciones && (
+        <>
+          <Button tone="cta" icon="sh-upload">Subir el archivo</Button>
+          <Button tone="ghost" icon="sh-pencil">Llenar a mano</Button>
+        </>
+      )
+    }
+  />
+);
+
+Banco.args = { mascota: 'idle', aviso: false, reloj: true, acciones: true };
+Banco.argTypes = {
+  mascota: { control: { type: 'select' }, options: ['ninguna', 'idle', 'thinking', 'done', 'problem', 'sleeping'] },
+};

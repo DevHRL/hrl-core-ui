@@ -1,6 +1,8 @@
 import { PageHeader, Button } from '../src/index.js';
 
-export default { title: 'Layout / PageHeader' };
+/* La cabecera clásica: la que AppShell dibuja en la barra superior cuando no
+   recibe `banner`. Las vistas nuevas usan PageBanner (Layout / PageBanner). */
+export default { title: 'Layout / PageHeader (clásica)' };
 
 export const Basico = () => <PageHeader title="Indicadores" description="Resumen del periodo seleccionado" />;
 

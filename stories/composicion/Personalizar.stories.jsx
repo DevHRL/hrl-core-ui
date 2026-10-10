@@ -1,4 +1,4 @@
-import { Alert, Badge } from '../../src/index.js';
+import { Alert, Badge, Button, Card, PREFERENCE_DEFAULTS, SegmentedControl, Stack, Switch, usePreferences } from '../../src/index.js';
 import { PanelEjemplo } from '../_compartido/PanelEjemplo.jsx';
 import { useTemaHrl } from '../_compartido/useTemaHrl.js';
 
@@ -27,6 +27,37 @@ function contrasteConBlanco(hex) {
 
 /* Cambiar tokens en un contenedor basta para que todo lo que hay dentro
    responda: los componentes no llevan ningún color escrito, solo `var()`. */
+/* Las preferencias de lectura del perfil, junto a los tokens: se prueban sobre
+   la misma vista. Clave propia del catálogo; no toca la de ningún sistema. */
+function PreferenciasDeLectura() {
+  const [prefs, cambiar, restablecer] = usePreferences('hrl_catalogo_prefs');
+  const cambiado = Object.keys(PREFERENCE_DEFAULTS).some((k) => prefs[k] !== PREFERENCE_DEFAULTS[k]);
+  return (
+    <Card accent="var(--info)" icon="sh-gear" title="Preferencias de lectura" subtitle="Contraste, tamaño del texto y enlaces, sobre esta vista">
+      <Stack direction="row" gap={5} wrap align="end">
+        <SegmentedControl
+          label="Contraste"
+          value={prefs.contrast}
+          onChange={(v) => cambiar({ contrast: v })}
+          options={[
+            { value: 'system', label: 'Sistema', ariaLabel: 'Como el sistema' },
+            { value: 'standard', label: 'Estándar' },
+            { value: 'high', label: 'Alto' },
+          ]}
+        />
+        <SegmentedControl
+          label="Tamaño del texto"
+          value={prefs.textScale}
+          onChange={(v) => cambiar({ textScale: v })}
+          options={[1, 1.15, 1.3, 1.5].map((n) => ({ value: n, label: `${Math.round(n * 100)} %` }))}
+        />
+        <Switch label="Subrayar enlaces" checked={prefs.underlineLinks} onChange={(v) => cambiar({ underlineLinks: v })} />
+        {cambiado && <Button tone="link" onClick={restablecer}>Restablecer</Button>}
+      </Stack>
+    </Card>
+  );
+}
+
 export const TemaEnVivo = ({ color, fuente, redondeo }) => {
   const tema = useTemaHrl();
   const claro = tema !== 'oscuro';
@@ -54,6 +85,7 @@ export const TemaEnVivo = ({ color, fuente, redondeo }) => {
         Texto blanco sobre este color: {contraste.toFixed(2)}:1 (mínimo 4.5:1 para texto normal). Ajusta los
         controles de la barra lateral y mira cómo responde toda la vista.
       </Alert>
+      <PreferenciasDeLectura />
       <div className="hrl-nuevo" style={variables}>
         <div style={{ display: 'grid', gap: 12 }}>
           <div className="showroom-fila">
