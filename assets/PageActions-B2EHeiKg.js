@@ -1,0 +1,1 @@
+import{r as e,f as a}from"./index-BhAy-QzJ.js";const n="hrl-acciones-pagina";function c({children:o}){const[t,s]=e.useState(null);return e.useEffect(()=>{s(document.getElementById(n))},[]),t?a.createPortal(o,t):null}export{c as P,n as a};

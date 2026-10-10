@@ -1,0 +1,1 @@
+import{j as s}from"./index-BhAy-QzJ.js";import{c as m}from"./variants-B0KDK2he.js";function t({variant:r="full",width:o,label:a="Hospital Regional de Loreto",className:e,style:l}){return s.jsx("span",{role:"img","aria-label":a,className:m("hrl-logo",r==="mark"&&"hrl-logo--escudo",e),style:o==null?l:{"--hrl-logo-ancho":typeof o=="number"?`${o}px`:o,...l}})}export{t as H};
