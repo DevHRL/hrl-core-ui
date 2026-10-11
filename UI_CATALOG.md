@@ -74,7 +74,7 @@ tokensToCss();                    // el bloque CSS completo, para otro bundler
 | `Mascot` | `@/core-ui` | La mascota del hospital, Dr. Mochi. `state` idle·thinking·done·problem·sleeping · `size` sm 40·md 64·lg 104·xl 160 o px · `mouth` · `interactive` (clic y teclado: se aplasta; mantenido se aprieta; cinco clics lo marean) · `onReact` (`'tap'`·`'squeeze'`·`'dizzy'`) · `label`. Mira a su alrededor y parpadea solo, sin seguir el cursor. Sin `label` es decorativa: lo que expresa se dice también en texto. Colores en `--mascota-*` |
 | `StatCard` | `@/core-ui` | `label` · `value` · `note` · `severity` neutral·normal·suspect·abnormal·nodata · `percent` · `info` · `delay` |
 | `Alert` | `@/core-ui` | `tone` info·success·warning·error · `title` · `action` · `children` |
-| `Dialog` | `@/core-ui` | `title` **(req.)** · `subtitle` · `onClose` **(req.)** · `maxWidth` · `footer` · `children` |
+| `Dialog` | `@/core-ui` | `title` **(req.)** · `subtitle` · `onClose` **(req.)** · `maxWidth` · `size` md·full (`full`: ocupa la ventana; cabecera y pie fijos, solo el cuerpo se desplaza en vertical) · `closeButton` (false quita la X; Esc y clic fuera siguen cerrando) · `footer` · `children` |
 | `DetailDialog` | `@/core-ui` | `title` · `subtitle` · `badge` · `icon` · `tone` · `fields` · `block` · `aside` · `onClose` |
 | `Tooltip` | `@/core-ui` | `title` · `body` **(req.)** · `focusable` · `as` · `style` · Con `focusable`, el objetivo mide al menos 24 px de alto sin mover el texto |
 | `Tabs` | `@/core-ui` | `tabs` `{key,label}[]` · `active` · `onChange` · `alerts` · `style` |

@@ -1523,6 +1523,39 @@ body { margin: 0; background: #f9fafb; }
   border-top: 1px solid var(--border);
 }
 
+/* Sin la X (closeButton={false}) la cabecera no reserva su hueco. */
+.hrl-modal--sin-cerrar .hrl-modal__head { padding-right: 24px; }
+
+/* A pantalla completa (size="full"): la ventana entera menos un margen, con
+   cabecera y pie siempre a la vista y solo el cuerpo desplazándose, en
+   vertical. Nada de desplazamiento horizontal: el contenido se acomoda al
+   ancho. En un teléfono ocupa todo, sin margen ni esquinas. */
+.hrl-modal-overlay--full { padding: 16px; overflow: hidden; }
+
+.hrl-modal--full {
+  display: flex;
+  flex-direction: column;
+  max-width: none;
+  height: calc(100dvh - 32px);
+  margin: 0;
+}
+
+.hrl-modal--full .hrl-modal__head,
+.hrl-modal--full .hrl-modal__foot { flex: 0 0 auto; }
+.hrl-modal--full .hrl-modal__foot { flex-wrap: wrap; }
+
+.hrl-modal--full .hrl-modal__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+@media (max-width: 599px) {
+  .hrl-modal-overlay--full { padding: 0; }
+  .hrl-modal--full { height: 100dvh; border-radius: 0; }
+}
+
 /* Paginador colocado antes del contenido en vez de después: el paginador de
    tabla se pega al fondo de la ventana al desplazarse (.hrl-pag), algo pensado
    para cuando cierra una lista, no para cuando la abre. Aquí se ancla en su

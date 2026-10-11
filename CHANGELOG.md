@@ -3,6 +3,18 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.10.0-redesign.12 — 11/10/2026 (prelanzamiento, rama `redesign`)
+
+**`Dialog` a pantalla completa y sin X.** Dos props nuevas y opcionales:
+
+- `size="full"`: ocupa la ventana menos un margen de 16 px (todo, en un teléfono). La cabecera y el pie quedan
+  siempre a la vista y solo el cuerpo se desplaza, en vertical; nunca en horizontal. Para trabajos que necesitan
+  todo el ancho y se recorren con los botones del pie (la corrección guiada de Reporte Estadístico).
+- `closeButton={false}`: quita la X de la esquina, para diálogos que se cierran con un botón del pie que dice qué
+  pasa al salir. Esc y el clic fuera siguen llamando a `onClose`.
+
+Sin cambios de API existentes.
+
 ## 1.10.0-redesign.11 — 11/10/2026 (prelanzamiento, rama `redesign`)
 
 **Grupos desplegables en el menú lateral.** `AppShell` acepta `collapsibleGroups`, la lista de títulos de `group`
