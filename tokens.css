@@ -761,7 +761,32 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   gap: 14px;
 }
 
-.hrl-sidebar__group { display: flex; flex-direction: column; gap: 2px; }
+.hrl-sidebar__group,
+.hrl-sidebar__group-items { display: flex; flex-direction: column; gap: 2px; }
+.hrl-sidebar__group-items[hidden] { display: none; }
+
+/* Rótulo de un grupo desplegable (collapsibleGroups): el mismo rótulo, pero
+   es un botón de todo el ancho con el alto táctil mínimo y un chevron que dice
+   si está abierto. */
+.hrl-sidebar__group-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: var(--touch-target, 40px);
+  padding: 0 16px 0 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--subtle-foreground);
+  border-radius: var(--radius-sm, 8px);
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+}
+.hrl-sidebar__group-toggle:hover { background: var(--muted); color: var(--foreground); }
+.hrl-sidebar__group-toggle .hrl-sidebar__group-label { color: inherit; }
+.hrl-sidebar__group-chevron { flex: 0 0 auto; transition: transform 0.28s var(--ease); }
+.hrl-sidebar__group-toggle[aria-expanded="false"] .hrl-sidebar__group-chevron { transform: rotate(-90deg); }
 
 /* Sidebar replegado: quedan solo los iconos, y la etiqueta de cada módulo
    pasa a un tooltip para que el menú siga siendo legible. */

@@ -1,5 +1,5 @@
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
-import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Sprite, Icon } from "./icons.js";
 import { EmptyState } from "./EmptyState.js";
 import { HrlLogo } from "./HrlLogo.js";
@@ -35,42 +35,82 @@ function agrupar(navItems) {
   }
   return grupos;
 }
-const SidebarNav = memo(function SidebarNav2({ navItems, active, onSelect, plegado }) {
-  return /* @__PURE__ */ jsx("nav", { className: "hrl-sidebar__nav", children: agrupar(navItems).map((sec, i) => /* @__PURE__ */ jsxs("div", { className: "hrl-sidebar__group", children: [
-    sec.title && /* @__PURE__ */ jsx("div", { className: "hrl-sidebar__group-label", children: sec.title }),
-    sec.items.map((item) => {
-      const Etiqueta = item.href ? "a" : "button";
-      const boton = /* @__PURE__ */ jsxs(
-        Etiqueta,
+function useGruposAbiertos(navItems, active, collapsibleGroups) {
+  const grupoActivo = navItems.find((n) => n.id === active)?.group ?? null;
+  const [abiertos, setAbiertos] = useState(() => new Set(grupoActivo ? [grupoActivo] : []));
+  const [ultimoActivo, setUltimoActivo] = useState(grupoActivo);
+  if (grupoActivo !== ultimoActivo) {
+    setUltimoActivo(grupoActivo);
+    if (grupoActivo && collapsibleGroups.includes(grupoActivo) && !abiertos.has(grupoActivo)) {
+      setAbiertos(new Set(abiertos).add(grupoActivo));
+    }
+  }
+  const alternar = useCallback((titulo) => {
+    setAbiertos((prev) => {
+      const sig = new Set(prev);
+      if (sig.has(titulo)) sig.delete(titulo);
+      else sig.add(titulo);
+      return sig;
+    });
+  }, []);
+  return [abiertos, alternar];
+}
+const SidebarNav = memo(function SidebarNav2({ navItems, active, onSelect, plegado, collapsibleGroups = [] }) {
+  const [abiertos, alternar] = useGruposAbiertos(navItems, active, collapsibleGroups);
+  const idBase = useId();
+  return /* @__PURE__ */ jsx("nav", { className: "hrl-sidebar__nav", children: agrupar(navItems).map((sec, i) => {
+    const desplegable = !plegado && sec.title && collapsibleGroups.includes(sec.title);
+    const abierto = !desplegable || abiertos.has(sec.title);
+    const idLista = `${idBase}-g${i}`;
+    return /* @__PURE__ */ jsxs("div", { className: `hrl-sidebar__group${desplegable ? " hrl-sidebar__group--desplegable" : ""}`, children: [
+      desplegable ? /* @__PURE__ */ jsxs(
+        "button",
         {
-          type: item.href ? void 0 : "button",
-          href: item.href,
-          className: `hrl-nav-item${item.id === active ? " hrl-nav-item--on" : ""}`,
-          onClick: () => onSelect?.(item.id),
-          "aria-current": item.id === active ? "page" : void 0,
-          "aria-label": plegado ? item.label : void 0,
+          type: "button",
+          className: "hrl-sidebar__group-toggle",
+          "aria-expanded": abierto,
+          "aria-controls": idLista,
+          onClick: () => alternar(sec.title),
           children: [
-            /* @__PURE__ */ jsx(Icon, { name: item.icon }),
-            /* @__PURE__ */ jsx("span", { className: "hrl-nav-item__label", children: item.label }),
-            item.badge != null && /* @__PURE__ */ jsx("span", { className: "hrl-nav-item__badge", children: item.badge })
+            /* @__PURE__ */ jsx("span", { className: "hrl-sidebar__group-label", children: sec.title }),
+            /* @__PURE__ */ jsx(Icon, { name: "sh-chevron-down", size: 16, className: "hrl-sidebar__group-chevron" })
           ]
-        },
-        item.id
-      );
-      return plegado ? /* @__PURE__ */ jsx(
-        Tooltip,
-        {
-          as: "div",
-          style: { display: "block", width: "100%" },
-          focusable: false,
-          title: item.label,
-          body: item.group ? `${item.group} \xB7 ${item.label}` : item.label,
-          children: boton
-        },
-        item.id
-      ) : boton;
-    })
-  ] }, sec.title || `g-${i}`)) });
+        }
+      ) : sec.title && /* @__PURE__ */ jsx("div", { className: "hrl-sidebar__group-label", children: sec.title }),
+      /* @__PURE__ */ jsx("div", { className: "hrl-sidebar__group-items", id: idLista, hidden: !abierto, children: sec.items.map((item) => {
+        const Etiqueta = item.href ? "a" : "button";
+        const boton = /* @__PURE__ */ jsxs(
+          Etiqueta,
+          {
+            type: item.href ? void 0 : "button",
+            href: item.href,
+            className: `hrl-nav-item${item.id === active ? " hrl-nav-item--on" : ""}`,
+            onClick: () => onSelect?.(item.id),
+            "aria-current": item.id === active ? "page" : void 0,
+            "aria-label": plegado ? item.label : void 0,
+            children: [
+              /* @__PURE__ */ jsx(Icon, { name: item.icon }),
+              /* @__PURE__ */ jsx("span", { className: "hrl-nav-item__label", children: item.label }),
+              item.badge != null && /* @__PURE__ */ jsx("span", { className: "hrl-nav-item__badge", children: item.badge })
+            ]
+          },
+          item.id
+        );
+        return plegado ? /* @__PURE__ */ jsx(
+          Tooltip,
+          {
+            as: "div",
+            style: { display: "block", width: "100%" },
+            focusable: false,
+            title: item.label,
+            body: item.group ? `${item.group} \xB7 ${item.label}` : item.label,
+            children: boton
+          },
+          item.id
+        ) : boton;
+      }) })
+    ] }, sec.title || `g-${i}`);
+  }) });
 });
 const BandaMemo = memo(PageBanner);
 const CabeceraMemo = memo(PageHeader);
@@ -285,6 +325,7 @@ const ID_CONTENIDO = "contenido-principal";
 const ANCHO_MOVIL = 899;
 function AppShell({
   navItems = [],
+  collapsibleGroups,
   active,
   onSelect,
   title,
@@ -395,7 +436,7 @@ function AppShell({
     /* @__PURE__ */ jsxs("div", { className: `hrl-shell${plegado ? " hrl-shell--plegado" : ""}${menuMovil ? " hrl-shell--menu-abierto" : ""}`, children: [
       /* @__PURE__ */ jsxs("aside", { className: "hrl-sidebar", "aria-label": "Men\xFA principal", children: [
         /* @__PURE__ */ jsx("div", { className: "hrl-sidebar__logo", children: logo === void 0 ? LOGO_POR_DEFECTO : logo }),
-        /* @__PURE__ */ jsx(SidebarNav, { navItems, active, onSelect: alElegir, plegado })
+        /* @__PURE__ */ jsx(SidebarNav, { navItems, active, onSelect: alElegir, plegado, collapsibleGroups })
       ] }),
       menuMovil && /* @__PURE__ */ jsx("button", { type: "button", className: "hrl-sidebar__velo", onClick: () => setMenuMovil(false), "aria-label": "Cerrar el men\xFA" }),
       /* @__PURE__ */ jsxs("div", { className: "hrl-main", ref: mainRef, children: [

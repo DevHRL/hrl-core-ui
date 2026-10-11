@@ -3,6 +3,19 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.10.0-redesign.11 — 11/10/2026 (prelanzamiento, rama `redesign`)
+
+**Grupos desplegables en el menú lateral.** `AppShell` acepta `collapsibleGroups`, la lista de títulos de `group`
+que se pliegan y despliegan con un clic en su rótulo. Sirve para un bloque de módulos hermanos que crece con el
+tiempo (los consolidados de cada área en Reporte Estadístico) sin alargar el menú de todos los días.
+
+- El rótulo pasa a ser un botón de todo el ancho, con alto táctil mínimo, `aria-expanded`/`aria-controls` y un
+  chevron que gira.
+- Un grupo se abre solo cuando la pantalla activa cae dentro: cerrado, el menú escondería dónde está el usuario.
+- Con el menú plegado el rótulo es una línea y no hay dónde hacer clic: el grupo muestra todos sus iconos.
+
+Sin cambios de API existentes; la prop es nueva y opcional.
+
 ## 1.10.0-redesign.10 — 05/10/2026 (prelanzamiento, rama `redesign`)
 
 **Plegar y desplegar el menú lateral ya no da tirones.** En todos los sistemas el menú tardaba en responder y la

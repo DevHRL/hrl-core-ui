@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Sprite, Icon } from './icons.jsx';
 import { EmptyState } from './EmptyState.jsx';
 import { HrlLogo } from './HrlLogo.jsx';
@@ -55,14 +55,60 @@ function agrupar(navItems) {
   return grupos;
 }
 
+/* Un grupo desplegable se abre solo cuando la pantalla activa cae dentro: si
+   quedara cerrado, el menú escondería dónde está el usuario. Cerrarlo después
+   es decisión suya y se respeta hasta que vuelva a entrar desde fuera. */
+function useGruposAbiertos(navItems, active, collapsibleGroups) {
+  const grupoActivo = navItems.find((n) => n.id === active)?.group ?? null;
+  const [abiertos, setAbiertos] = useState(() => new Set(grupoActivo ? [grupoActivo] : []));
+  const [ultimoActivo, setUltimoActivo] = useState(grupoActivo);
+  if (grupoActivo !== ultimoActivo) {
+    setUltimoActivo(grupoActivo);
+    if (grupoActivo && collapsibleGroups.includes(grupoActivo) && !abiertos.has(grupoActivo)) {
+      setAbiertos(new Set(abiertos).add(grupoActivo));
+    }
+  }
+  const alternar = useCallback((titulo) => {
+    setAbiertos((prev) => {
+      const sig = new Set(prev);
+      if (sig.has(titulo)) sig.delete(titulo);
+      else sig.add(titulo);
+      return sig;
+    });
+  }, []);
+  return [abiertos, alternar];
+}
+
 /* Memorizado: el AppShell se vuelve a pintar por cosas que no son del menú
    (abrir un cajón, plegar) y el menú solo cambia con sus propias props. */
-const SidebarNav = memo(function SidebarNav({ navItems, active, onSelect, plegado }) {
+const SidebarNav = memo(function SidebarNav({ navItems, active, onSelect, plegado, collapsibleGroups = [] }) {
+  const [abiertos, alternar] = useGruposAbiertos(navItems, active, collapsibleGroups);
+  const idBase = useId();
   return (
     <nav className="hrl-sidebar__nav">
-      {agrupar(navItems).map((sec, i) => (
-        <div className="hrl-sidebar__group" key={sec.title || `g-${i}`}>
-          {sec.title && <div className="hrl-sidebar__group-label">{sec.title}</div>}
+      {agrupar(navItems).map((sec, i) => {
+        /* Plegado, el rótulo es solo una línea y no hay dónde hacer clic: los
+           iconos del grupo se muestran todos, como en un grupo normal. */
+        const desplegable = !plegado && sec.title && collapsibleGroups.includes(sec.title);
+        const abierto = !desplegable || abiertos.has(sec.title);
+        const idLista = `${idBase}-g${i}`;
+        return (
+        <div className={`hrl-sidebar__group${desplegable ? ' hrl-sidebar__group--desplegable' : ''}`} key={sec.title || `g-${i}`}>
+          {desplegable ? (
+            <button
+              type="button"
+              className="hrl-sidebar__group-toggle"
+              aria-expanded={abierto}
+              aria-controls={idLista}
+              onClick={() => alternar(sec.title)}
+            >
+              <span className="hrl-sidebar__group-label">{sec.title}</span>
+              <Icon name="sh-chevron-down" size={16} className="hrl-sidebar__group-chevron" />
+            </button>
+          ) : (
+            sec.title && <div className="hrl-sidebar__group-label">{sec.title}</div>
+          )}
+          <div className="hrl-sidebar__group-items" id={idLista} hidden={!abierto}>
           {sec.items.map((item) => {
             const Etiqueta = item.href ? 'a' : 'button';
             const boton = (
@@ -98,8 +144,10 @@ const SidebarNav = memo(function SidebarNav({ navItems, active, onSelect, plegad
               boton
             );
           })}
+          </div>
         </div>
-      ))}
+        );
+      })}
     </nav>
   );
 });
@@ -371,6 +419,9 @@ function ProfileDrawer({ user, onClose, onSignOut, leaving, tema, onTema, prefs,
    página. Todo lo que muestra llega por props; no consulta nada.
 
      navItems  { id, label, icon, group?, badge?, href? }[]
+     collapsibleGroups  títulos de `group` que se pliegan y despliegan con un
+               clic en su rótulo; se abren solos si contienen la pantalla
+               activa. Pásalo como constante: el menú está memorizado
      user      { name, email?, role?, avatar? }
      logo      nodo libre para la marca; si se omite, el logo del hospital (HrlLogo),
                que al plegar el menú queda en solo el escudo.
@@ -394,6 +445,7 @@ const ANCHO_MOVIL = 899;
 
 export function AppShell({
   navItems = [],
+  collapsibleGroups,
   active,
   onSelect,
   title,
@@ -538,7 +590,7 @@ export function AppShell({
       <div className={`hrl-shell${plegado ? ' hrl-shell--plegado' : ''}${menuMovil ? ' hrl-shell--menu-abierto' : ''}`}>
         <aside className="hrl-sidebar" aria-label="Menú principal">
           <div className="hrl-sidebar__logo">{logo === undefined ? LOGO_POR_DEFECTO : logo}</div>
-          <SidebarNav navItems={navItems} active={active} onSelect={alElegir} plegado={plegado} />
+          <SidebarNav navItems={navItems} active={active} onSelect={alElegir} plegado={plegado} collapsibleGroups={collapsibleGroups} />
         </aside>
         {menuMovil && <button type="button" className="hrl-sidebar__velo" onClick={() => setMenuMovil(false)} aria-label="Cerrar el menú" />}
 
