@@ -123,19 +123,6 @@
   --banda-hasta: #008659;
   --banda-texto: #ffffff;
 
-  /* Menú lateral (AppShell): el mismo degradado de la banda, de arriba abajo,
-     con texto blanco. No cambia con el tema, por la misma razón que la banda. La
-     selección y el paso del puntero oscurecen en vez de aclarar: un velo blanco
-     dejaba el texto blanco en 3,6:1 al pie del degradado, por debajo de AA; uno
-     oscuro lo sube. */
-  --menu-desde: #004b50;
-  --menu-hasta: #008659;
-  --menu-texto: #ffffff;
-  --menu-hover: rgba(0, 0, 0, 0.12);
-  --menu-activo: rgba(0, 0, 0, 0.22);
-  --menu-separador: rgba(255, 255, 255, 0.24);
-  --menu-placa: #ffffff;
-
   /* Paleta categórica. No es un semáforo: son colores de identidad, sin
      significado de estado. Cada serie mantiene el suyo en todos los paneles para
      que la misma categoría se reconozca de un vistazo. El orden es estable:
@@ -718,16 +705,11 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
      no tiene descendientes `fixed` (los tooltips van por portal a <body>). */
   contain: size layout;
   overflow: hidden;
-  /* Verde agua, igual que la banda y en los dos temas (--menu-*). El texto y
-     los iconos heredan el blanco de aquí. */
-  background: linear-gradient(180deg, var(--menu-desde) 0%, var(--menu-hasta) 100%);
-  color: var(--menu-texto);
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border-soft);
   display: flex;
   flex-direction: column;
 }
-
-/* Sobre el verde, el foco verde de siempre no se ve: aquí es blanco. */
-.hrl-nuevo .hrl-sidebar :focus-visible { outline-color: var(--menu-texto); }
 
 /* El logo viene recortado al contenido, así que el aire lo da el padding y no
    el propio PNG. El alto mínimo es el del logo extendido (158 px de ancho con
@@ -740,21 +722,10 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   justify-content: center;
   min-height: 99px;
   padding: 11px 20px 9px;
-  border-bottom: 1px solid var(--menu-separador);
+  border-bottom: 1px solid var(--border-soft);
 }
 
 .hrl-sidebar__logo img { width: 158px; height: auto; display: block; }
-
-/* Los verdes oscuros del logo no se leen sobre el menú verde: va sobre una
-   placa blanca, como en el tema oscuro. Vale para el logo por defecto y para
-   uno propio en <img>. */
-.hrl-sidebar__logo .hrl-logo,
-.hrl-sidebar__logo img {
-  padding: var(--space-2);
-  background-color: var(--menu-placa);
-  background-origin: content-box;
-  border-radius: var(--radius-sm);
-}
 
 /* Logo por defecto del AppShell: el extendido con el menú abierto y solo el
    escudo con el menú plegado. El extendido no cabe en los 76 px del menú
@@ -772,7 +743,7 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   font-size: var(--text-xs, 11px);
   font-weight: 700;
   letter-spacing: 0.8px;
-  color: var(--menu-texto);
+  color: var(--subtle-foreground);
   text-transform: uppercase;
   /* Una línea siempre: mientras el menú cambia de ancho, un rótulo que se
      partiera en dos haría saltar de alto a todos los módulos de debajo. */
@@ -808,11 +779,11 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   background: transparent;
   cursor: pointer;
   font-family: inherit;
-  color: var(--menu-texto);
+  color: var(--subtle-foreground);
   border-radius: var(--radius-sm, 8px);
   transition: background 0.3s var(--ease), color 0.3s var(--ease);
 }
-.hrl-sidebar__group-toggle:hover { background: var(--menu-hover); }
+.hrl-sidebar__group-toggle:hover { background: var(--muted); color: var(--foreground); }
 .hrl-sidebar__group-toggle .hrl-sidebar__group-label { color: inherit; }
 .hrl-sidebar__group-chevron { flex: 0 0 auto; transition: transform 0.28s var(--ease); }
 .hrl-sidebar__group-toggle[aria-expanded="false"] .hrl-sidebar__group-chevron { transform: rotate(-90deg); }
@@ -841,7 +812,7 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   left: var(--space-4);
   right: var(--space-4);
   top: 50%;
-  border-top: 1px dashed var(--menu-separador);
+  border-top: 1px dashed var(--border-soft);
 }
 
 .hrl-shell--plegado .hrl-nav-item { justify-content: center; gap: 0; padding: 13px 0; }
@@ -859,20 +830,18 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   font-family: inherit;
   font-size: var(--text-md, 14px);
   font-weight: 500;
-  color: var(--menu-texto);
+  color: var(--text-secondary);
   background: transparent;
   transition: background 0.4s var(--ease), color 0.4s var(--ease), border-color 0.4s var(--ease);
 }
 
-.hrl-nav-item:hover { background: var(--menu-hover); }
+.hrl-nav-item:hover { background: rgba(145, 158, 171, 0.1); }
 
-/* El módulo activo se marca con tres señales, no solo con el color: negrita,
-   la barra blanca a la izquierda y un fondo más oscuro (ver --menu-activo). */
 .hrl-nav-item--on {
   font-weight: 700;
-  color: var(--menu-texto);
-  background: var(--menu-activo);
-  border-left-color: var(--menu-texto);
+  color: var(--brand-texto);
+  background: rgba(0, 167, 111, 0.08);
+  border-left-color: var(--brand-texto);
 }
 
 .hrl-nav-item svg { flex: 0 0 auto; }
@@ -2548,7 +2517,6 @@ body { margin: 0; background: #f9fafb; }
   --neutral-text: #3a4650;
   --action-blue: #0a4fa8;
   --banda-hasta: #005c43;
-  --menu-hasta: #005c43;
   --subtle-foreground: #3a4650;
 
   /* fin del alto contraste claro */
@@ -2573,7 +2541,6 @@ body { margin: 0; background: #f9fafb; }
   --neutral-text: #d0dae2;
   --brand-texto: #7df0b4;
   --banda-hasta: #005c43;
-  --menu-hasta: #005c43;
   --subtle-foreground: #c9d4dc;
   --danger: #9a1b00;
   --action-blue: #0a4fa8;

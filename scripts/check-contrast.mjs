@@ -72,9 +72,6 @@ const SOBRE_SI_MISMO = [
   ['banda-texto', 'banda-desde'],
   ['banda-texto', 'banda-hasta'],
   ['banda-desde', 'banda-texto'],
-  // El menú lateral: texto blanco en los dos extremos de su degradado.
-  ['menu-texto', 'menu-desde'],
-  ['menu-texto', 'menu-hasta'],
   ['mascota-tinta', 'warning'],
 ];
 

@@ -3,6 +3,14 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.10.0-redesign.14 — 27/10/2026 (prelanzamiento, rama `redesign`)
+
+**Vuelve el menú lateral blanco.** Se deshace el verde agua de 1.10.0-redesign.13 a pedido del equipo: el menú es
+otra vez la superficie del tema (blanco en claro, la superficie oscura en oscuro), con el texto, la selección y el
+logo de 1.10.0-redesign.12. Se retiran los tokens `--menu-*`; ninguna aplicación los usaba fuera del kit.
+
+Cambio de aspecto deliberado; sin cambios de API.
+
 ## 1.10.0-redesign.13 — 26/10/2026 (prelanzamiento, rama `redesign`)
 
 **Menú lateral en verde agua.** El `AppShell` pinta su menú con el degradado de la banda (de `#004b50` arriba a
