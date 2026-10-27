@@ -1,0 +1,1 @@
+import{j as t}from"./index-BDBCno4v.js";import{S as e}from"./Spinner-Q9V42s-O.js";const d={title:"Estados / Spinner"},i=()=>t.jsx(e,{text:"Calculando indicadores…",height:160});typeof window<"u"&&window.document&&window.document.createElement&&document.documentElement.setAttribute("data-storyloaded","");export{i as Basico,d as default};
