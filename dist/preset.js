@@ -64,6 +64,18 @@ const preset = {
     "banda-desde": "#004b50",
     "banda-hasta": "#008659",
     "banda-texto": "#ffffff",
+    /* Menú lateral (AppShell): el mismo degradado de la banda, de arriba abajo,
+     con texto blanco. No cambia con el tema, por la misma razón que la banda.
+     La selección y el paso del puntero oscurecen en vez de aclarar: un velo
+     blanco dejaba el texto blanco en 3,6:1 al pie del degradado, por debajo de
+     AA; uno oscuro lo sube. */
+    "menu-desde": "#004b50",
+    "menu-hasta": "#008659",
+    "menu-texto": "#ffffff",
+    "menu-hover": "rgba(0, 0, 0, 0.12)",
+    "menu-activo": "rgba(0, 0, 0, 0.22)",
+    "menu-separador": "rgba(255, 255, 255, 0.24)",
+    "menu-placa": "#ffffff",
     /* Paleta categórica. No es un semáforo: son colores de identidad, sin
      significado de estado. Cada serie mantiene el suyo en todos los paneles
      para que la misma categoría se reconozca de un vistazo. El orden es

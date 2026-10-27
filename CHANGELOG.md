@@ -3,6 +3,21 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.10.0-redesign.13 — 26/10/2026 (prelanzamiento, rama `redesign`)
+
+**Menú lateral en verde agua.** El `AppShell` pinta su menú con el degradado de la banda (de `#004b50` arriba a
+`#008659` abajo), con texto e iconos blancos, en los dos temas. Antes era blanco en claro y gris en oscuro.
+
+- Tokens nuevos `--menu-*` (`desde`, `hasta`, `texto`, `hover`, `activo`, `separador`, `placa`). No cambian
+  con el tema, como `--banda-*`. En alto contraste el pie del degradado baja a `#005c43`.
+- El módulo activo se marca con negrita, la barra blanca y un fondo **más oscuro**. Un fondo más claro dejaba el
+  texto blanco en 3,6:1 al pie del degradado, por debajo de AA. El blanco queda en 4,61:1 sobre `#008659` y en
+  9,90:1 sobre `#004b50` (`npm run contrast`).
+- El logo va sobre una placa blanca dentro del menú, como en el tema oscuro: sus verdes no se leen sobre el verde.
+- El anillo de foco del menú es blanco.
+
+Cambio de aspecto deliberado; sin cambios de API.
+
 ## 1.10.0-redesign.12 — 11/10/2026 (prelanzamiento, rama `redesign`)
 
 **`Dialog` a pantalla completa y sin X.** Dos props nuevas y opcionales:
