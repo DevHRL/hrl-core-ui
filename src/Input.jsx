@@ -43,11 +43,7 @@ export function Input({
       {label}
       {required && <span className="hrl-field__req">*</span>}
       {info && (
-        <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" style={{ color: 'var(--subtle-foreground)', flex: '0 0 auto' }}>
-          <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="2" />
-          <circle cx="12" cy="7.8" r="1.3" fill="currentColor" />
-          <path d="M12 11v6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        </svg>
+        <Icon name="sh-info" size={14} style={{ color: 'var(--subtle-foreground)', flex: '0 0 auto' }} />
       )}
     </>
   );
@@ -97,10 +93,7 @@ export function Input({
       ) : (
         <span className="hrl-field__wrap">
           {searchIcon && (
-            <svg width="16" height="16" viewBox="0 0 24 24" style={{ color: 'var(--subtle-foreground)', flex: '0 0 auto' }} aria-hidden="true">
-              <circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" strokeWidth="1.8" />
-              <path d="M15.5 15.5L20 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-            </svg>
+            <Icon name="sh-search" size={17} style={{ color: 'var(--subtle-foreground)', flex: '0 0 auto' }} />
           )}
           {/* `number` va como texto con teclado numérico y no como
               type="number": el control nativo cambia de valor con la rueda del
@@ -139,10 +132,7 @@ export function Input({
 
       {error && (
         <span className="hrl-field__error" id={idError}>
-          <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="9" fill="currentColor" opacity="0.2" />
-            <path d="M12 7.5v6M12 16.6h0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          </svg>
+          <Icon name="sh-crit" size={15} />
           {error}
         </span>
       )}

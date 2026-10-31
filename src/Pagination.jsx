@@ -1,4 +1,5 @@
 import { PAGE_SIZES } from './paginate.js';
+import { Icon } from './icons.jsx';
 
 /* Siempre muestra la primera, la última y ±1 alrededor de la actual. */
 function numeros(total, actual) {
@@ -25,15 +26,17 @@ export function Pagination({
   const ir = (n) => onChange?.(Math.max(1, Math.min(totalPages, n)));
 
   const botones = [
-    { clave: 'prev', etiqueta: '«', ir: () => ir(actual - 1), off: actual === 1 },
+    { clave: 'prev', icono: 'sh-chevron', girado: true, nombre: 'Página anterior', ir: () => ir(actual - 1), off: actual === 1 },
     ...numeros(totalPages, actual).map((n, i) => ({
       clave: n === '…' ? `gap-${i}` : `p-${n}`,
       etiqueta: String(n),
       ir: n === '…' ? undefined : () => ir(n),
       off: n === '…',
+      hueco: n === '…',
       on: n === actual,
+      nombre: n === '…' ? undefined : `Página ${n}`,
     })),
-    { clave: 'next', etiqueta: '»', ir: () => ir(actual + 1), off: actual === totalPages },
+    { clave: 'next', icono: 'sh-chevron', nombre: 'Página siguiente', ir: () => ir(actual + 1), off: actual === totalPages },
   ];
 
   return (
@@ -61,11 +64,14 @@ export function Pagination({
           <button
             key={b.clave}
             type="button"
-            className={`hrl-pag__btn${b.on ? ' hrl-pag__btn--on' : ''}`}
+            className={`hrl-pag__btn${b.on ? ' hrl-pag__btn--on' : ''}${b.hueco ? ' hrl-pag__btn--hueco' : ''}`}
             onClick={b.ir}
             disabled={b.off}
+            aria-label={b.nombre}
+            aria-current={b.on ? 'page' : undefined}
+            aria-hidden={b.hueco || undefined}
           >
-            {b.etiqueta}
+            {b.icono ? <Icon name={b.icono} size={15} style={b.girado ? { transform: 'rotate(180deg)' } : undefined} /> : b.etiqueta}
           </button>
         ))}
       </div>

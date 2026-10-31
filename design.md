@@ -118,7 +118,9 @@ con el tema. Úsalos, nunca el hex.
 
 ### 2.3 Nada de iconos sueltos
 
-Todo icono sale de `src/icons.jsx` vía `<Icon name="..." />`. Añadir uno es
+Todo icono sale de `src/icons.jsx` vía `<Icon name="..." />`. **Solo iconos de relleno** (desde
+1.11.0): formas llenas en una rejilla de 24, sin `stroke`, con los huecos recortados por
+`fill-rule="evenodd"`; la prueba de humo falla si el sprite tiene un trazo. Añadir uno es
 dibujar su `<symbol>` **dentro de `IconSprite`** (nunca dentro de `Icon`, que se
 repite en cada uso) y declarar su nombre en `src/icon-catalog.js`. La prueba de
 humo falla si un nombre del registro no tiene su símbolo.
@@ -224,9 +226,9 @@ Las escalas que un componente debe usar en vez de un valor suelto:
 
 | Qué | Tokens |
 |---|---|
-| Tamaño de fuente | `--text-xs` 11 · `sm` 12.5 · `base` 13.5 · `md` 14 · `lg` 17 · `xl` 22 · `2xl` 30 |
+| Tamaño de fuente | `--text-xs` 11 · `sm` 12.5 · `base` 13.5 · `md` 14 · `lg` 17 · `xl` 22 · `2xl` 32 · `3xl` 36 |
 | Familia | `--font-sans`, `--font-mono` |
-| Radio | `--radius-xs/sm/md`, `--radius`, `--radius-lg`, `--radius-card`, `--radius-xl`, `--radius-full` |
+| Radio | `--radius-xs/sm/md`, `--radius` (12), `--radius-nav` (13), `--radius-lg` (14), `--radius-xl` (18), `--radius-tile` (18), `--radius-card` (22), `--radius-full` |
 | Movimiento | `--duration-fast/base/slow`, `--ease`, `--transition-fast/base/slow` |
 
 El tema oscuro solo redefine lo que cambia; el resto se resuelve por cascada. Un

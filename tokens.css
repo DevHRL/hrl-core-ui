@@ -8,26 +8,26 @@
 
 /* Fuentes propias del kit (carpeta fonts/, licencia OFL en fonts/LICENSE.txt).
    Se sirven desde el paquete y no desde Google Fonts: la red de un hospital
-   puede no llegar a internet, y sin la fuente el sistema cae en Helvetica o
-   Arial y deja de parecerse a lo diseñado. Public Sans es variable (un solo
-   archivo cubre 100-900); font-display: swap evita texto invisible mientras
-   carga. El bundler del proyecto empaqueta estos archivos al importar
-   tokens.css: no hay que copiarlos ni configurar nada. */
+   puede no llegar a internet, y sin la fuente el sistema cae en la del sistema
+   operativo y deja de parecerse a lo diseñado. Plus Jakarta Sans (la de la
+   nueva interfaz, 1.11.0) es variable: un solo archivo cubre 200-800;
+   font-display: swap evita texto invisible mientras carga. El bundler del
+   proyecto empaqueta estos archivos al importar tokens.css. */
 @font-face {
-  font-family: 'Public Sans';
+  font-family: 'Plus Jakarta Sans';
   font-style: normal;
   font-display: swap;
-  font-weight: 100 900;
-  src: url('./fonts/public-sans-latin-ext.woff2') format('woff2');
+  font-weight: 200 800;
+  src: url('./fonts/plus-jakarta-sans-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
 
 @font-face {
-  font-family: 'Public Sans';
+  font-family: 'Plus Jakarta Sans';
   font-style: normal;
   font-display: swap;
-  font-weight: 100 900;
-  src: url('./fonts/public-sans-latin.woff2') format('woff2');
+  font-weight: 200 800;
+  src: url('./fonts/plus-jakarta-sans-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 
@@ -51,45 +51,49 @@
 
 .hrl-nuevo,
 .hrl-portal {
-  --bg-app: #f9fafb;
+  --bg-app: #f1f2f4;
   --bg-surface: #ffffff;
-  --text-primary: #1c252e;
-  --text-secondary: #5f6f7c;
-  --text-disabled: #8493a1;
-  --border: rgba(145, 158, 171, 0.2);
-  --border-soft: rgba(145, 158, 171, 0.16);
-  --row-hover: rgba(145, 158, 171, 0.06);
-  --head-bg: rgba(145, 158, 171, 0.08);
+  --text-primary: #101828;
+  --text-secondary: #5d677a;
+  --text-disabled: #98a2b3;
+  --border: #eaecee;
+  --border-soft: #f0f2f3;
+  --row-hover: #f8f9fa;
+  --head-bg: #f4f6f6;
+  --surface-sunken: #f6f7f8;
+  --nav-icon: #667085;
+  --nav-text: #344054;
 
   /* Versiones opacas, para las celdas fijas de la matriz: al ser sticky se
      superponen a otras filas y con un color translúcido se transparentan. */
-  --head-solido: #eff1f3;
+  --head-solido: #f4f6f6;
   --fila-solida: #fbfcfc;
-  --brand-deep: #004b50;
-  --brand: #008659;
-  --brand-hover: #007867;
+  --brand-deep: #0b403a;
+  --brand: #107f6f;
+  --brand-hover: #0c6b5e;
 
   /* El verde profundo se usa como fondo y como texto; en oscuro el texto
      necesita su propio tono, porque sobre fondo oscuro no se lee. */
-  --brand-texto: #004b50;
-  --toast-bg: #1c252e;
-  --action-blue: #0e71f1;
+  --brand-texto: #086c60;
+  --toast-bg: #101828;
+  --action-blue: #086c60;
+  --toast-icono: #6fe0c8;
 
   /* Acento categórico, sin significado de estado: identifica módulos y series
      que no son ni acción ni alerta. */
   --violet: #8e33ff;
-  --danger: #e52a00;
-  --danger-text: #b71d18;
+  --danger: #d1442b;
+  --danger-text: #8e3a26;
   --warning: #ffab00;
-  --warning-text: #7a4100;
+  --warning-text: #7d550f;
   --info: #00b8d9;
-  --info-text: #006c9c;
+  --info-text: #1f5f86;
 
   /* Tonos de texto que acompañan a un fondo teñido pálido. En claro son oscuros;
      en oscuro tienen que invertirse o el badge queda ilegible. */
-  --ok-text: #00544a;
-  --accent-text: #0a56ae;
-  --neutral-text: #4e5a64;
+  --ok-text: #0a5a51;
+  --accent-text: #086c60;
+  --neutral-text: #475467;
 
   /* Identidad institucional del hospital. Son los colores del logotipo, no del
      sistema de diseño: se usan solo en la marca (login y cabecera) y no cambian
@@ -127,9 +131,9 @@
      significado de estado. Cada serie mantiene el suyo en todos los paneles para
      que la misma categoría se reconozca de un vistazo. El orden es estable:
      cambiarlo reasigna colores en todo el sistema. */
-  --serie-1: #004b50;
+  --serie-1: #107f6f;
   --serie-2: #0c7bb3;
-  --serie-3: #b7560b;
+  --serie-3: #c9822e;
   --serie-4: #7a2fd1;
   --serie-5: #c2185b;
   --serie-6: #0e8c9c;
@@ -139,9 +143,9 @@
   --serie-10: #96154c;
   --serie-11: #5119b7;
   --ease: cubic-bezier(0.33, 1, 0.68, 1);
-  --shadow-card: 0 0 2px rgba(145, 158, 171, 0.2), 0 12px 24px -4px rgba(145, 158, 171, 0.12);
-  --shadow-card-hover: 0 0 2px rgba(145, 158, 171, 0.2), 0 20px 40px -8px rgba(145, 158, 171, 0.28);
-  --shadow-drawer: -24px 0 48px -12px rgba(145, 158, 171, 0.34);
+  --shadow-card: 0 1px 3px rgba(16, 24, 40, 0.04), 0 12px 30px -16px rgba(16, 24, 40, 0.12);
+  --shadow-card-hover: 0 1px 3px rgba(16, 24, 40, 0.06), 0 18px 36px -16px rgba(16, 24, 40, 0.2);
+  --shadow-drawer: -24px 0 48px -12px rgba(16, 24, 40, 0.18);
 
   /* CAPA SEMANTICA
 
@@ -157,7 +161,7 @@
   --surface-foreground: var(--text-primary);
   --muted: var(--head-bg);
   --muted-foreground: var(--text-secondary);
-  --subtle-foreground: #667482;
+  --subtle-foreground: #626b7f;
 
   /* Accion principal */
   --primary: var(--brand);
@@ -183,17 +187,17 @@
   /* Fondos tenidos de cada estado. Existen para no escribir el mismo `rgba(...)`
      suelto en cada aviso, y para poder subirles la opacidad en modo oscuro,
      donde un velo del 8 % no se ve. */
-  --info-soft: rgba(0, 184, 217, 0.06);
-  --success-soft: rgba(0, 167, 111, 0.08);
-  --warning-soft: rgba(255, 171, 0, 0.10);
-  --destructive-soft: rgba(255, 86, 48, 0.08);
-  --neutral-soft: rgba(145, 158, 171, 0.10);
+  --info-soft: #eaf2f7;
+  --success-soft: #e6f2f0;
+  --warning-soft: #f7f0e2;
+  --destructive-soft: #fcede9;
+  --neutral-soft: #edf0f1;
 
   /* Bordes, campos y foco */
   --input: var(--bg-surface);
-  --input-border: #8493a1;
-  --selection: rgba(0, 134, 89, 0.18);
-  --scrim: rgba(28, 37, 46, 0.32);
+  --input-border: #8a94a6;
+  --selection: rgba(16, 127, 111, 0.18);
+  --scrim: rgba(16, 24, 40, 0.36);
   --ring: var(--brand);
 
   /* --------------------------------------------------- escala de radios */
@@ -202,21 +206,23 @@
   --radius-sm: 8px;
   --radius-md: 10px;
   --radius-lg: 14px;
-  --radius-card: 16px;
+  --radius-card: 22px;
   --radius-xl: 18px;
   --radius-full: 999px;
+  --radius-nav: 13px;
+  --radius-tile: 18px;
 
   /* -------------------------------------------------- escala de sombras */
-  --shadow-sm: 0 1px 2px rgba(28, 37, 46, 0.08);
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
   --shadow-md: var(--shadow-card);
   --shadow-lg: var(--shadow-card-hover);
-  --shadow-overlay: 0 32px 64px -16px rgba(28, 37, 46, 0.44);
+  --shadow-overlay: 0 32px 64px -16px rgba(16, 24, 40, 0.32);
 
   /* ---------------------------------------------- escala tipografica En rem y
      multiplicada por --hrl-escala-texto (la preferencia «Tamaño del texto», de 1
      a 1.5): así el texto respeta también el tamaño de letra del navegador, no
      solo el zoom. */
-  --font-sans: 'Public Sans', Helvetica, Arial, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
   --text-xs: calc(0.6875rem * var(--hrl-escala-texto, 1));
   --text-sm: calc(0.78125rem * var(--hrl-escala-texto, 1));
@@ -224,7 +230,7 @@
   --text-md: calc(0.875rem * var(--hrl-escala-texto, 1));
   --text-lg: calc(1.0625rem * var(--hrl-escala-texto, 1));
   --text-xl: calc(1.375rem * var(--hrl-escala-texto, 1));
-  --text-2xl: calc(1.875rem * var(--hrl-escala-texto, 1));
+  --text-2xl: calc(2rem * var(--hrl-escala-texto, 1));
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
@@ -232,6 +238,8 @@
   --leading-tight: 1.25;
   --leading-normal: 1.5;
   --leading-loose: 1.6;
+  --text-3xl: calc(2.25rem * var(--hrl-escala-texto, 1));
+  --weight-extrabold: 800;
 
   /* --------------------------------------------------- transiciones */
   --duration-fast: 0.2s;
@@ -257,6 +265,7 @@
   --space-6: 32px;
 
   font-family: var(--font-sans);
+  font-feature-settings: 'tnum' 1;
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
 }
@@ -339,33 +348,31 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
 
 /* ---------------------------------------------------------------- UiStatCard */
 
+/* Una cifra suelta (1.11.0): tarjeta blanca de esquina amplia, la etiqueta
+   arriba con su icono en un círculo con borde, y la cifra grande y apretada
+   (32 px, extranegrita), como los indicadores del boceto. */
 .hrl-stat {
   background: var(--bg-surface);
   border: none;
-  border-radius: var(--radius-card, 16px);
+  border-radius: var(--radius-card, 22px);
   box-shadow: var(--shadow-card);
-  padding: 18px 20px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: 10px;
   width: 100%;
   font: inherit;
   color: inherit;
   text-align: left;
-  transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
+  transition: box-shadow var(--transition-base);
   animation: hrl-riseIn 0.5s var(--ease) both;
   animation-delay: var(--delay, 0ms);
 }
 
-.hrl-stat:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-card-hover);
-}
-
 /* Solo cuando la tarjeta lleva `onClick` (un botón real, no un `article`):
-   el cursor y el foco visible son la única pista de que se puede pulsar, ya
-   que por lo demás se ve igual a una tarjeta informativa. */
+   el cursor, la sombra y el foco visible son la pista de que se puede pulsar. */
 .hrl-stat--clic { cursor: pointer; }
+.hrl-stat--clic:hover { box-shadow: var(--shadow-card-hover); }
 .hrl-stat--clic:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
 
 .hrl-stat__top {
@@ -375,13 +382,16 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   gap: 10px;
 }
 
-.hrl-stat__label { font-size: var(--text-base, 13.5px); color: var(--text-secondary); }
+.hrl-stat__label { font-size: var(--text-sm, 12.5px); font-weight: var(--weight-semibold); color: var(--text-secondary); }
 
 .hrl-stat__label--info {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   cursor: help;
   border-radius: var(--radius-xs, 6px);
   outline-offset: 3px;
-  transition: color 0.35s var(--ease);
+  transition: color var(--transition-fast);
 }
 
 .hrl-stat__label--info svg { color: var(--subtle-foreground); flex: 0 0 auto; }
@@ -389,24 +399,32 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
 .hrl-stat__label--info:hover svg,
 .hrl-stat__label--info:focus-visible { color: var(--text-primary); }
 
+/* El icono de la severidad en un círculo con borde del mismo color. El icono
+   va en el tono de texto (--sev-texto), que se lee sobre blanco; la barra usa
+   el color pleno (--sev). */
 .hrl-stat__icon {
-  width: 30px;
-  height: 30px;
+  width: 38px;
+  height: 38px;
   flex: 0 0 auto;
-  border-radius: 9px;
+  border-radius: var(--radius-full);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: color-mix(in srgb, var(--sev) 14%, transparent);
-  color: var(--sev);
+  border: 1.5px solid color-mix(in srgb, var(--sev-texto, var(--sev)) 40%, transparent);
+  color: var(--sev-texto, var(--sev));
 }
 
-.hrl-stat__value { font-size: var(--text-2xl, 30px); font-weight: 700; letter-spacing: -0.9px; line-height: 1.1; }
+.hrl-stat__value {
+  font-size: var(--text-2xl, 32px);
+  font-weight: var(--weight-extrabold);
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+}
 
 .hrl-stat__track {
-  height: 6px;
-  border-radius: 4px;
-  background: rgba(145, 158, 171, 0.16);
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--muted);
   overflow: hidden;
 }
 
@@ -415,26 +433,28 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   height: 100%;
   width: var(--pct, 0%);
   background: var(--sev);
-  border-radius: 4px;
+  border-radius: 0 var(--radius-full) var(--radius-full) 0;
   transform-origin: left;
   animation: hrl-barGrowX 0.85s var(--ease) both;
   animation-delay: calc(var(--delay, 0ms) + 120ms);
 }
 
-.hrl-stat__note { font-size: var(--text-sm, 12.5px); color: var(--subtle-foreground); }
+.hrl-stat__note { font-size: var(--text-sm, 12.5px); color: var(--muted-foreground); }
 
 /* ------------------------------------------------------------------ UiBadge */
 
+/* Píldora de estado: fondo tenue del tono y su icono de relleno. */
 .hrl-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   white-space: nowrap;
   width: fit-content;
-  font-size: var(--text-sm, 12.5px);
-  font-weight: 700;
-  padding: 5px 11px;
-  border-radius: var(--radius-sm, 8px);
+  font-size: var(--text-xs, 11px);
+  font-weight: var(--weight-semibold);
+  line-height: 1.2;
+  padding: 5px 10px 5px 7px;
+  border-radius: var(--radius-full);
   background: var(--tone-bg);
   color: var(--tone-fg);
 }
@@ -455,16 +475,16 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   gap: 7px;
   font-size: var(--text-sm, 12.5px);
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--nav-text);
 }
 
 .hrl-field__req { color: var(--danger-text); font-weight: 700; }
 
 .hrl-field__control,
 .hrl-field__wrap {
-  min-height: 42px;
-  padding: 0 12px;
-  border-radius: var(--radius-md, 10px);
+  min-height: var(--touch-target-lg);
+  padding: 0 14px;
+  border-radius: var(--radius);
   border: 1px solid var(--input-border);
   background: var(--bg-surface);
   font-family: inherit;
@@ -493,7 +513,7 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
 .hrl-field--error .hrl-field__control,
 .hrl-field--error .hrl-field__wrap {
   border-color: var(--danger);
-  background: rgba(255, 86, 48, 0.04);
+  background: var(--destructive-soft);
 }
 
 .hrl-field__ver {
@@ -542,97 +562,95 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   position: sticky;
   bottom: 0;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 14px 24px;
+  gap: 12px 16px;
+  padding: 12px 22px;
   background: var(--bg-surface);
-  backdrop-filter: blur(8px);
   border-top: 1px solid var(--border);
 }
 
-.hrl-pag__counter { font-size: var(--text-base, 13.5px); color: var(--text-secondary); }
-.hrl-pag__pages { display: flex; align-items: center; gap: 6px; }
+.hrl-pag__counter { font-size: var(--text-sm, 12.5px); color: var(--text-secondary); }
+.hrl-pag__pages { display: flex; align-items: center; gap: 4px; padding: 3px; border-radius: var(--radius-full); background: var(--muted); }
 
 .hrl-pag__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-width: var(--touch-target);
   min-height: var(--touch-target);
   padding: 0 10px;
   border: none;
-  border-radius: 9px;
+  border-radius: var(--radius-full);
   cursor: pointer;
   font-family: inherit;
   font-size: var(--text-base, 13.5px);
-  font-weight: 500;
+  font-weight: var(--weight-semibold);
   color: var(--text-secondary);
-  background: rgba(145, 158, 171, 0.1);
-  transition: background 0.4s var(--ease), color 0.4s var(--ease), opacity 0.4s var(--ease);
+  background: transparent;
+  transition: background var(--transition-fast), color var(--transition-fast), opacity var(--transition-fast);
 }
 
-.hrl-pag__btn--on {
-  font-weight: 700;
-  color: #fff;
-  background: var(--accent, var(--action-blue));
+.hrl-pag__btn:hover:not(:disabled) { color: var(--foreground); background: var(--surface); }
+
+.hrl-pag__btn--on,
+.hrl-pag__btn--on:hover:not(:disabled) {
+  font-weight: var(--weight-bold);
+  color: var(--primary-foreground);
+  background: var(--primary);
 }
 
-.hrl-pag__btn:disabled { opacity: 0.45; cursor: default; }
+.hrl-pag__btn:disabled { opacity: 0.4; cursor: default; }
+/* El hueco «…» no es un botón deshabilitado: es texto, y se lee entero. */
+.hrl-pag__btn--hueco:disabled { opacity: 1; min-width: 24px; padding: 0 2px; }
 
 /* ------------------------------------------------------------ UiSectionCard */
 
 .hrl-section {
-  /* La medida de siempre: 24 px de relleno, esquina de tarjeta y su sombra.
-     En 1.10.0-redesign.4 se probó una tarjeta compacta (12 × 16, radio 10,
-     borde fino) y se volvió a esta: compacta se leía apretada. De aquella
-     prueba queda la cabecera en banda. */
+  /* La tarjeta de la nueva interfaz (1.11.0): blanca, sin borde, esquina de
+     22 px, relleno de 22 y una sombra difusa que la separa del gris de la
+     página sin dibujar una línea. */
   display: block;
   background: var(--bg-surface);
-  border-radius: var(--radius-card, 16px);
+  border-radius: var(--radius-card, 22px);
   box-shadow: var(--shadow-card);
-  padding: 24px;
+  padding: 22px;
   min-width: 0;
   animation: hrl-riseIn 0.55s var(--ease) both;
 }
 
 .hrl-section--flush { padding: 0; overflow: hidden; }
-.hrl-section--flush > .hrl-section__head { padding: 20px 24px 12px; }
+.hrl-section--flush > .hrl-section__head { padding: 22px 22px 14px; }
 
-/* La cabecera es una sola banda: barra, icono, título y descripción, estado y
-   acción a la misma altura. En una tarjeta angosta, el estado y la acción
-   bajan solos a una segunda línea en vez de apretar el título. */
+/* Una sola fila: título y descripción, estado y acción a la misma altura. En
+   una tarjeta angosta, el estado y la acción bajan solos a una segunda línea
+   en vez de apretar el título. */
 .hrl-section__head {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px 16px;
+  gap: 10px 14px;
   min-width: 0;
+  margin-bottom: 16px;
 }
 
-.hrl-section__accent {
-  width: 6px;
-  height: 22px;
-  border-radius: 4px;
-  background: var(--accent);
-  flex: 0 0 auto;
-  margin-right: -4px;
+.hrl-section__head:last-child { margin-bottom: 0; }
+.hrl-section--flush > .hrl-section__head { margin-bottom: 0; }
+
+.hrl-section__textos { flex: 1 1 220px; min-width: 0; }
+
+.hrl-section__title {
+  margin: 0;
+  font-size: var(--text-lg, 17px);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.02em;
+  line-height: var(--leading-tight);
+  color: var(--text-primary);
 }
 
-/* El icono en una baldosa del color de la barra: dice qué es la sección. */
-.hrl-section__icono {
-  display: inline-grid;
-  place-items: center;
-  flex: 0 0 auto;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-md, 10px);
-  color: var(--accent, var(--primary-text));
-  background: color-mix(in srgb, var(--accent, var(--primary)) 12%, transparent);
-}
-
-.hrl-section__textos { flex: 1 1 240px; min-width: 0; }
-
-.hrl-section__title { margin: 0; font-size: var(--text-lg, 17px); font-weight: 700; color: var(--text-primary); }
-.hrl-section__subtitle { margin: 6px 0 0; font-size: var(--text-base, 13.5px); color: var(--text-secondary); }
-.hrl-section__total { font-size: var(--text-base, 13.5px); font-weight: var(--weight-regular); color: var(--text-secondary); }
+.hrl-section__subtitle { margin: 4px 0 0; font-size: var(--text-sm, 12.5px); line-height: 1.45; color: var(--text-secondary); }
+.hrl-section__total { font-size: var(--text-sm, 12.5px); font-weight: var(--weight-medium); letter-spacing: 0; color: var(--text-secondary); }
 
 .hrl-section__meta {
   display: flex;
@@ -644,6 +662,7 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
 
 .hrl-section__acciones {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   flex: 0 0 auto;
   gap: 8px;
@@ -651,6 +670,11 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
 
 /* ----------------------------------------------------------------- AppShell */
 
+/* Nueva interfaz (1.11.0): menú lateral blanco con el módulo activo relleno en
+   verde agua, barra superior blanca con las vistas al centro y el contenido
+   sobre un gris muy claro. El menú y la barra son sólidos y se separan del
+   resto con una línea de 1 px (una sombra sin desenfoque), no con una sombra
+   difusa: así el borde se ve igual se desplace lo que se desplace debajo. */
 .hrl-shell {
   display: flex;
   min-height: 100vh;
@@ -658,6 +682,8 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   /* Lo que dura plegar o desplegar el menú. Lo leen el CSS (el ancho del menú)
      y AppShell (el deslizamiento del contenido), para que vayan a la par. */
   --hrl-menu-duracion: 280ms;
+  --hrl-menu-ancho: 252px;
+  --hrl-menu-plegado: 80px;
   /* Mientras el contenido se desliza al desplegar, su borde derecho asoma
      fuera de la ventana: sin esto aparecería una barra horizontal un instante. */
   overflow-x: clip;
@@ -671,7 +697,7 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   left: 8px;
   z-index: 100;
   padding: 10px 16px;
-  border-radius: var(--radius-md, 10px);
+  border-radius: var(--radius);
   background: var(--primary);
   color: var(--primary-foreground);
   font-weight: var(--weight-semibold);
@@ -697,7 +723,7 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   left: 0;
   z-index: 30;
   height: 100vh;
-  width: 260px;
+  width: var(--hrl-menu-ancho);
   transition: width var(--hrl-menu-duracion) var(--ease);
   /* El ancho se anima, y sin esto cada cuadro recolocaba el documento entero.
      Con ancho y alto explícitos, el menú es un límite de recolocación: solo se
@@ -706,43 +732,63 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   contain: size layout;
   overflow: hidden;
   background: var(--bg-surface);
-  border-right: 1px solid var(--border-soft);
+  box-shadow: 1px 0 0 var(--border);
   display: flex;
   flex-direction: column;
+  gap: var(--space-3);
+  padding: 18px 14px 16px;
 }
 
-/* El logo viene recortado al contenido, así que el aire lo da el padding y no
-   el propio PNG. El alto mínimo es el del logo extendido (158 px de ancho con
-   la proporción 640:316 = 78 px) más el relleno y el borde, y vale igual con el
-   menú plegado: el escudo es más bajo, y sin este mínimo todos los módulos
-   subían al plegar. Un logo propio más alto que 78 px sí mueve el menú. */
-.hrl-sidebar__logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 99px;
-  padding: 11px 20px 9px;
-  border-bottom: 1px solid var(--border-soft);
+/* La marca: el escudo en su baldosa y dos líneas (hospital y sistema). */
+.hrl-sidebar__logo { display: flex; align-items: center; min-height: 50px; padding: 2px 4px 8px; }
+
+.hrl-marca { display: flex; align-items: center; gap: 11px; min-width: 0; }
+
+.hrl-marca__escudo {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius);
+  background: var(--surface-sunken);
 }
 
-.hrl-sidebar__logo img { width: 158px; height: auto; display: block; }
+/* El escudo ya va sobre su baldosa: en oscuro no necesita la placa blanca que
+   lleva el logo suelto (.hrl-logo), solo un fondo claro detrás. */
+:root[data-tema-hrl='oscuro'] .hrl-marca__escudo { background: var(--mascota-blanco); }
+:root[data-tema-hrl='oscuro'] .hrl-marca__escudo .hrl-logo { padding: 0; background-color: transparent; }
 
-/* Logo por defecto del AppShell: el extendido con el menú abierto y solo el
-   escudo con el menú plegado. El extendido no cabe en los 76 px del menú
-   plegado, y HrlLogo no es un <img>, así que la regla de arriba no lo reducía:
-   quedaba cortado.
-   Van anidadas en .hrl-sidebar__logo a propósito: `.hrl-logo { display: block }`
-   se define más abajo con la misma especificidad y, con una sola clase, ganaba
-   y se veían los dos logos a la vez (1.7.0). */
-.hrl-sidebar__logo .hrl-sidebar__logo-escudo { display: none; }
-.hrl-shell--plegado .hrl-sidebar__logo .hrl-sidebar__logo-completo { display: none; }
-.hrl-shell--plegado .hrl-sidebar__logo .hrl-sidebar__logo-escudo { display: block; }
+.hrl-marca__textos { display: flex; flex-direction: column; min-width: 0; }
+
+.hrl-marca__hospital {
+  font-size: var(--text-base, 13.5px);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.02em;
+  line-height: var(--leading-tight);
+  color: var(--foreground);
+  /* El nombre completo del hospital no cabe en una línea del menú: baja a
+     dos en vez de cortarse en «Hospital Regional de Lo…». */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.hrl-marca__sistema {
+  font-size: var(--text-xs, 11px);
+  line-height: 1.3;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .hrl-sidebar__group-label,
 .hrl-sidebar__section-label {
   font-size: var(--text-xs, 11px);
-  font-weight: 700;
-  letter-spacing: 0.8px;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.1em;
   color: var(--subtle-foreground);
   text-transform: uppercase;
   /* Una línea siempre: mientras el menú cambia de ancho, un rótulo que se
@@ -750,19 +796,23 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   white-space: nowrap;
 }
 
-.hrl-sidebar__section-label { padding: 12px 20px 6px; }
-.hrl-sidebar__group-label { padding: 10px 20px 4px; }
+.hrl-sidebar__section-label,
+.hrl-sidebar__group-label { padding: 4px 11px 6px; }
 
 .hrl-sidebar__nav {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: var(--space-3);
+  /* El anillo de foco de un módulo no se recorta contra el borde del menú. */
+  margin: 0 -4px;
+  padding: 0 4px;
 }
 
 .hrl-sidebar__group,
-.hrl-sidebar__group-items { display: flex; flex-direction: column; gap: 2px; }
+.hrl-sidebar__group-items { display: flex; flex-direction: column; gap: 3px; }
 .hrl-sidebar__group-items[hidden] { display: none; }
 
 /* Rótulo de un grupo desplegable (collapsibleGroups): el mismo rótulo, pero
@@ -774,29 +824,142 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   justify-content: space-between;
   width: 100%;
   min-height: var(--touch-target, 40px);
-  padding: 0 16px 0 0;
+  padding: 0 10px 0 0;
   border: none;
   background: transparent;
   cursor: pointer;
   font-family: inherit;
   color: var(--subtle-foreground);
-  border-radius: var(--radius-sm, 8px);
-  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+  border-radius: var(--radius-nav);
+  transition: background var(--transition-fast), color var(--transition-fast);
 }
 .hrl-sidebar__group-toggle:hover { background: var(--muted); color: var(--foreground); }
-.hrl-sidebar__group-toggle .hrl-sidebar__group-label { color: inherit; }
+.hrl-sidebar__group-toggle .hrl-sidebar__group-label { color: inherit; padding-bottom: 4px; }
 .hrl-sidebar__group-chevron { flex: 0 0 auto; transition: transform 0.28s var(--ease); }
 .hrl-sidebar__group-toggle[aria-expanded="false"] .hrl-sidebar__group-chevron { transform: rotate(-90deg); }
 
-/* Sidebar replegado: quedan solo los iconos, y la etiqueta de cada módulo
-   pasa a un tooltip para que el menú siga siendo legible. */
-.hrl-shell--plegado .hrl-sidebar { width: 76px; }
-.hrl-shell--plegado .hrl-sidebar__logo { padding-left: 10px; padding-right: 10px; }
-.hrl-shell--plegado .hrl-sidebar__logo img { width: 54px; }
+/* Un módulo: píldora de 42 px. El activo invierte el color: relleno verde agua
+   con texto e icono claros. El color no es la única señal: además lleva
+   aria-current y el texto pasa a negrita. */
+.hrl-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  min-height: 42px;
+  padding: 0 13px;
+  border: none;
+  border-radius: var(--radius-nav);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: var(--text-base, 13.5px);
+  font-weight: var(--weight-semibold);
+  color: var(--nav-text);
+  background: transparent;
+  text-decoration: none;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.hrl-nav-item svg { flex: 0 0 auto; color: var(--nav-icon); transition: color var(--transition-fast); }
+.hrl-nav-item:hover { background: var(--muted); color: var(--foreground); }
+
+.hrl-nav-item--on,
+.hrl-nav-item--on:hover {
+  font-weight: var(--weight-bold);
+  color: var(--primary-foreground);
+  background: var(--primary);
+}
+
+.hrl-nav-item--on svg { color: currentColor; }
+
+.hrl-nav-item__label { flex: 1; min-width: 0; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.hrl-nav-item__badge {
+  flex: 0 0 auto;
+  font-size: var(--text-xs, 11px);
+  font-weight: var(--weight-bold);
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: var(--radius-full);
+  background: var(--success-soft);
+  color: var(--primary-text);
+}
+
+.hrl-nav-item--on .hrl-nav-item__badge {
+  background: color-mix(in srgb, var(--primary-foreground) 22%, transparent);
+  color: var(--primary-foreground);
+}
+
+/* El perfil, al pie del menú: avatar, nombre y cargo sobre una baldosa gris.
+   Es un botón: abre el cajón del perfil. */
+.hrl-sidebar__pie { margin-top: auto; padding-top: var(--space-2); }
+
+.hrl-cuenta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 54px;
+  padding: 10px;
+  border: none;
+  border-radius: var(--radius-lg);
+  background: var(--surface-sunken);
+  color: var(--foreground);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.hrl-cuenta:hover { background: var(--muted); }
+
+.hrl-cuenta__avatar {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  background: var(--success-soft);
+  color: var(--primary-text);
+  font-size: var(--text-sm, 12.5px);
+  font-weight: var(--weight-bold);
+}
+
+.hrl-cuenta__avatar img { width: 100%; height: 100%; object-fit: cover; }
+.hrl-cuenta__textos { display: flex; flex-direction: column; min-width: 0; }
+
+.hrl-cuenta__nombre {
+  font-size: var(--text-sm, 12.5px);
+  font-weight: var(--weight-bold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hrl-cuenta__detalle {
+  font-size: var(--text-xs, 11px);
+  color: var(--muted-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Sidebar replegado: quedan el escudo, los iconos y el avatar, y la etiqueta
+   de cada módulo pasa a un tooltip para que el menú siga siendo legible. */
+.hrl-shell--plegado .hrl-sidebar { width: var(--hrl-menu-plegado); padding-inline: 12px; }
+.hrl-shell--plegado .hrl-marca__textos,
+.hrl-shell--plegado .hrl-cuenta__textos,
+.hrl-shell--plegado .hrl-nav-item__label,
+.hrl-shell--plegado .hrl-nav-item__badge { display: none; }
+.hrl-shell--plegado .hrl-sidebar__logo { justify-content: center; padding-inline: 0; }
+.hrl-shell--plegado .hrl-nav-item { justify-content: center; gap: 0; padding: 0; }
+.hrl-shell--plegado .hrl-cuenta { justify-content: center; padding-inline: 0; }
 
 /* Plegado, el rótulo de grupo no cabe, pero conserva su alto: sin texto, y en
-   su lugar una línea que separa los bloques. Antes se ocultaba y la línea iba
-   con otro relleno, y cada módulo quedaba a distinta altura abierto y plegado. */
+   su lugar una línea que separa los bloques. Así cada módulo queda a la misma
+   altura abierto y plegado. */
 .hrl-shell--plegado .hrl-sidebar__section-label,
 .hrl-shell--plegado .hrl-sidebar__group-label {
   position: relative;
@@ -809,43 +972,11 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
 .hrl-shell--plegado .hrl-sidebar__group-label::after {
   content: "";
   position: absolute;
-  left: var(--space-4);
-  right: var(--space-4);
+  left: var(--space-2);
+  right: var(--space-2);
   top: 50%;
-  border-top: 1px dashed var(--border-soft);
+  border-top: 1px solid var(--border);
 }
-
-.hrl-shell--plegado .hrl-nav-item { justify-content: center; gap: 0; padding: 13px 0; }
-.hrl-shell--plegado .hrl-nav-item__label { display: none; }
-
-.hrl-nav-item {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  width: 100%;
-  padding: 13px 20px;
-  border: none;
-  border-left: 3px solid transparent;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: var(--text-md, 14px);
-  font-weight: 500;
-  color: var(--text-secondary);
-  background: transparent;
-  transition: background 0.4s var(--ease), color 0.4s var(--ease), border-color 0.4s var(--ease);
-}
-
-.hrl-nav-item:hover { background: rgba(145, 158, 171, 0.1); }
-
-.hrl-nav-item--on {
-  font-weight: 700;
-  color: var(--brand-texto);
-  background: rgba(0, 167, 111, 0.08);
-  border-left-color: var(--brand-texto);
-}
-
-.hrl-nav-item svg { flex: 0 0 auto; }
-.hrl-nav-item__label { flex: 1; text-align: left; white-space: nowrap; }
 
 .hrl-main {
   flex: 1;
@@ -855,22 +986,173 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   /* El menú está fuera de flujo: el hueco lo deja este margen.
 
      El margen cambia de golpe, sin transición. Animarlo obligaba al navegador
-     a recolocar todo el contenido —tablas, gráficos, la banda— en cada cuadro
-     de la animación, y en las PC del hospital el menú daba tirones y tardaba en
-     responder. Ahora el contenido se recoloca una sola vez y lo que se anima es
-     un desplazamiento (`transform`, en AppShell), que no recoloca nada. */
-  margin-left: 260px;
+     a recolocar todo el contenido —tablas, gráficos, la cabecera— en cada
+     cuadro de la animación, y en las PC del hospital el menú daba tirones.
+     Ahora el contenido se recoloca una sola vez y lo que se anima es un
+     desplazamiento (`transform`, en AppShell), que no recoloca nada. */
+  margin-left: var(--hrl-menu-ancho);
 }
 
-.hrl-shell--plegado .hrl-main { margin-left: 76px; }
+.hrl-shell--plegado .hrl-main { margin-left: var(--hrl-menu-plegado); }
+
+/* Reserva el canal de la barra de desplazamiento: sin esto, un panel que pasa
+   de necesitar scroll a no necesitarlo desplaza todo el contenido a lo ancho. */
+html { scrollbar-gutter: stable; }
+
+/* Esta hoja se carga sola, sin ningún reset: sin esto el <body> conserva su
+   margen de 8px y su fondo blanco, que en modo oscuro se ve como un marco
+   alrededor de toda la aplicación. Es el valor de --bg-app, repetido porque
+   <body> queda fuera de .hrl-nuevo, donde viven los tokens. */
+body { margin: 0; background: #f1f2f4; }
+
+.hrl-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--surface);
+  box-shadow: 0 1px 0 var(--border);
+}
+
+/* Tres zonas: al inicio replegar y la acción principal; al centro las vistas
+   de la sección; al final los controles del módulo, la campana y el menú de la
+   cuenta. El centro se centra de verdad (margen automático a los dos lados),
+   no según lo que pese cada costado. Alto mínimo, no fijo: con el texto
+   agrandado una altura fija lo cortaría. */
+.hrl-topbar__row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 14px;
+  min-height: 68px;
+  padding: 12px var(--space-5);
+}
+
+.hrl-topbar__inicio,
+.hrl-topbar__fin { display: flex; align-items: center; gap: var(--space-2); flex: 0 0 auto; }
+.hrl-topbar__fin { margin-left: auto; }
+.hrl-topbar__spacer { flex: 1; }
+
+/* Botón cuadrado de la barra: 44 px, esquina de 14 y un borde fino. */
+.hrl-barra-boton {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: var(--touch-target-lg);
+  height: var(--touch-target-lg);
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  color: var(--nav-text);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.hrl-barra-boton:hover { background: var(--muted); color: var(--foreground); }
+
+/* La acción principal del sistema (crear): relleno verde agua, sin borde. */
+.hrl-barra-boton--primario { border-color: transparent; background: var(--primary); color: var(--primary-foreground); }
+.hrl-barra-boton--primario:hover { background: var(--primary-hover); color: var(--primary-foreground); }
+
+.hrl-plegar svg { transition: transform 0.45s var(--ease); }
+.hrl-plegar--plegado svg { transform: rotate(180deg); }
+
+.hrl-bell--on { background: var(--success-soft); color: var(--primary-text); border-color: transparent; }
+
+/* Un aviso sin leer: la cuenta en una pastilla roja con un aro del color de la
+   barra, para que se despegue del icono. */
+.hrl-bell__badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: var(--radius-full);
+  background: var(--danger);
+  color: var(--destructive-foreground);
+  font-size: var(--text-xs, 11px);
+  font-weight: var(--weight-bold);
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 2px var(--surface);
+}
+
+/* Las vistas de la sección: una píldora gris con la activa rellena. */
+/* Si no caben todas (nueve consolidados), la píldora se encoge y se desplaza
+   de lado; AppShell lleva la vista activa a la parte visible. Nunca empuja la
+   campana a otra fila. */
+.hrl-vistas {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 4px;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.hrl-vistas__item {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  min-height: 38px;
+  padding: 0 18px;
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--muted-foreground);
+  font-family: inherit;
+  font-size: var(--text-base, 13.5px);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.hrl-vistas__item:hover { color: var(--foreground); }
+
+.hrl-vistas__item--on,
+.hrl-vistas__item--on:hover {
+  padding-inline: 20px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-weight: var(--weight-bold);
+}
+
+/* Con poco ancho, las vistas bajan a su propia fila, a lo ancho, y se
+   desplazan de lado si no caben: nunca empujan la campana fuera de la barra. */
+@media (max-width: 1180px) {
+  .hrl-topbar__row { flex-wrap: wrap; }
+  .hrl-vistas { order: 3; flex: 1 0 100%; margin: 0; justify-content: flex-start; }
+}
+
+/* Separación entre la barra y el módulo. Va aquí y no en cada panel para que
+   todos los módulos respiren igual. */
+.hrl-content {
+  flex: 1;
+  min-width: 0;
+  padding: 26px 0 30px;
+  animation: hrl-panelIn 0.34s var(--ease) both;
+}
 
 /* Pantallas estrechas: el menú lateral deja de ocupar sitio y pasa a ser un
-   cajón que se abre con el botón del menú. Antes el shell exigía 1440 px de
-   ancho y en un teléfono toda la aplicación se desplazaba de lado. */
+   cajón que se abre con el botón de replegar. */
 @media (max-width: 899px) {
   .hrl-sidebar,
   .hrl-shell--plegado .hrl-sidebar {
-    width: 260px;
+    width: var(--hrl-menu-ancho);
+    padding-inline: 14px;
     transform: translateX(-100%);
     transition: transform 0.3s var(--ease);
     box-shadow: var(--shadow-drawer);
@@ -895,183 +1177,28 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
     cursor: pointer;
   }
 
-  /* La barra superior cabe en un teléfono: menos relleno y el nombre del
-     sistema se acorta antes que empujar la campana y el perfil fuera de la
-     pantalla (a 375 px el avatar quedaba 30 px a la derecha del borde). */
-  .hrl-topbar .hrl-topbar__row { padding: 0 16px; }
-  .hrl-topbar__brand { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-  .hrl-topbar .hrl-topbar__acciones { margin-right: 4px; }
+  .hrl-topbar__row { padding: 10px var(--space-4); gap: var(--space-2); }
 
   /* En un teléfono un botón sí parte su etiqueta, en vez de salirse de su
-     tarjeta: «Descargar la plantilla de agosto de 2026» no cabe en 375 px.
-     En escritorio sigue sin partirla (ver .hrl-btn). */
+     tarjeta. En escritorio sigue sin partirla (ver .hrl-btn). */
   .hrl-nuevo .hrl-btn { white-space: normal; max-width: 100%; text-align: center; }
 
   /* Con el cajón, el menú siempre se muestra desplegado. */
+  .hrl-shell--plegado .hrl-marca__textos,
+  .hrl-shell--plegado .hrl-cuenta__textos { display: flex; }
   .hrl-shell--plegado .hrl-nav-item__label { display: inline; }
-  .hrl-shell--plegado .hrl-nav-item { justify-content: flex-start; gap: 14px; padding: 13px 20px; }
-  .hrl-shell--plegado .hrl-sidebar__logo .hrl-sidebar__logo-completo { display: block; }
-  .hrl-shell--plegado .hrl-sidebar__logo .hrl-sidebar__logo-escudo { display: none; }
+  .hrl-shell--plegado .hrl-nav-item__badge { display: inline-block; }
+  .hrl-shell--plegado .hrl-nav-item { justify-content: flex-start; gap: 11px; padding: 0 13px; }
+  .hrl-shell--plegado .hrl-cuenta { justify-content: flex-start; padding-inline: 10px; }
+  .hrl-shell--plegado .hrl-sidebar__logo { justify-content: flex-start; padding-inline: 4px; }
+  .hrl-shell--plegado .hrl-sidebar__section-label,
+  .hrl-shell--plegado .hrl-sidebar__group-label { color: var(--subtle-foreground); }
+  .hrl-shell--plegado .hrl-sidebar__section-label::after,
+  .hrl-shell--plegado .hrl-sidebar__group-label::after { content: none; }
 }
 
 @media (max-width: 899px) and (prefers-reduced-motion: reduce) {
   .hrl-sidebar { transition: none; }
-}
-
-/* Reserva el canal de la barra de desplazamiento: sin esto, un panel que pasa
-   de necesitar scroll a no necesitarlo desplaza todo el contenido a lo ancho. */
-html { scrollbar-gutter: stable; }
-
-/* Esta hoja se carga sola, sin ningún reset: sin esto el <body> conserva su
-   margen de 8px y su fondo blanco, que en modo oscuro se ve como un marco
-   alrededor de toda la aplicación. */
-body { margin: 0; background: #f9fafb; }
-
-/* Opaca y con su propia sombra: antes era casi del mismo tono que el fondo de
-   la aplicación (blanco sobre blanco translúcido), así que al hacer scroll el
-   contenido se transparentaba bajo ella y la diferencia desaparecía. Con
-   `--surface` sólido y una sombra fija, el borde queda siempre visible, se
-   mueva lo que se mueva debajo. */
-.hrl-topbar {
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  background: var(--surface);
-  box-shadow: var(--shadow-sm);
-}
-
-/* Alto mínimo, no fijo: con el texto agrandado (preferencia «Tamaño del
-   texto») una altura fija lo cortaría. */
-.hrl-topbar__row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 52px;
-  padding: 0 32px;
-  border-bottom: 1px solid rgba(145, 158, 171, 0.14);
-}
-
-.hrl-topbar__brand { font-size: var(--text-md, 14px); font-weight: 700; letter-spacing: -0.2px; white-space: nowrap; }
-
-.hrl-topbar__chip {
-  font-size: var(--text-xs, 11px);
-  font-weight: 700;
-  background: rgba(145, 158, 171, 0.16);
-  padding: 2px 8px;
-  border-radius: var(--radius-xs, 6px);
-}
-
-.hrl-topbar__spacer { flex: 1; }
-
-/* Botón de replegar el menú. Vive en la barra superior, junto al borde del
-   sidebar, para que la acción quede al lado de lo que afecta. */
-.hrl-plegar {
-  width: var(--touch-target);
-  height: var(--touch-target);
-  margin-right: 6px;
-  flex: 0 0 auto;
-  border: none;
-  border-radius: 9px;
-  background: rgba(145, 158, 171, 0.12);
-  color: var(--text-secondary);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.35s var(--ease), color 0.35s var(--ease);
-}
-
-.hrl-plegar:hover { background: rgba(0, 167, 111, 0.16); color: var(--brand-hover); }
-.hrl-plegar svg { transition: transform 0.45s var(--ease); }
-.hrl-plegar--plegado svg { transform: rotate(180deg); }
-
-.hrl-bell {
-  position: relative;
-  width: var(--touch-target);
-  height: var(--touch-target);
-  border: none;
-  border-radius: 50%;
-  background: transparent;
-  color: var(--text-primary);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.4s var(--ease), color 0.4s var(--ease);
-}
-
-.hrl-bell:hover { background: rgba(145, 158, 171, 0.12); }
-.hrl-bell--on { background: rgba(0, 167, 111, 0.14); color: var(--brand-hover); }
-.hrl-bell svg { animation: hrl-bellRing 5s ease-in-out infinite; transform-origin: 50% 20%; }
-
-.hrl-bell__badge {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  min-width: 18px;
-  min-height: 18px;
-  padding: 0 4px;
-  border-radius: 9px;
-  background: var(--danger);
-  color: #fff;
-  font-size: var(--text-xs, 11px);
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid var(--bg-app);
-}
-
-.hrl-avatar {
-  width: var(--touch-target);
-  height: var(--touch-target);
-  margin-left: 4px;
-  border-radius: 50%;
-  border: 2px solid rgba(0, 167, 111, 0.48);
-  padding: 2px;
-  background: transparent;
-  cursor: pointer;
-  transition: transform 0.45s var(--ease);
-}
-
-.hrl-avatar:hover { transform: scale(1.07); }
-
-.hrl-avatar__initials {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: var(--brand-deep);
-  color: #fff;
-  font-size: var(--text-base, 13.5px);
-  font-weight: 700;
-}
-
-/* Con 4px abajo, el subtítulo quedaba rozando el borde de la barra y lo
-   primero del módulo se leía como parte del encabezado. Los controles de la
-   ranura se centran contra el bloque título + subtítulo, no contra su base:
-   alineados abajo parecían colgar del subtítulo. */
-.hrl-pagehead {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px 20px;
-  padding: 16px 32px 18px;
-}
-
-.hrl-pagehead h1 { margin: 0; font-size: var(--text-xl, 22px); font-weight: 700; letter-spacing: -0.4px; }
-.hrl-pagehead p { margin: 4px 0 0; font-size: var(--text-base, 13.5px); color: var(--text-secondary); }
-
-/* Separación fija entre la barra y el módulo. Va aquí y no en cada panel
-   (`.hrl-panel` arranca en 0) para que todos los módulos respiren igual. */
-.hrl-content {
-  flex: 1;
-  min-width: 0;
-  padding-top: 28px;
-  animation: hrl-panelIn 0.34s var(--ease) both;
 }
 
 /* ------------------------------------------------------------------ Drawers */
@@ -1091,6 +1218,8 @@ body { margin: 0; background: #f9fafb; }
   top: 0;
   right: 0;
   bottom: 0;
+  border-radius: var(--radius-card) 0 0 var(--radius-card);
+  overflow: hidden;
   max-width: 92vw;
   background: var(--bg-surface);
   z-index: 90;
@@ -1125,30 +1254,32 @@ body { margin: 0; background: #f9fafb; }
   transition: background 0.4s var(--ease);
 }
 
-.hrl-drawer__link:hover { background: rgba(24, 119, 242, 0.1); }
+.hrl-drawer__link:hover { background: var(--success-soft); }
 .hrl-drawer__link:disabled { opacity: 0.45; cursor: default; }
 
 .hrl-iconbtn {
   width: var(--touch-target);
   height: var(--touch-target);
   border: none;
-  border-radius: 50%;
+  border-radius: var(--radius);
   background: transparent;
   color: var(--text-secondary);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.4s var(--ease);
+  transition: background var(--transition-fast), color var(--transition-fast);
 }
 
-.hrl-iconbtn:hover { background: rgba(145, 158, 171, 0.14); }
+.hrl-iconbtn:hover { background: var(--muted); color: var(--foreground); }
 
 .hrl-drawer__tabs {
   display: flex;
-  gap: 6px;
-  padding: 0 20px 10px;
-  border-bottom: 1px solid var(--border);
+  gap: 2px;
+  margin: 0 20px 12px;
+  padding: 4px;
+  border-radius: var(--radius-full);
+  background: var(--muted);
 }
 
 .hrl-tab {
@@ -1159,26 +1290,29 @@ body { margin: 0; background: #f9fafb; }
   background: transparent;
   cursor: pointer;
   font-family: inherit;
-  font-size: var(--text-md, 14px);
-  font-weight: 500;
+  flex: 1;
+  justify-content: center;
+  min-height: 36px;
+  font-size: var(--text-sm, 12.5px);
+  font-weight: var(--weight-semibold);
   color: var(--text-secondary);
-  padding: 10px 8px;
-  border-bottom: 2px solid transparent;
-  transition: color 0.4s var(--ease), border-color 0.4s var(--ease);
+  padding: 0 10px;
+  border-radius: var(--radius-full);
+  transition: color var(--transition-fast), background var(--transition-fast);
 }
 
-.hrl-tab--on { font-weight: 700; color: var(--text-primary); border-bottom-color: var(--brand-texto); }
+.hrl-tab--on { font-weight: var(--weight-bold); color: var(--primary-foreground); background: var(--primary); }
 
 .hrl-tab__count {
   font-size: var(--text-xs, 11px);
   font-weight: 700;
   padding: 2px 7px;
-  border-radius: var(--radius-xs, 6px);
-  background: rgba(145, 158, 171, 0.16);
+  border-radius: var(--radius-full);
+  background: var(--surface);
   color: var(--text-secondary);
 }
 
-.hrl-tab--on .hrl-tab__count { background: var(--brand-deep); color: #fff; }
+.hrl-tab--on .hrl-tab__count { background: color-mix(in srgb, var(--primary-foreground) 22%, transparent); color: var(--primary-foreground); }
 
 .hrl-drawer__body { flex: 1; overflow-y: auto; }
 .hrl-drawer__foot { padding: 14px 20px; border-top: 1px solid var(--border); }
@@ -1186,18 +1320,18 @@ body { margin: 0; background: #f9fafb; }
 .hrl-drawer__btn {
   width: 100%;
   border: none;
-  background: rgba(145, 158, 171, 0.1);
+  background: var(--muted);
   font-family: inherit;
-  font-size: var(--text-md, 14px);
-  font-weight: 700;
+  font-size: var(--text-base, 13.5px);
+  font-weight: var(--weight-semibold);
   color: var(--text-primary);
   padding: 11px;
-  border-radius: var(--radius-md, 10px);
+  border-radius: var(--radius);
   cursor: pointer;
   transition: background 0.4s var(--ease);
 }
 
-.hrl-drawer__btn:hover { background: rgba(145, 158, 171, 0.2); }
+.hrl-drawer__btn:hover { background: var(--neutral-soft); }
 
 .hrl-profile__head {
   display: flex;
@@ -1205,7 +1339,7 @@ body { margin: 0; background: #f9fafb; }
   align-items: center;
   gap: 6px;
   padding: 8px 24px 24px;
-  border-bottom: 1px dashed rgba(145, 158, 171, 0.24);
+  border-bottom: 1px solid var(--border);
 }
 
 .hrl-profile__ring {
@@ -1213,7 +1347,7 @@ body { margin: 0; background: #f9fafb; }
   height: 104px;
   border-radius: 50%;
   padding: 5px;
-  background: conic-gradient(from 180deg, #00a76f, #5be49b, #00b8d9, #00a76f);
+  background: var(--success-soft);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1223,14 +1357,14 @@ body { margin: 0; background: #f9fafb; }
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: var(--brand-deep);
-  color: #fff;
+  background: var(--primary);
+  color: var(--primary-foreground);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--text-2xl, 30px);
-  font-weight: 700;
-  letter-spacing: -1px;
+  font-size: var(--text-2xl, 32px);
+  font-weight: var(--weight-extrabold);
+  letter-spacing: -0.035em;
 }
 
 .hrl-profile__name { font-size: var(--text-lg, 17px); font-weight: 700; margin-top: 10px; }
@@ -1270,23 +1404,23 @@ body { margin: 0; background: #f9fafb; }
 .hrl-profile__item svg { color: var(--subtle-foreground); }
 .hrl-profile__item span { flex: 1; text-align: left; }
 
-.hrl-profile__foot { padding: 16px 20px 22px; border-top: 1px dashed rgba(145, 158, 171, 0.24); }
+.hrl-profile__foot { padding: 16px 20px 22px; border-top: 1px solid var(--border); }
 
 .hrl-signout {
   width: 100%;
   border: none;
-  background: rgba(255, 86, 48, 0.12);
+  background: var(--destructive-soft);
   color: var(--danger-text);
   font-family: inherit;
-  font-size: var(--text-md, 14px);
-  font-weight: 700;
+  font-size: var(--text-base, 13.5px);
+  font-weight: var(--weight-bold);
   padding: 12px;
-  border-radius: var(--radius-md, 10px);
+  border-radius: var(--radius);
   cursor: pointer;
   transition: background 0.4s var(--ease);
 }
 
-.hrl-signout:hover { background: rgba(255, 86, 48, 0.22); }
+.hrl-signout:hover { background: color-mix(in srgb, var(--danger) 18%, var(--surface)); }
 
 /* -------------------------------------------------------------- EmptyState */
 
@@ -1328,12 +1462,16 @@ body { margin: 0; background: #f9fafb; }
   font-size: var(--text-base, 13.5px);
 }
 
+/* Cabecera sin fondo, en gris y negrita, separada por una línea: la tabla de
+   la nueva interfaz se lee por sus filas, no por una banda de color. No va en
+   mayúsculas como el boceto: cambiaría unidades («kg», «mL») y siglas. */
 .hrl-table thead th {
-  background: var(--head-bg);
+  background: var(--bg-surface);
   font-size: var(--text-sm, 12.5px);
-  font-weight: 700;
-  color: var(--text-secondary);
-  padding: 11px 14px;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.01em;
+  color: var(--muted-foreground);
+  padding: 10px 14px;
   text-align: left;
   white-space: nowrap;
   border-bottom: 1px solid var(--border);
@@ -1379,8 +1517,8 @@ body { margin: 0; background: #f9fafb; }
 }
 
 .hrl-table tbody td {
-  padding: 9px 14px;
-  border-bottom: 1px dashed var(--border);
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border-soft);
   /* Solo opacidad: el desplazamiento vertical hacía que cada cambio de página
      o de filtro pareciera un salto de la tabla entera. */
   animation: hrl-celdaIn 0.32s var(--ease) both;
@@ -1389,6 +1527,7 @@ body { margin: 0; background: #f9fafb; }
 
 .hrl-table tbody tr { transition: background 0.35s var(--ease); }
 .hrl-table tbody tr:hover { background: var(--row-hover); }
+.hrl-table tbody tr:last-child > td { border-bottom: none; }
 
 .hrl-table__empty {
   padding: 32px 14px !important;
@@ -1419,9 +1558,9 @@ body { margin: 0; background: #f9fafb; }
      que le queda hasta el borde de la ventana. */
   transform: translateY(-50%);
   width: max-content;
-  background: #1c252e;
+  background: var(--toast-bg);
   color: rgba(255, 255, 255, 0.74);
-  font-family: var(--font-sans, 'Public Sans', Helvetica, Arial, sans-serif);
+  font-family: var(--font-sans, 'Plus Jakarta Sans', system-ui, sans-serif);
   font-size: var(--text-base, 13.5px);
   line-height: 1.5;
   padding: 14px 18px;
@@ -1467,7 +1606,7 @@ body { margin: 0; background: #f9fafb; }
   position: fixed;
   inset: 0;
   z-index: 200;
-  background: rgba(28, 37, 46, 0.42);
+  background: var(--scrim);
   backdrop-filter: blur(3px);
   display: flex;
   align-items: center;
@@ -1484,8 +1623,8 @@ body { margin: 0; background: #f9fafb; }
      diálogo se ancla arriba en vez de recortarse por ambos extremos. */
   margin: auto;
   background: var(--bg-surface);
-  border-radius: var(--radius-xl, 18px);
-  box-shadow: 0 32px 64px -16px rgba(28, 37, 46, 0.44);
+  border-radius: var(--radius-card, 22px);
+  box-shadow: var(--shadow-overlay);
   animation: hrl-modalIn 0.38s var(--ease) both;
 }
 
@@ -1507,11 +1646,11 @@ body { margin: 0; background: #f9fafb; }
   display: flex;
   align-items: flex-start;
   gap: 16px;
-  padding: 22px 56px 14px 24px;
+  padding: 24px 60px 16px 24px;
   border-bottom: 1px solid var(--border);
 }
 
-.hrl-modal__title { margin: 0; font-size: var(--text-lg, 17px); font-weight: 700; }
+.hrl-modal__title { margin: 0; font-size: var(--text-xl, 22px); font-weight: var(--weight-extrabold); letter-spacing: -0.03em; line-height: 1.2; }
 .hrl-modal__subtitle { margin: 6px 0 0; font-size: var(--text-base, 13.5px); color: var(--text-secondary); }
 .hrl-modal__body { padding: 20px 24px; }
 .hrl-modal__foot {
@@ -1584,52 +1723,58 @@ body { margin: 0; background: #f9fafb; }
   font-size: var(--text-base, 13.5px);
   font-weight: 600;
   padding: 12px 18px;
-  border-radius: var(--radius, 12px);
-  box-shadow: 0 18px 36px -10px rgba(28, 37, 46, 0.5);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-overlay);
   animation: hrl-toastIn 0.4s var(--ease) both;
 }
 
 /* ------------------------------------------------------------------ Botones */
 
+/* 40 px de alto (el objetivo táctil), esquina de 12 y texto seminegrita. El
+   principal es el verde agua relleno; el secundario, blanco con un borde fino,
+   como los botones de la barra. */
 .hrl-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  min-height: 42px;
+  min-height: var(--touch-target);
   padding: 0 16px;
-  border: none;
-  border-radius: var(--radius-md, 10px);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
   font-family: inherit;
-  font-size: var(--text-md, 14px);
-  font-weight: 700;
+  font-size: var(--text-base, 13.5px);
+  font-weight: var(--weight-semibold);
   cursor: pointer;
-  transition: background 0.4s var(--ease), color 0.4s var(--ease), opacity 0.4s var(--ease);
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), opacity var(--transition-fast);
 }
 
-.hrl-btn--cta { background: #00695c; color: #fff; }
-.hrl-btn--cta:hover { background: var(--brand-deep); }
-.hrl-btn--blue { background: var(--action-blue); color: #fff; }
-.hrl-btn--blue:hover { background: #0c68e9; }
-.hrl-btn--ghost { background: rgba(145, 158, 171, 0.12); color: var(--text-primary); }
+.hrl-btn--cta { background: var(--primary); color: var(--primary-foreground); }
+.hrl-btn--cta:hover { background: var(--primary-hover); }
+.hrl-btn--blue { background: var(--action-blue); color: var(--primary-foreground); }
+.hrl-btn--blue:hover { background: color-mix(in srgb, var(--action-blue) 86%, var(--foreground)); }
+.hrl-btn--ghost { background: var(--surface); border-color: var(--border); color: var(--nav-text); }
+.hrl-btn--ghost:hover { background: var(--muted); color: var(--foreground); }
 
 /* Acción con aspecto de enlace: abre un registro desde su celda. Mide 24 px de
-   alto (WCAG 2.5.8) en lugar de los 42 de un botón, para caber en una fila. */
+   alto (WCAG 2.5.8) en lugar de los 40 de un botón, para caber en una fila. */
 .hrl-btn.hrl-btn--enlace {
   min-height: 24px;
   padding: 2px 6px;
   margin: 0 -6px;
+  border: none;
   background: transparent;
-  color: var(--accent-text);
+  color: var(--primary-text);
   font-size: var(--text-sm);
   font-weight: var(--weight-bold);
   text-align: left;
   white-space: normal;
+  border-radius: var(--radius-xs);
 }
 
-.hrl-btn.hrl-btn--enlace:hover { background: var(--info-soft); text-decoration: underline; }
-.hrl-btn--ghost:hover { background: rgba(145, 158, 171, 0.22); }
-.hrl-btn--peligro { background: rgba(255, 86, 48, 0.14); color: var(--danger-text); }
-.hrl-btn--peligro:hover { background: rgba(255, 86, 48, 0.26); }
+.hrl-btn.hrl-btn--enlace:hover { background: var(--success-soft); text-decoration: underline; }
+.hrl-btn--peligro { background: var(--destructive-soft); color: var(--danger-text); }
+.hrl-btn--peligro:hover { background: color-mix(in srgb, var(--danger) 18%, var(--surface)); }
 .hrl-btn:disabled { opacity: 0.5; cursor: default; }
 
 .hrl-btn-mini {
@@ -1639,23 +1784,23 @@ body { margin: 0; background: #f9fafb; }
      mínimo del contrato, porque es un botón real de la tabla. */
   min-height: var(--touch-target);
   gap: 6px;
-  border: 1px solid var(--input-border);
+  border: 1px solid var(--border);
   background: var(--bg-surface);
   font-family: inherit;
   font-size: var(--text-sm, 12.5px);
-  font-weight: 700;
-  color: var(--text-primary);
-  padding: 6px 11px;
-  border-radius: 9px;
+  font-weight: var(--weight-semibold);
+  color: var(--nav-text);
+  padding: 6px 12px;
+  border-radius: var(--radius);
   cursor: pointer;
   /* Un botón nunca parte su etiqueta en dos líneas: engorda la fila. */
   white-space: nowrap;
-  transition: background 0.4s var(--ease);
+  transition: background var(--transition-fast);
 }
 
 .hrl-btn { white-space: nowrap; }
 
-.hrl-btn-mini:hover { background: rgba(145, 158, 171, 0.1); }
+.hrl-btn-mini:hover { background: var(--muted); }
 
 /* Ocupa siempre su celda: con display:none el grid de la fila se descuadra. */
 .hrl-trunc {
@@ -1694,32 +1839,45 @@ body { margin: 0; background: #f9fafb; }
 
 /* ---------------------------------------------- Pestañas dentro de un panel */
 
+/* La misma píldora que las vistas de la barra superior: fondo gris y la
+   pestaña activa rellena en verde agua. Así una pestaña se reconoce igual en
+   la barra y dentro de un panel. */
 .hrl-tabs {
-  display: flex;
-  gap: 4px;
+  display: inline-flex;
   flex-wrap: wrap;
-  margin: 0 0 24px;
-  border-bottom: 1px solid var(--border);
+  gap: 2px;
+  max-width: 100%;
+  margin: 0 0 20px;
+  padding: 4px;
+  border-radius: var(--radius-xl);
+  background: var(--muted);
 }
 
 .hrl-tabs__btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  min-height: 38px;
+  padding: 0 16px;
   border: none;
+  border-radius: var(--radius-lg);
   background: transparent;
   cursor: pointer;
   font-family: inherit;
-  font-size: var(--text-md, 14px);
-  font-weight: 500;
+  font-size: var(--text-base, 13.5px);
+  font-weight: var(--weight-semibold);
   color: var(--text-secondary);
-  padding: 12px 14px;
-  border-bottom: 2px solid transparent;
-  transition: color 0.4s var(--ease), border-color 0.4s var(--ease);
+  transition: color var(--transition-fast), background var(--transition-fast);
 }
 
 .hrl-tabs__btn:hover { color: var(--text-primary); }
-.hrl-tabs__btn--on { font-weight: 700; color: var(--text-primary); border-bottom-color: var(--brand); }
+
+.hrl-tabs__btn--on,
+.hrl-tabs__btn--on:hover {
+  font-weight: var(--weight-bold);
+  color: var(--primary-foreground);
+  background: var(--primary);
+}
 
 /* -------------------------------------------------------- Entrada compacta */
 
@@ -1757,9 +1915,9 @@ body { margin: 0; background: #f9fafb; }
   align-items: center;
   gap: 10px;
   padding: 14px 16px;
-  border-radius: var(--radius, 12px);
-  background: rgba(255, 86, 48, 0.08);
-  border: 1px solid rgba(255, 86, 48, 0.24);
+  border-radius: var(--radius-lg);
+  background: var(--destructive-soft);
+  border: 1px solid color-mix(in srgb, var(--danger) 18%, transparent);
   color: var(--danger-text);
   font-size: var(--text-base, 13.5px);
   font-weight: 600;
@@ -1770,9 +1928,9 @@ body { margin: 0; background: #f9fafb; }
   align-items: flex-start;
   gap: 12px;
   padding: 16px 18px;
-  border-radius: var(--radius, 12px);
-  background: rgba(255, 171, 0, 0.1);
-  border: 1px solid rgba(255, 171, 0, 0.28);
+  border-radius: var(--radius-lg);
+  background: var(--warning-soft);
+  border: 1px solid color-mix(in srgb, var(--warning) 26%, transparent);
   color: var(--warning-text);
   animation: hrl-riseIn 0.5s var(--ease) both;
 }
@@ -2359,15 +2517,15 @@ body { margin: 0; background: #f9fafb; }
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
   gap: 2px;
-  padding: 3px;
-  border-radius: var(--radius-sm);
+  padding: 4px;
+  border-radius: var(--radius-full);
   background: var(--muted);
 }
 .hrl-segmentos__opcion {
   min-height: var(--touch-target, 40px);
   padding: 0 var(--space-2);
   border: 1px solid transparent;
-  border-radius: var(--radius-xs);
+  border-radius: var(--radius-full);
   background: transparent;
   color: var(--muted-foreground);
   font: inherit;
@@ -2377,12 +2535,12 @@ body { margin: 0; background: #f9fafb; }
 }
 .hrl-segmentos__opcion:hover { color: var(--foreground); }
 .hrl-segmentos__opcion[aria-checked='true'] {
-  background: var(--surface);
-  color: var(--foreground);
-  box-shadow: var(--shadow-sm);
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-weight: var(--weight-bold);
 }
 /* En alto contraste el elegido no puede depender de una sombra tenue. */
-:root[data-contraste-hrl='alto'] .hrl-segmentos__opcion[aria-checked='true'] { border-color: var(--foreground); box-shadow: none; }
+:root[data-contraste-hrl='alto'] .hrl-segmentos__opcion[aria-checked='true'] { border-color: var(--foreground); }
 
 .hrl-tema {
   display: flex;
@@ -2402,7 +2560,7 @@ body { margin: 0; background: #f9fafb; }
 }
 
 .hrl-tema:hover { background: var(--row-hover); }
-.hrl-tema--on { border-color: rgba(0, 167, 111, 0.5); }
+.hrl-tema--on { border-color: color-mix(in srgb, var(--primary) 50%, transparent); }
 
 .hrl-tema__texto { display: flex; flex-direction: column; gap: 2px; }
 .hrl-tema__texto strong { font-size: var(--text-md, 14px); font-weight: 700; }
@@ -2414,7 +2572,8 @@ body { margin: 0; background: #f9fafb; }
   height: 26px;
   flex: 0 0 auto;
   border-radius: 13px;
-  background: rgba(145, 158, 171, 0.34);
+  background: var(--neutral-soft);
+  box-shadow: inset 0 0 0 1px var(--input-border);
   transition: background 0.35s var(--ease);
 }
 
@@ -2441,50 +2600,56 @@ body { margin: 0; background: #f9fafb; }
    significado, no decoración, y se aclaran sus versiones de texto. */
 :root[data-tema-hrl='oscuro'] .hrl-nuevo,
 :root[data-tema-hrl='oscuro'] .hrl-portal {
-  --bg-app: #10161b;
-  --bg-surface: #18212a;
-  --text-primary: #e9edf1;
-  --text-secondary: #9fb0bd;
-  --text-disabled: #788894;
-  --border: rgba(145, 158, 171, 0.26);
-  --border-soft: rgba(145, 158, 171, 0.16);
-  --row-hover: rgba(145, 158, 171, 0.1);
-  --head-bg: rgba(145, 158, 171, 0.12);
-  --head-solido: #222d37;
-  --fila-solida: #1e2831;
-  --brand-texto: #5be49b;
-  --toast-bg: #2b3742;
+  --bg-app: #0e1316;
+  --bg-surface: #171d22;
+  --text-primary: #eef1f4;
+  --text-secondary: #a7b1be;
+  --text-disabled: #6f7a88;
+  --border: #283139;
+  --border-soft: #20282e;
+  --row-hover: #1c2328;
+  --head-bg: #1f272d;
+  --head-solido: #1f272d;
+  --fila-solida: #1a2126;
+  --brand-texto: #5fd3bf;
+  --toast-bg: #26313a;
   --danger-text: #ffac9b;
-  --warning-text: #ffd666;
-  --info-text: #61f3f3;
-  --ok-text: #5be49b;
-  --accent-text: #8fc7ff;
-  --neutral-text: #b3c0cb;
+  --warning-text: #f3c969;
+  --info-text: #8ccdf0;
+  --ok-text: #6fe0c8;
+  --accent-text: #5fd3bf;
+  --neutral-text: #b8c1cc;
+  --action-blue: #5fd3bf;
+  --surface-sunken: #1c2328;
+  --nav-icon: #8b96a4;
+  --nav-text: #d5dbe2;
+  --danger: #c4432c;
+  --accent-foreground: #062520;
 
   /* Sobre superficie oscura, un velo del 8 % desaparece: se refuerzan. */
-  --info-soft: rgba(0, 184, 217, 0.14);
-  --success-soft: rgba(0, 167, 111, 0.18);
-  --warning-soft: rgba(255, 171, 0, 0.18);
-  --destructive-soft: rgba(255, 86, 48, 0.18);
-  --neutral-soft: rgba(145, 158, 171, 0.16);
+  --info-soft: rgba(140, 205, 240, 0.14);
+  --success-soft: rgba(43, 179, 159, 0.18);
+  --warning-soft: rgba(243, 201, 105, 0.16);
+  --destructive-soft: rgba(255, 120, 95, 0.16);
+  --neutral-soft: rgba(184, 193, 204, 0.12);
 
   /* Los semanticos que no se derivan solos de los de implementacion. */
-  --primary-foreground: #06231b;
-  --subtle-foreground: #8696a2;
-  --input-border: #66737f;
-  --selection: rgba(0, 167, 111, 0.34);
+  --primary-foreground: #062520;
+  --subtle-foreground: #8b96a4;
+  --input-border: #66727f;
+  --selection: rgba(43, 179, 159, 0.34);
   --scrim: rgba(0, 0, 0, 0.55);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.45);
   --shadow-overlay: 0 32px 64px -16px rgba(0, 0, 0, 0.66);
-  --shadow-card: 0 0 2px rgba(0, 0, 0, 0.5), 0 12px 24px -4px rgba(0, 0, 0, 0.42);
-  --shadow-card-hover: 0 0 2px rgba(0, 0, 0, 0.5), 0 20px 40px -8px rgba(0, 0, 0, 0.55);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4), 0 12px 30px -16px rgba(0, 0, 0, 0.6);
+  --shadow-card-hover: 0 1px 3px rgba(0, 0, 0, 0.45), 0 18px 36px -16px rgba(0, 0, 0, 0.7);
   --shadow-drawer: -24px 0 48px -12px rgba(0, 0, 0, 0.6);
 
-  /* El verde oscurecido en claro (para que el texto blanco del botón llegue a
-     4.5:1) deja muy poco margen para el texto casi negro que usa este tema: se
-     conserva aquí el verde original, que ya funcionaba bien con ese texto
-     (5.35:1). */
-  --brand: #00a76f;
+  /* La acción principal en oscuro es un verde agua más claro con texto casi
+     negro encima (primary-foreground): el verde del tema claro, con texto
+     blanco, se apagaba sobre el fondo oscuro. */
+  --brand: #2bb39f;
+  --brand-hover: #3cc4af;
 
   color-scheme: dark;
 }
@@ -2500,24 +2665,26 @@ body { margin: 0; background: #f9fafb; }
      AAA (7:1 sobre las superficies), bordes sólidos de 3:1 o más donde el
      estándar los tiene translúcidos, y una acción principal más oscura para que
      el texto blanco de los botones llegue a 7:1. */
-  --text-secondary: #3a4650;
-  --text-disabled: #5f6f7c;
-  --border: #6b7a87;
-  --border-soft: #7d8b98;
-  --input-border: #4e5a64;
-  --row-hover: #eef1f4;
-  --head-bg: #eef1f4;
-  --brand: #005c43;
-  --brand-hover: #004d38;
-  --danger: #9a1b00;
-  --danger-text: #921512;
-  --warning-text: #693800;
-  --info-text: #005479;
-  --accent-text: #084a96;
-  --neutral-text: #3a4650;
-  --action-blue: #0a4fa8;
-  --banda-hasta: #005c43;
-  --subtle-foreground: #3a4650;
+  --text-secondary: #344054;
+  --text-disabled: #5d677a;
+  --border: #6b7685;
+  --border-soft: #7c8696;
+  --input-border: #4b5565;
+  --row-hover: #eef1f2;
+  --head-bg: #eef1f2;
+  --brand: #0a5a51;
+  --brand-hover: #084a43;
+  --danger: #962d1a;
+  --danger-text: #7a2e1c;
+  --warning-text: #5f400a;
+  --info-text: #164a69;
+  --accent-text: #064d45;
+  --neutral-text: #344054;
+  --action-blue: #064d45;
+  --banda-hasta: #0a5a51;
+  --subtle-foreground: #344054;
+  --nav-icon: #344054;
+  --brand-texto: #064d45;
 
   /* fin del alto contraste claro */
 }
@@ -2526,25 +2693,26 @@ body { margin: 0; background: #f9fafb; }
 :root[data-tema-hrl='oscuro'][data-contraste-hrl='alto'] .hrl-portal {
   /* ALTO CONTRASTE, OSCURO. Solo lo que cambia frente al oscuro estándar, con el
      mismo criterio: texto AAA, bordes sólidos de 3:1 o más. */
-  --text-secondary: #c9d4dc;
-  --text-disabled: #a3b1bc;
-  --border: #8796a3;
-  --border-soft: #6f7d89;
-  --input-border: #a3b1bc;
-  --row-hover: #222d37;
-  --head-bg: #222d37;
+  --text-secondary: #cfd6de;
+  --text-disabled: #a7b1be;
+  --border: #8793a1;
+  --border-soft: #6f7b88;
+  --input-border: #a7b1be;
+  --row-hover: #232c33;
+  --head-bg: #232c33;
   --danger-text: #ffc2b6;
   --warning-text: #ffe08a;
   --info-text: #8ff7f7;
-  --ok-text: #7df0b4;
-  --accent-text: #b5dbff;
+  --ok-text: #8ff0dc;
+  --accent-text: #8ff0dc;
   --neutral-text: #d0dae2;
-  --brand-texto: #7df0b4;
-  --banda-hasta: #005c43;
-  --subtle-foreground: #c9d4dc;
-  --danger: #9a1b00;
-  --action-blue: #0a4fa8;
-  --brand: #34d399;
+  --brand-texto: #8ff0dc;
+  --banda-hasta: #0a5a51;
+  --subtle-foreground: #cfd6de;
+  --danger: #962d1a;
+  --action-blue: #8ff0dc;
+  --brand: #5fe0c9;
+  --nav-icon: #cfd6de;
 
   /* fin del alto contraste oscuro */
 }
@@ -2570,7 +2738,7 @@ body { margin: 0; background: #f9fafb; }
 /* Alto contraste, más allá de los colores: las tarjetas pierden la sombra
    (que en una pantalla con reflejos no separa nada) y ganan un borde sólido,
    y el foco se refuerza a 3 px con 2 px de separación (WCAG 2.4.13). */
-:root[data-contraste-hrl='alto'] :is(.hrl-nuevo, .hrl-portal) :is(.hrl-section, .hrl-stat) {
+:root[data-contraste-hrl='alto'] :is(.hrl-nuevo, .hrl-portal) :is(.hrl-section, .hrl-stat, .hrl-pagehead__estado) {
   box-shadow: none;
   border: 1px solid var(--input-border);
 }
@@ -2581,12 +2749,8 @@ body { margin: 0; background: #f9fafb; }
 }
 
 :root[data-tema-hrl='oscuro'] { color-scheme: dark; }
-:root[data-tema-hrl='oscuro'] body { background: #10161b; }
+:root[data-tema-hrl='oscuro'] body { background: #0e1316; }
 
-/* El aro del avatar y el sello del perfil llevan texto blanco sobre el verde
-   profundo: en oscuro ese verde queda demasiado apagado. */
-:root[data-tema-hrl='oscuro'] .hrl-avatar__initials,
-:root[data-tema-hrl='oscuro'] .hrl-profile__initials { background: #00714f; }
 
 /* ------------------------------------------- Filas marcadas de las tablas */
 
@@ -2620,7 +2784,7 @@ body { margin: 0; background: #f9fafb; }
   to { background-position: 0 50%; }
 }
 
-.hrl-skeleton-fila td { border-bottom: 1px dashed var(--border); padding: 12px 14px; }
+.hrl-skeleton-fila td { border-bottom: 1px solid var(--border-soft); padding: 12px 14px; }
 
 /* --------------------------------------------------- DropdownMenu */
 
@@ -2629,7 +2793,7 @@ body { margin: 0; background: #f9fafb; }
   z-index: 210;
   min-width: 200px;
   padding: 6px;
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   background: var(--surface);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-lg);
@@ -2678,37 +2842,139 @@ body { margin: 0; background: #f9fafb; }
 .hrl-menu__item:focus-visible { background: var(--muted); outline: none; }
 .hrl-menu__item:disabled { color: var(--subtle-foreground); cursor: not-allowed; }
 .hrl-menu__item--peligro { color: var(--destructive-text); }
-.hrl-menu__item--peligro:hover:not(:disabled) { background: rgba(255, 86, 48, 0.1); }
+.hrl-menu__item--peligro:hover:not(:disabled) { background: var(--destructive-soft); }
 
 .hrl-menu__separador { height: 1px; margin: 4px 6px; background: var(--border); }
 .hrl-menu__atajo { font-size: var(--text-xs); color: var(--subtle-foreground); }
 
-/* ---------------------------------------------- PageHeader: migas */
+/* ------------------------------------------------- PageHeader (1.11.0) */
 
-.hrl-migas {
+/* La cabecera de la vista, al principio del contenido y sobre el fondo de la
+   página: el título grande y su mensaje a un lado; la ruta y la fecha al otro.
+   Lleva el borde de la página (24 px; --hrl-borde para otro). */
+.hrl-pagehead {
   display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-bottom: 6px;
-  font-size: var(--text-sm);
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: 0 var(--hrl-borde, var(--space-5)) var(--space-4);
+}
+
+.hrl-pagehead__fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-4);
+  padding: 0 2px 2px;
+}
+
+.hrl-pagehead__textos { flex: 1 1 340px; min-width: 0; }
+
+.hrl-pagehead h1 {
+  margin: 0;
+  font-size: var(--text-3xl, 36px);
+  font-weight: var(--weight-extrabold);
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+  color: var(--foreground);
+}
+
+.hrl-pagehead__bajada {
+  margin: 8px 0 0;
+  max-width: 72ch;
+  font-size: var(--text-md, 14px);
+  line-height: var(--leading-normal);
   color: var(--muted-foreground);
 }
 
-.hrl-migas__paso { display: inline-flex; align-items: center; gap: 4px; }
-.hrl-migas__paso a { color: inherit; text-decoration: none; border-radius: var(--radius-xs); }
-.hrl-migas__paso a:hover { color: var(--accent); text-decoration: underline; }
-.hrl-migas__paso [aria-current='page'] { color: var(--foreground); font-weight: var(--weight-semibold); }
+.hrl-pagehead__lado {
+  display: grid;
+  gap: 5px;
+  justify-items: end;
+  text-align: right;
+  min-width: 0;
+}
 
-.hrl-pagehead__acciones { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
-/* La ranura existe siempre (es destino de `AccionesPagina`); vacía no debe
-   sumar el hueco del `gap`. */
+.hrl-migas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  font-size: var(--text-md, 14px);
+  font-weight: var(--weight-semibold);
+  color: var(--foreground);
+}
+
+.hrl-migas__icono { color: var(--muted-foreground); margin-right: 2px; }
+.hrl-migas__separador { color: var(--subtle-foreground); }
+.hrl-migas__paso { display: inline-flex; align-items: center; gap: 6px; }
+.hrl-migas__paso a { color: var(--muted-foreground); text-decoration: none; border-radius: var(--radius-xs); }
+.hrl-migas__paso a:hover { color: var(--primary-text); text-decoration: underline; }
+.hrl-migas__paso [aria-current='page'] { color: var(--foreground); }
+
+.hrl-pagehead__fecha { margin: 0; font-size: var(--text-sm, 12.5px); color: var(--muted-foreground); }
+.hrl-pagehead__hora { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* La franja del estado y las acciones. Existe siempre (es el destino de
+   PageActions); sin estado ni acciones no ocupa sitio. */
+.hrl-pagehead__franja {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.hrl-pagehead__franja:not(:has(.hrl-pagehead__estado)):has(> .hrl-pagehead__acciones:empty) { display: none; }
+
+/* El estado de la vista, dicho una vez: baldosa con su icono, la etiqueta y
+   una línea de detalle. Provisional: aquí irán los avisos del mes. */
+.hrl-pagehead__estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+  margin: 0;
+  padding: 8px 16px 8px 8px;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.hrl-pagehead__estado-icono {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  background: var(--success-soft);
+  color: var(--success-text);
+}
+
+.hrl-pagehead__estado--aviso .hrl-pagehead__estado-icono { background: var(--warning-soft); color: var(--warning-fg); }
+
+.hrl-pagehead__estado-textos { display: flex; flex-direction: column; min-width: 0; }
+.hrl-pagehead__estado-textos strong { font-size: var(--text-base, 13.5px); font-weight: var(--weight-bold); line-height: 1.35; }
+.hrl-pagehead__estado-textos span { font-size: var(--text-sm, 12.5px); color: var(--muted-foreground); line-height: 1.4; }
+
+.hrl-pagehead__acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-left: auto; }
+/* Vacía no debe sumar el hueco del `gap`. */
 .hrl-pagehead__acciones:empty { display: none; }
+
+@media (max-width: 720px) {
+  .hrl-pagehead { margin-inline: var(--hrl-borde, var(--space-3)); }
+  .hrl-pagehead h1 { font-size: var(--text-2xl, 32px); }
+  .hrl-pagehead__lado { justify-items: start; text-align: left; }
+  .hrl-migas { justify-content: flex-start; }
+  .hrl-pagehead__acciones { margin-left: 0; }
+}
 
 /* --------------------------------------------------- Alert: éxito */
 
 .hrl-aviso--ok {
-  background: rgba(0, 167, 111, 0.08);
-  border-color: rgba(0, 167, 111, 0.26);
+  background: var(--success-soft);
+  border-color: color-mix(in srgb, var(--primary) 22%, transparent);
   color: var(--success-text);
 }
 
@@ -2737,7 +3003,8 @@ body { margin: 0; background: #f9fafb; }
 /* Objetivo táctil mínimo en todo control interactivo del kit. */
 .hrl-btn,
 .hrl-iconbtn,
-.hrl-tabs__btn { min-height: var(--touch-target); }
+.hrl-tabs__btn,
+.hrl-vistas__item { min-height: var(--touch-target); }
 
 /* =====================================================================
    Componentes traídos del prototipo de Reporte Estadístico (paso 0 de

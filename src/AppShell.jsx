@@ -3,7 +3,6 @@ import { Sprite, Icon } from './icons.jsx';
 import { EmptyState } from './EmptyState.jsx';
 import { HrlLogo } from './HrlLogo.jsx';
 import { PageHeader } from './PageHeader.jsx';
-import { PageBanner } from './PageBanner.jsx';
 import { Tooltip } from './Tooltip.jsx';
 import { readTheme, applyTheme } from './theme.js';
 import { usePreferences, PREFERENCE_DEFAULTS } from './preferences.js';
@@ -14,15 +13,23 @@ import { useExitAnimation } from './useExitAnimation.js';
 
 const TABS_NOTIF = ['Todas', 'No leídas', 'Archivadas'];
 
-/* Logo por defecto: el extendido con el menú abierto y solo el escudo con el
-   menú plegado, que no deja sitio para el nombre. Se montan los dos y el CSS
-   decide cuál se ve, así plegar no vuelve a pintar el árbol. */
-const LOGO_POR_DEFECTO = (
-  <>
-    <HrlLogo width={158} className="hrl-sidebar__logo-completo" />
-    <HrlLogo variant="mark" width={52} className="hrl-sidebar__logo-escudo" />
-  </>
-);
+/* Marca por defecto: el escudo del hospital en su baldosa y, al lado, el
+   hospital y el nombre del sistema (`brand`) en dos líneas. Con el menú
+   plegado queda solo el escudo: el CSS esconde los textos, así plegar no
+   vuelve a pintar el árbol. */
+function MarcaPorDefecto({ brand }) {
+  return (
+    <span className="hrl-marca">
+      <span className="hrl-marca__escudo">
+        <HrlLogo variant="mark" width={30} />
+      </span>
+      <span className="hrl-marca__textos">
+        <span className="hrl-marca__hospital">Hospital Regional de Loreto</span>
+        {brand && <span className="hrl-marca__sistema">{brand}</span>}
+      </span>
+    </span>
+  );
+}
 
 /* Contrato de usuario del shell:
      { name, email?, role?, avatar? }
@@ -152,9 +159,8 @@ const SidebarNav = memo(function SidebarNav({ navItems, active, onSelect, plegad
   );
 });
 
-/* Ni la banda ni la cabecera dependen de que el menú esté plegado: sin memo,
-   cada plegado las volvía a pintar enteras (con la mascota y el reloj). */
-const BandaMemo = memo(PageBanner);
+/* La cabecera no depende de que el menú esté plegado: sin memo, cada plegado
+   la volvía a pintar entera (con el reloj). */
 const CabeceraMemo = memo(PageHeader);
 
 /* El menú cambia de ancho por CSS; el contenido no se anima con su margen
@@ -414,34 +420,82 @@ function ProfileDrawer({ user, onClose, onSignOut, leaving, tema, onTema, prefs,
   );
 }
 
-/* Layout maestro: menú lateral replegable, barra superior con ranura de
-   acciones, cajón de notificaciones, menú de perfil con tema y encabezado de
-   página. Todo lo que muestra llega por props; no consulta nada.
+/* Layout maestro: menú lateral replegable con el perfil al pie, barra superior
+   (replegar, acción principal, vistas al centro, notificaciones y menú de la
+   cuenta), cajones de notificaciones y de perfil, y la cabecera de la página al
+   principio del contenido. Todo lo que muestra llega por props; no consulta
+   nada.
 
      navItems  { id, label, icon, group?, badge?, href? }[]
      collapsibleGroups  títulos de `group` que se pliegan y despliegan con un
                clic en su rótulo; se abren solos si contienen la pantalla
                activa. Pásalo como constante: el menú está memorizado
-     user      { name, email?, role?, avatar? }
-     logo      nodo libre para la marca; si se omite, el logo del hospital (HrlLogo),
-               que al plegar el menú queda en solo el escudo.
-               Pasar `logo={null}` deja la barra lateral sin marca
-     brand     nombre del sistema en la barra superior; el kit no lo sabe
+     user      { name, email?, role?, avatar? }: se muestra al pie del menú
+               lateral, y al pulsarlo se abre el cajón del perfil
+     logo      nodo libre para la marca; si se omite, el escudo del hospital con
+               su nombre y el de `brand`. `logo={null}` deja el menú sin marca
+     brand     nombre del sistema, bajo el del hospital; el kit no lo sabe
+     title, subtitle, breadcrumbs
+               la cabecera de la página (PageHeader): el título grande, el
+               mensaje debajo y, al otro lado, la ruta
+     date      la fecha que la cabecera muestra bajo la ruta («Sábado, 31 de
+               octubre de 2026»); la decide la aplicación, que sabe qué día es
+               para ella
+     actions   controles junto al estado de la cabecera (y destino de PageActions)
+     banner    { status?, actions?, clock?, mascot? }: el estado de la vista
+               (icono, etiqueta, detalle y tono), sus acciones y la hora junto a
+               la fecha. `mascot` se acepta y por ahora no se dibuja: la nueva
+               cabecera ya no lleva la banda verde con la mascota
+     primaryAction  { icon, label, description?, onClick }: la acción de crear
+               del sistema, en el botón verde agua al inicio de la barra
+     tabs      { items: { id, label }[], active, onSelect, label? }: las vistas
+               de la sección, en la píldora del centro de la barra
      themeKey  clave con la que se recuerda el modo oscuro
-     preferencesKey  clave con la que se recuerdan contraste, tamaño del texto y
-               subrayado de enlaces (usePreferences); por defecto, la de
-               themeKey con «_prefs»
-     banner    { status?, mascot?, actions?, clock? }: la vista se presenta con
-               PageBanner (la cabecera en banda) al principio del contenido, en
-               vez de con PageHeader dentro de la barra superior. Usa el mismo
-               title, subtitle y breadcrumbs; `actions` de la barra se suma a
-               las de la banda */
+     preferencesKey  clave de contraste, tamaño del texto y subrayado de
+               enlaces (usePreferences); por defecto, la de themeKey con «_prefs» */
 /* El id del contenido principal: el destino del enlace «Saltar al contenido».
    Exportado para que la aplicación lleve el foco ahí al cambiar de pantalla. */
 export const ID_CONTENIDO = 'contenido-principal';
 
 /* Por debajo de este ancho el menú lateral es un cajón (tokens.css). */
 const ANCHO_MOVIL = 899;
+
+/* Las vistas de la sección, al centro de la barra: una píldora con la activa
+   rellena. Es navegación (enlaces o botones con aria-current), no un grupo de
+   pestañas con paneles: cada vista es una pantalla con su propia dirección. */
+function VistasBarra({ tabs }) {
+  const items = tabs?.items ?? [];
+  const ref = useRef(null);
+  /* Con muchas vistas la píldora se desplaza de lado: la activa se trae a la
+     parte visible, o quien entra a «Epidemiología» no vería cuál está abierta. */
+  useEffect(() => {
+    const activa = ref.current?.querySelector('[aria-current="page"]');
+    const nav = ref.current;
+    if (!activa || !nav || nav.scrollWidth <= nav.clientWidth) return;
+    nav.scrollLeft = activa.offsetLeft - (nav.clientWidth - activa.offsetWidth) / 2;
+  }, [tabs?.active]);
+  if (items.length < 2) return <div className="hrl-topbar__spacer" />;
+  return (
+    <nav className="hrl-vistas" ref={ref} aria-label={tabs.label ?? 'Vistas de la sección'}>
+      {items.map((v) => {
+        const activa = v.id === tabs.active;
+        const Etiqueta = v.href ? 'a' : 'button';
+        return (
+          <Etiqueta
+            key={v.id}
+            type={v.href ? undefined : 'button'}
+            href={v.href}
+            className={`hrl-vistas__item${activa ? ' hrl-vistas__item--on' : ''}`}
+            aria-current={activa ? 'page' : undefined}
+            onClick={() => tabs.onSelect?.(v.id)}
+          >
+            {v.label}
+          </Etiqueta>
+        );
+      })}
+    </nav>
+  );
+}
 
 export function AppShell({
   navItems = [],
@@ -451,8 +505,11 @@ export function AppShell({
   title,
   subtitle,
   breadcrumbs,
+  date,
   actions,
   banner,
+  primaryAction,
+  tabs,
   user,
   logo,
   brand,
@@ -482,12 +539,10 @@ export function AppShell({
     applyTheme(tema, themeKey);
   }, [tema, themeKey]);
 
-  /* Alto real de la barra superior (fila + título de página, con o sin migas
-     ni subtítulo): un panel con lateral fijo lo necesita para anclar su propio
-     `sticky` justo debajo, y ese alto cambia de un módulo a otro. Se mide en
-     vez de adivinarlo, porque un valor fijo se desalinea en cuanto el título
-     ocupa dos líneas o el módulo no trae subtítulo. Vive en <html>, fuera del
-     árbol de React, igual que el atributo del tema. */
+  /* Alto real de la barra superior: un panel con lateral fijo lo necesita para
+     anclar su propio `sticky` justo debajo. Se mide en vez de adivinarlo,
+     porque la barra baja a dos filas en pantallas medianas (las vistas pasan
+     debajo). Vive en <html>, fuera del árbol de React, igual que el tema. */
   const topbarRef = useRef(null);
   const mainRef = useRef(null);
   /* Dónde empezaba el contenido antes de plegar o desplegar: se mide en el
@@ -510,7 +565,7 @@ export function AppShell({
     const ro = new ResizeObserver(medir);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [title, subtitle, breadcrumbs, banner]);
+  }, []);
 
   const abierto = notifOpen || profileOpen;
 
@@ -531,10 +586,17 @@ export function AppShell({
     document.getElementById(ID_CONTENIDO)?.focus();
   };
 
+  /* Quien abrió un cajón recupera el foco al cerrarlo (§ 3.1): el perfil se
+     abre desde el pie del menú o desde la barra, y la campana desde la barra. */
+  const disparador = useRef(null);
+
   /* Antes del efecto que lo usa: `close` es una constante y no se iza. */
   const ocultar = useCallback(() => {
     setNotifOpen(false);
     setProfileOpen(false);
+    const el = disparador.current;
+    disparador.current = null;
+    if (el && typeof el.focus === 'function') requestAnimationFrame(() => el.focus());
   }, []);
   const { leaving, close } = useExitAnimation(ocultar);
 
@@ -575,11 +637,22 @@ export function AppShell({
     [onSelect],
   );
 
-  /* Un fragmento nuevo en cada pintada anularía el memo de la banda. */
-  const accionesBanda = useMemo(
-    () => (banner && (banner.actions || actions) ? <>{banner.actions}{actions}</> : null),
+  const abrirPerfil = (e) => {
+    disparador.current = e?.currentTarget ?? null;
+    setMenuMovil(false);
+    setProfileOpen(true);
+    setNotifOpen(false);
+  };
+
+  /* Un fragmento nuevo en cada pintada anularía el memo de la cabecera. */
+  const accionesCabecera = useMemo(
+    () => (banner?.actions || actions ? <>{banner?.actions}{actions}</> : null),
     [banner, actions],
   );
+
+  const marca = logo === undefined ? <MarcaPorDefecto brand={brand} /> : logo;
+  const nombreCuenta = user?.name ?? 'Sin sesión';
+  const detalleCuenta = user?.role ?? user?.email;
 
   return (
     <div className="hrl-nuevo">
@@ -589,74 +662,106 @@ export function AppShell({
       </a>
       <div className={`hrl-shell${plegado ? ' hrl-shell--plegado' : ''}${menuMovil ? ' hrl-shell--menu-abierto' : ''}`}>
         <aside className="hrl-sidebar" aria-label="Menú principal">
-          <div className="hrl-sidebar__logo">{logo === undefined ? LOGO_POR_DEFECTO : logo}</div>
+          {marca && <div className="hrl-sidebar__logo">{marca}</div>}
           <SidebarNav navItems={navItems} active={active} onSelect={alElegir} plegado={plegado} collapsibleGroups={collapsibleGroups} />
+          {user && (
+            <div className="hrl-sidebar__pie">
+              {/* El perfil vive aquí, al pie del menú: abre el cajón con la
+                  apariencia, la accesibilidad y el cierre de sesión. Plegado,
+                  queda el avatar y el nombre pasa al tooltip. */}
+              <Tooltip
+                as="div"
+                style={{ display: 'block', width: '100%' }}
+                focusable={false}
+                title={nombreCuenta}
+                body={detalleCuenta ? `${detalleCuenta} · abre el perfil, la apariencia y el cierre de sesión` : 'Abre el perfil, la apariencia y el cierre de sesión'}
+              >
+                <button type="button" className="hrl-cuenta" onClick={abrirPerfil} aria-label={`Perfil de ${nombreCuenta}`}>
+                  <span className="hrl-cuenta__avatar" aria-hidden="true">
+                    {user.avatar ? <img className="hrl-avatar__foto" src={user.avatar} alt="" /> : iniciales(user.name)}
+                  </span>
+                  <span className="hrl-cuenta__textos">
+                    <span className="hrl-cuenta__nombre">{nombreCuenta}</span>
+                    {detalleCuenta && <span className="hrl-cuenta__detalle">{detalleCuenta}</span>}
+                  </span>
+                </button>
+              </Tooltip>
+            </div>
+          )}
         </aside>
         {menuMovil && <button type="button" className="hrl-sidebar__velo" onClick={() => setMenuMovil(false)} aria-label="Cerrar el menú" />}
 
         <div className="hrl-main" ref={mainRef}>
           <header className="hrl-topbar" ref={topbarRef}>
             <div className="hrl-topbar__row">
-              {/* Sin tooltip a propósito: el gesto se explica solo y el aviso
-                  estorbaba justo donde está el cursor al navegar. */}
-              <button
-                type="button"
-                className={`hrl-plegar${plegado ? ' hrl-plegar--plegado' : ''}`}
-                onClick={alternarMenu}
-                aria-label={plegado ? 'Mostrar el menú lateral' : 'Replegar el menú lateral'}
-                aria-expanded={menuMovil || !plegado}
-              >
-                <Icon name="sh-sidebar-collapse" size={18} />
-              </button>
-              {brand && <span className="hrl-topbar__brand">{brand}</span>}
-              <div className="hrl-topbar__spacer" />
-              {/* Ranura para las acciones del módulo activo. La llena el propio
-                  módulo con un portal, para que la barra no tenga que saber
-                  qué acciones existen en cada panel. */}
-              <div className="hrl-topbar__acciones" id="hrl-acciones-modulo" />
-              <button
-                type="button"
-                className={`hrl-bell${notifOpen ? ' hrl-bell--on' : ''}`}
-                onClick={() => {
-                  setNotifOpen((v) => !v);
-                  setProfileOpen(false);
-                }}
-                aria-label={`Notificaciones${noLeidas ? `: ${noLeidas} sin leer` : ''}`}
-              >
-                <Icon name="sh-bell" size={21} />
-                {noLeidas > 0 && <span className="hrl-bell__badge">{noLeidas}</span>}
-              </button>
-              <button
-                type="button"
-                className="hrl-avatar"
-                onClick={() => {
-                  setProfileOpen(true);
-                  setNotifOpen(false);
-                }}
-                aria-label="Perfil"
-              >
-                {user?.avatar ? (
-                  <img className="hrl-avatar__foto" src={user.avatar} alt="" />
-                ) : (
-                  <span className="hrl-avatar__initials">{iniciales(user?.name)}</span>
+              <div className="hrl-topbar__inicio">
+                {/* Sin tooltip a propósito: el gesto se explica solo y el aviso
+                    estorbaba justo donde está el cursor al navegar. */}
+                <button
+                  type="button"
+                  className={`hrl-barra-boton hrl-plegar${plegado ? ' hrl-plegar--plegado' : ''}`}
+                  onClick={alternarMenu}
+                  aria-label={plegado ? 'Mostrar el menú lateral' : 'Replegar el menú lateral'}
+                  aria-expanded={menuMovil || !plegado}
+                >
+                  <Icon name="sh-sidebar-collapse" size={19} />
+                </button>
+                {primaryAction && (
+                  <Tooltip title={primaryAction.label} body={primaryAction.description ?? primaryAction.label} focusable={false}>
+                    <button type="button" className="hrl-barra-boton hrl-barra-boton--primario" onClick={primaryAction.onClick} aria-label={primaryAction.label}>
+                      <Icon name={primaryAction.icon ?? 'sh-plus'} size={20} />
+                    </button>
+                  </Tooltip>
                 )}
-              </button>
+              </div>
+
+              <VistasBarra tabs={tabs} />
+
+              <div className="hrl-topbar__fin">
+                {/* Ranura para controles del módulo activo. La llena el propio
+                    módulo con un portal, para que la barra no tenga que saber
+                    qué controles existen en cada panel. */}
+                <div className="hrl-topbar__acciones" id="hrl-acciones-modulo" />
+                <Tooltip
+                  title="Notificaciones"
+                  body={noLeidas ? `${noLeidas} sin leer. Avisos que el sistema deriva de lo que pasa ahora: plazos, envíos, observaciones.` : 'Avisos que el sistema deriva de lo que pasa ahora: plazos, envíos, observaciones.'}
+                  focusable={false}
+                >
+                  <button
+                    type="button"
+                    className={`hrl-barra-boton hrl-bell${notifOpen ? ' hrl-bell--on' : ''}`}
+                    onClick={(e) => {
+                      disparador.current = e.currentTarget;
+                      setNotifOpen((v) => !v);
+                      setProfileOpen(false);
+                    }}
+                    aria-label={`Notificaciones${noLeidas ? `: ${noLeidas} sin leer` : ''}`}
+                  >
+                    <Icon name="sh-bell" size={19} />
+                    {noLeidas > 0 && <span className="hrl-bell__badge">{noLeidas}</span>}
+                  </button>
+                </Tooltip>
+                <Tooltip title="Menú de la cuenta" body="Perfil, modo oscuro, tamaño del texto, contraste y cierre de sesión." focusable={false}>
+                  <button type="button" className="hrl-barra-boton" onClick={abrirPerfil} aria-label="Abrir el menú de la cuenta">
+                    <Icon name="sh-lines" size={19} />
+                  </button>
+                </Tooltip>
+              </div>
             </div>
-            {!banner && <CabeceraMemo title={title} description={subtitle} breadcrumbs={breadcrumbs} actions={actions} />}
           </header>
 
           {/* `main`, con id y enfocable: es el destino del enlace de salto y adonde la
               aplicación debe llevar el foco al cambiar de pantalla. */}
           <main id={ID_CONTENIDO} tabIndex={-1} className={`hrl-content${panelLeaving ? ' hrl-content--saliendo' : ''}`}>
-            {banner && (
-              <BandaMemo
+            {title && (
+              <CabeceraMemo
                 title={title}
                 description={subtitle}
                 breadcrumbs={breadcrumbs}
-                clock={banner.clock}
-                status={banner.status}
-                mascot={banner.mascot}
-                actions={accionesBanda}
+                date={date}
+                clock={banner?.clock}
+                status={banner?.status}
+                actions={accionesCabecera}
               />
             )}
             {children}

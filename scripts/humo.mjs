@@ -155,9 +155,28 @@ const ASERCIONES = [
     globalThis.localStorage = { getItem: () => null, setItem: () => {}, removeItem: () => {} };
     return JSON.stringify(p) === JSON.stringify(kit.PREFERENCE_DEFAULTS);
   }],
-  ['AppShell con banner dibuja la banda y no la cabecera de la barra', () => {
+  /* 1.11.0: la cabecera es PageHeader al principio del contenido, con el
+     estado del `banner` en su franja; la banda verde ya no se dibuja. */
+  ['AppShell con banner dibuja la cabecera nueva con su estado, sin la banda', () => {
     const h = html('AppShell', { navItems: [], title: 'x', banner: { status: { label: 'Pendiente' } } });
-    return h.includes('hrl-banda') && !h.includes('hrl-pagehead');
+    return h.includes('hrl-pagehead') && h.includes('Pendiente') && !h.includes('hrl-banda');
+  }],
+  ['AppShell pone el perfil al pie del menú y no en la barra', () => {
+    const h = html('AppShell', { navItems: [], title: 'x', user: { name: 'Ana Ruiz', role: 'Jefatura' } });
+    return h.includes('hrl-cuenta') && h.includes('Ana Ruiz') && !h.includes('hrl-avatar"');
+  }],
+  ['AppShell dibuja las vistas al centro con la activa marcada', () => {
+    const tabs = { items: [{ id: 'a', label: 'Uno' }, { id: 'b', label: 'Dos' }], active: 'b' };
+    const h = html('AppShell', { navItems: [], title: 'x', tabs });
+    return h.includes('hrl-vistas') && /aria-current="page"[^>]*>Dos</.test(h);
+  }],
+  ['AppShell con primaryAction dibuja el botón principal con su nombre', () => {
+    const h = html('AppShell', { navItems: [], title: 'x', primaryAction: { label: 'Nuevo registro', onClick: () => {} } });
+    return h.includes('hrl-barra-boton--primario') && h.includes('aria-label="Nuevo registro"');
+  }],
+  ['los iconos son de relleno: el sprite no dibuja ningún trazo', () => {
+    const h = html('IconSprite', {});
+    return !/stroke/.test(h) && h.includes('fill-rule="evenodd"');
   }],
   ['Input con autoFocus lo declara', () => html('Input', { label: 'X', autoFocus: true }).length > 0],
 ];

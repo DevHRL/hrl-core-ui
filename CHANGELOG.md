@@ -3,6 +3,50 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.11.0-redesign.1 — 31/10/2026 (prelanzamiento, rama `nueva-interfaz`)
+
+**Nueva interfaz.** Cambio de aspecto de todo el kit, a partir del boceto «Dashboard estadístico» del equipo.
+Lo que cambia y cuánto:
+
+- **Tipografía.** Plus Jakarta Sans reemplaza a Public Sans (`--font-sans`), empaquetada en `fonts/` como
+  antes (OFL). Cifras tabulares en toda la interfaz. `--text-2xl` pasa de 30 a 32 px y hay `--text-3xl`
+  (36 px, el título de página) y `--weight-extrabold` (800).
+- **Color.** Fondo de página `#f1f2f4`, texto `#101828`, bordes sólidos `#eaecee`. La acción principal es un
+  verde agua (`--primary` `#107f6f`, 4,9:1 con blanco; de los tonos del boceto, el que llega a AA). Fondos
+  tenues de estado sólidos (`--success-soft` `#e6f2f0`, `--warning-soft`, `--destructive-soft`,
+  `--neutral-soft`). `--accent`/`tone="blue"` dejan de ser azules: son el verde profundo de los enlaces
+  (`#086c60`). Tema oscuro y alto contraste rehechos con el mismo criterio (`npm run contrast`: todo AA, y AAA
+  en alto contraste).
+- **Tokens nuevos:** `--surface-sunken`, `--nav-text`, `--nav-icon`, `--radius-nav` (13), `--radius-tile` (18),
+  `--toast-icono`, `--text-3xl`, `--weight-extrabold`. `--radius-card` pasa de 16 a 22 px; las sombras de
+  tarjeta son más difusas.
+- **Iconos solo de relleno.** Los 52 iconos se redibujaron como formas llenas (sin `stroke`), con los huecos
+  recortados por `evenodd`. Nuevos: `sh-search`, `sh-plus`, `sh-sort`, `sh-more`. Los SVG sueltos que quedaban
+  en Badge, StatCard, Input, Toast y DataTable pasan a `Icon`. La prueba de humo falla si el sprite vuelve a
+  tener un trazo.
+- **`AppShell`.** Menú lateral blanco (252 px) con la marca arriba —escudo, hospital y `brand`— y el **perfil
+  al pie**; el módulo activo **invierte el color**: relleno verde agua con texto e icono claros. La barra
+  superior pierde el avatar y el nombre del sistema: al inicio, replegar y la acción principal; **al centro,
+  las vistas de la sección** en una píldora; al final, la campana y el menú de la cuenta. La cabecera de la
+  página va siempre al principio del contenido. Props nuevas, opcionales: `date`, `primaryAction`
+  `{icon,label,description,onClick}` y `tabs` `{items,active,onSelect,label}`. `banner` se sigue aceptando:
+  su `status`, `actions` y `clock` van a la cabecera nueva; su `mascot` ya no se dibuja.
+- **`PageHeader`.** Título de 36 px en extranegrita con el mensaje debajo; a la derecha la ruta (con icono) y
+  la fecha (`date`, y la hora con `clock`); debajo, una franja con el estado (`status`) y las acciones, que
+  sigue siendo el destino de `PageActions`. `PageBanner` sigue exportado pero el `AppShell` ya no lo usa.
+- **`Card`.** Blanca, sin borde, esquina de 22 px y relleno de 22; el título a 17 px. **Ya no dibuja la barra
+  de color ni la baldosa del icono**: `accent` e `icon` se aceptan sin error (y `accent` sigue fijando
+  `--accent` dentro de la tarjeta).
+- **Botones, pestañas y controles.** Botón de 40 px y esquina de 12; el secundario (`ghost`) es blanco con
+  borde. `Tabs`, `SegmentedControl`, las pestañas del cajón y el paginador son píldoras grises con la opción
+  activa rellena. El paginador usa flechas de icono con `aria-label` y marca la página con `aria-current`.
+- **Tabla.** Cabecera sin fondo, gris y en negrita; filas con línea sólida tenue. No va en mayúsculas como el
+  boceto: cambiaría unidades y siglas.
+- **Insignias** en píldora con icono de relleno; **StatCard** con la cifra a 32 px, el icono en un círculo con
+  borde y sin el salto al pasar el cursor; **diálogos** y **cajones** con la esquina de tarjeta.
+
+Cambio de aspecto deliberado. API: solo se añaden props; nada se quita ni se renombra.
+
 ## 1.10.0-redesign.14 — 27/10/2026 (prelanzamiento, rama `redesign`)
 
 **Vuelve el menú lateral blanco.** Se deshace el verde agua de 1.10.0-redesign.13 a pedido del equipo: el menú es

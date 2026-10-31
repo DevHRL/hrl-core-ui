@@ -60,7 +60,13 @@ export const ICONS = Object.freeze([
   'sh-inbox',
   'sh-pencil',
   'sh-scissors',
-  'sh-box'
+  'sh-box',
+
+  /* Barra superior y tablas de la nueva interfaz (1.11.0). */
+  'sh-search',
+  'sh-plus',
+  'sh-sort',
+  'sh-more'
 ]);
 
 /* Nombres anteriores, en español, de iconos ya renombrados. Se siguen

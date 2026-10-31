@@ -35,11 +35,7 @@ function Input({
   const etiquetaVisible = /* @__PURE__ */ jsxs(Fragment, { children: [
     label,
     required && /* @__PURE__ */ jsx("span", { className: "hrl-field__req", children: "*" }),
-    info && /* @__PURE__ */ jsxs("svg", { width: "13", height: "13", viewBox: "0 0 24 24", "aria-hidden": "true", style: { color: "var(--subtle-foreground)", flex: "0 0 auto" }, children: [
-      /* @__PURE__ */ jsx("circle", { cx: "12", cy: "12", r: "9", fill: "none", stroke: "currentColor", strokeWidth: "2" }),
-      /* @__PURE__ */ jsx("circle", { cx: "12", cy: "7.8", r: "1.3", fill: "currentColor" }),
-      /* @__PURE__ */ jsx("path", { d: "M12 11v6", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round" })
-    ] })
+    info && /* @__PURE__ */ jsx(Icon, { name: "sh-info", size: 14, style: { color: "var(--subtle-foreground)", flex: "0 0 auto" } })
   ] });
   return /* @__PURE__ */ jsxs("label", { className: `hrl-field${error ? " hrl-field--error" : ""}`, children: [
     info ? /* @__PURE__ */ jsx(Tooltip, { title: label, body: info, as: "span", children: /* @__PURE__ */ jsx("span", { className: "hrl-field__label", style: { cursor: "help" }, children: etiquetaVisible }) }) : /* @__PURE__ */ jsx("span", { className: labelHidden ? "hrl-oculto-visual" : "hrl-field__label", children: etiquetaVisible }),
@@ -62,10 +58,7 @@ function Input({
         ]
       }
     ) : /* @__PURE__ */ jsxs("span", { className: "hrl-field__wrap", children: [
-      searchIcon && /* @__PURE__ */ jsxs("svg", { width: "16", height: "16", viewBox: "0 0 24 24", style: { color: "var(--subtle-foreground)", flex: "0 0 auto" }, "aria-hidden": "true", children: [
-        /* @__PURE__ */ jsx("circle", { cx: "11", cy: "11", r: "6", fill: "none", stroke: "currentColor", strokeWidth: "1.8" }),
-        /* @__PURE__ */ jsx("path", { d: "M15.5 15.5L20 20", stroke: "currentColor", strokeWidth: "1.8", strokeLinecap: "round" })
-      ] }),
+      searchIcon && /* @__PURE__ */ jsx(Icon, { name: "sh-search", size: 17, style: { color: "var(--subtle-foreground)", flex: "0 0 auto" } }),
       /* @__PURE__ */ jsx(
         "input",
         {
@@ -97,10 +90,7 @@ function Input({
       )
     ] }),
     error && /* @__PURE__ */ jsxs("span", { className: "hrl-field__error", id: idError, children: [
-      /* @__PURE__ */ jsxs("svg", { width: "14", height: "14", viewBox: "0 0 24 24", "aria-hidden": "true", children: [
-        /* @__PURE__ */ jsx("circle", { cx: "12", cy: "12", r: "9", fill: "currentColor", opacity: "0.2" }),
-        /* @__PURE__ */ jsx("path", { d: "M12 7.5v6M12 16.6h0", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round" })
-      ] }),
+      /* @__PURE__ */ jsx(Icon, { name: "sh-crit", size: 15 }),
       error
     ] }),
     hint && /* @__PURE__ */ jsx("span", { className: "hrl-field__hint", id: idPista, children: hint })

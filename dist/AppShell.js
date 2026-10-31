@@ -4,7 +4,6 @@ import { Sprite, Icon } from "./icons.js";
 import { EmptyState } from "./EmptyState.js";
 import { HrlLogo } from "./HrlLogo.js";
 import { PageHeader } from "./PageHeader.js";
-import { PageBanner } from "./PageBanner.js";
 import { Tooltip } from "./Tooltip.js";
 import { readTheme, applyTheme } from "./theme.js";
 import { usePreferences, PREFERENCE_DEFAULTS } from "./preferences.js";
@@ -13,10 +12,15 @@ import { Switch } from "./Switch.js";
 import { Button } from "./Button.js";
 import { useExitAnimation } from "./useExitAnimation.js";
 const TABS_NOTIF = ["Todas", "No le\xEDdas", "Archivadas"];
-const LOGO_POR_DEFECTO = /* @__PURE__ */ jsxs(Fragment, { children: [
-  /* @__PURE__ */ jsx(HrlLogo, { width: 158, className: "hrl-sidebar__logo-completo" }),
-  /* @__PURE__ */ jsx(HrlLogo, { variant: "mark", width: 52, className: "hrl-sidebar__logo-escudo" })
-] });
+function MarcaPorDefecto({ brand }) {
+  return /* @__PURE__ */ jsxs("span", { className: "hrl-marca", children: [
+    /* @__PURE__ */ jsx("span", { className: "hrl-marca__escudo", children: /* @__PURE__ */ jsx(HrlLogo, { variant: "mark", width: 30 }) }),
+    /* @__PURE__ */ jsxs("span", { className: "hrl-marca__textos", children: [
+      /* @__PURE__ */ jsx("span", { className: "hrl-marca__hospital", children: "Hospital Regional de Loreto" }),
+      brand && /* @__PURE__ */ jsx("span", { className: "hrl-marca__sistema", children: brand })
+    ] })
+  ] });
+}
 function iniciales(nombre) {
   if (!nombre) return "\xB7\xB7";
   const partes = nombre.trim().split(/\s+/).slice(0, 2);
@@ -112,7 +116,6 @@ const SidebarNav = memo(function SidebarNav2({ navItems, active, onSelect, plega
     ] }, sec.title || `g-${i}`);
   }) });
 });
-const BandaMemo = memo(PageBanner);
 const CabeceraMemo = memo(PageHeader);
 function deslizarContenido(main, desde) {
   if (!main || !desde || typeof main.animate !== "function") return;
@@ -323,6 +326,33 @@ function ProfileDrawer({ user, onClose, onSignOut, leaving, tema, onTema, prefs,
 }
 const ID_CONTENIDO = "contenido-principal";
 const ANCHO_MOVIL = 899;
+function VistasBarra({ tabs }) {
+  const items = tabs?.items ?? [];
+  const ref = useRef(null);
+  useEffect(() => {
+    const activa = ref.current?.querySelector('[aria-current="page"]');
+    const nav = ref.current;
+    if (!activa || !nav || nav.scrollWidth <= nav.clientWidth) return;
+    nav.scrollLeft = activa.offsetLeft - (nav.clientWidth - activa.offsetWidth) / 2;
+  }, [tabs?.active]);
+  if (items.length < 2) return /* @__PURE__ */ jsx("div", { className: "hrl-topbar__spacer" });
+  return /* @__PURE__ */ jsx("nav", { className: "hrl-vistas", ref, "aria-label": tabs.label ?? "Vistas de la secci\xF3n", children: items.map((v) => {
+    const activa = v.id === tabs.active;
+    const Etiqueta = v.href ? "a" : "button";
+    return /* @__PURE__ */ jsx(
+      Etiqueta,
+      {
+        type: v.href ? void 0 : "button",
+        href: v.href,
+        className: `hrl-vistas__item${activa ? " hrl-vistas__item--on" : ""}`,
+        "aria-current": activa ? "page" : void 0,
+        onClick: () => tabs.onSelect?.(v.id),
+        children: v.label
+      },
+      v.id
+    );
+  }) });
+}
 function AppShell({
   navItems = [],
   collapsibleGroups,
@@ -331,8 +361,11 @@ function AppShell({
   title,
   subtitle,
   breadcrumbs,
+  date,
   actions,
   banner,
+  primaryAction,
+  tabs,
   user,
   logo,
   brand,
@@ -374,7 +407,7 @@ function AppShell({
     const ro = new ResizeObserver(medir);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [title, subtitle, breadcrumbs, banner]);
+  }, []);
   const abierto = notifOpen || profileOpen;
   useEffect(() => {
     if (!menuMovil) return void 0;
@@ -388,9 +421,13 @@ function AppShell({
     e.preventDefault();
     document.getElementById(ID_CONTENIDO)?.focus();
   };
+  const disparador = useRef(null);
   const ocultar = useCallback(() => {
     setNotifOpen(false);
     setProfileOpen(false);
+    const el = disparador.current;
+    disparador.current = null;
+    if (el && typeof el.focus === "function") requestAnimationFrame(() => el.focus());
   }, []);
   const { leaving, close } = useExitAnimation(ocultar);
   useEffect(() => {
@@ -423,82 +460,106 @@ function AppShell({
     },
     [onSelect]
   );
-  const accionesBanda = useMemo(
-    () => banner && (banner.actions || actions) ? /* @__PURE__ */ jsxs(Fragment, { children: [
-      banner.actions,
+  const abrirPerfil = (e) => {
+    disparador.current = e?.currentTarget ?? null;
+    setMenuMovil(false);
+    setProfileOpen(true);
+    setNotifOpen(false);
+  };
+  const accionesCabecera = useMemo(
+    () => banner?.actions || actions ? /* @__PURE__ */ jsxs(Fragment, { children: [
+      banner?.actions,
       actions
     ] }) : null,
     [banner, actions]
   );
+  const marca = logo === void 0 ? /* @__PURE__ */ jsx(MarcaPorDefecto, { brand }) : logo;
+  const nombreCuenta = user?.name ?? "Sin sesi\xF3n";
+  const detalleCuenta = user?.role ?? user?.email;
   return /* @__PURE__ */ jsxs("div", { className: "hrl-nuevo", children: [
     /* @__PURE__ */ jsx(Sprite, {}),
     /* @__PURE__ */ jsx("a", { className: "hrl-saltar", href: `#${ID_CONTENIDO}`, onClick: saltarAlContenido, children: "Saltar al contenido" }),
     /* @__PURE__ */ jsxs("div", { className: `hrl-shell${plegado ? " hrl-shell--plegado" : ""}${menuMovil ? " hrl-shell--menu-abierto" : ""}`, children: [
       /* @__PURE__ */ jsxs("aside", { className: "hrl-sidebar", "aria-label": "Men\xFA principal", children: [
-        /* @__PURE__ */ jsx("div", { className: "hrl-sidebar__logo", children: logo === void 0 ? LOGO_POR_DEFECTO : logo }),
-        /* @__PURE__ */ jsx(SidebarNav, { navItems, active, onSelect: alElegir, plegado, collapsibleGroups })
+        marca && /* @__PURE__ */ jsx("div", { className: "hrl-sidebar__logo", children: marca }),
+        /* @__PURE__ */ jsx(SidebarNav, { navItems, active, onSelect: alElegir, plegado, collapsibleGroups }),
+        user && /* @__PURE__ */ jsx("div", { className: "hrl-sidebar__pie", children: /* @__PURE__ */ jsx(
+          Tooltip,
+          {
+            as: "div",
+            style: { display: "block", width: "100%" },
+            focusable: false,
+            title: nombreCuenta,
+            body: detalleCuenta ? `${detalleCuenta} \xB7 abre el perfil, la apariencia y el cierre de sesi\xF3n` : "Abre el perfil, la apariencia y el cierre de sesi\xF3n",
+            children: /* @__PURE__ */ jsxs("button", { type: "button", className: "hrl-cuenta", onClick: abrirPerfil, "aria-label": `Perfil de ${nombreCuenta}`, children: [
+              /* @__PURE__ */ jsx("span", { className: "hrl-cuenta__avatar", "aria-hidden": "true", children: user.avatar ? /* @__PURE__ */ jsx("img", { className: "hrl-avatar__foto", src: user.avatar, alt: "" }) : iniciales(user.name) }),
+              /* @__PURE__ */ jsxs("span", { className: "hrl-cuenta__textos", children: [
+                /* @__PURE__ */ jsx("span", { className: "hrl-cuenta__nombre", children: nombreCuenta }),
+                detalleCuenta && /* @__PURE__ */ jsx("span", { className: "hrl-cuenta__detalle", children: detalleCuenta })
+              ] })
+            ] })
+          }
+        ) })
       ] }),
       menuMovil && /* @__PURE__ */ jsx("button", { type: "button", className: "hrl-sidebar__velo", onClick: () => setMenuMovil(false), "aria-label": "Cerrar el men\xFA" }),
       /* @__PURE__ */ jsxs("div", { className: "hrl-main", ref: mainRef, children: [
-        /* @__PURE__ */ jsxs("header", { className: "hrl-topbar", ref: topbarRef, children: [
-          /* @__PURE__ */ jsxs("div", { className: "hrl-topbar__row", children: [
+        /* @__PURE__ */ jsx("header", { className: "hrl-topbar", ref: topbarRef, children: /* @__PURE__ */ jsxs("div", { className: "hrl-topbar__row", children: [
+          /* @__PURE__ */ jsxs("div", { className: "hrl-topbar__inicio", children: [
             /* @__PURE__ */ jsx(
               "button",
               {
                 type: "button",
-                className: `hrl-plegar${plegado ? " hrl-plegar--plegado" : ""}`,
+                className: `hrl-barra-boton hrl-plegar${plegado ? " hrl-plegar--plegado" : ""}`,
                 onClick: alternarMenu,
                 "aria-label": plegado ? "Mostrar el men\xFA lateral" : "Replegar el men\xFA lateral",
                 "aria-expanded": menuMovil || !plegado,
-                children: /* @__PURE__ */ jsx(Icon, { name: "sh-sidebar-collapse", size: 18 })
+                children: /* @__PURE__ */ jsx(Icon, { name: "sh-sidebar-collapse", size: 19 })
               }
             ),
-            brand && /* @__PURE__ */ jsx("span", { className: "hrl-topbar__brand", children: brand }),
-            /* @__PURE__ */ jsx("div", { className: "hrl-topbar__spacer" }),
-            /* @__PURE__ */ jsx("div", { className: "hrl-topbar__acciones", id: "hrl-acciones-modulo" }),
-            /* @__PURE__ */ jsxs(
-              "button",
-              {
-                type: "button",
-                className: `hrl-bell${notifOpen ? " hrl-bell--on" : ""}`,
-                onClick: () => {
-                  setNotifOpen((v) => !v);
-                  setProfileOpen(false);
-                },
-                "aria-label": `Notificaciones${noLeidas ? `: ${noLeidas} sin leer` : ""}`,
-                children: [
-                  /* @__PURE__ */ jsx(Icon, { name: "sh-bell", size: 21 }),
-                  noLeidas > 0 && /* @__PURE__ */ jsx("span", { className: "hrl-bell__badge", children: noLeidas })
-                ]
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              "button",
-              {
-                type: "button",
-                className: "hrl-avatar",
-                onClick: () => {
-                  setProfileOpen(true);
-                  setNotifOpen(false);
-                },
-                "aria-label": "Perfil",
-                children: user?.avatar ? /* @__PURE__ */ jsx("img", { className: "hrl-avatar__foto", src: user.avatar, alt: "" }) : /* @__PURE__ */ jsx("span", { className: "hrl-avatar__initials", children: iniciales(user?.name) })
-              }
-            )
+            primaryAction && /* @__PURE__ */ jsx(Tooltip, { title: primaryAction.label, body: primaryAction.description ?? primaryAction.label, focusable: false, children: /* @__PURE__ */ jsx("button", { type: "button", className: "hrl-barra-boton hrl-barra-boton--primario", onClick: primaryAction.onClick, "aria-label": primaryAction.label, children: /* @__PURE__ */ jsx(Icon, { name: primaryAction.icon ?? "sh-plus", size: 20 }) }) })
           ] }),
-          !banner && /* @__PURE__ */ jsx(CabeceraMemo, { title, description: subtitle, breadcrumbs, actions })
-        ] }),
+          /* @__PURE__ */ jsx(VistasBarra, { tabs }),
+          /* @__PURE__ */ jsxs("div", { className: "hrl-topbar__fin", children: [
+            /* @__PURE__ */ jsx("div", { className: "hrl-topbar__acciones", id: "hrl-acciones-modulo" }),
+            /* @__PURE__ */ jsx(
+              Tooltip,
+              {
+                title: "Notificaciones",
+                body: noLeidas ? `${noLeidas} sin leer. Avisos que el sistema deriva de lo que pasa ahora: plazos, env\xEDos, observaciones.` : "Avisos que el sistema deriva de lo que pasa ahora: plazos, env\xEDos, observaciones.",
+                focusable: false,
+                children: /* @__PURE__ */ jsxs(
+                  "button",
+                  {
+                    type: "button",
+                    className: `hrl-barra-boton hrl-bell${notifOpen ? " hrl-bell--on" : ""}`,
+                    onClick: (e) => {
+                      disparador.current = e.currentTarget;
+                      setNotifOpen((v) => !v);
+                      setProfileOpen(false);
+                    },
+                    "aria-label": `Notificaciones${noLeidas ? `: ${noLeidas} sin leer` : ""}`,
+                    children: [
+                      /* @__PURE__ */ jsx(Icon, { name: "sh-bell", size: 19 }),
+                      noLeidas > 0 && /* @__PURE__ */ jsx("span", { className: "hrl-bell__badge", children: noLeidas })
+                    ]
+                  }
+                )
+              }
+            ),
+            /* @__PURE__ */ jsx(Tooltip, { title: "Men\xFA de la cuenta", body: "Perfil, modo oscuro, tama\xF1o del texto, contraste y cierre de sesi\xF3n.", focusable: false, children: /* @__PURE__ */ jsx("button", { type: "button", className: "hrl-barra-boton", onClick: abrirPerfil, "aria-label": "Abrir el men\xFA de la cuenta", children: /* @__PURE__ */ jsx(Icon, { name: "sh-lines", size: 19 }) }) })
+          ] })
+        ] }) }),
         /* @__PURE__ */ jsxs("main", { id: ID_CONTENIDO, tabIndex: -1, className: `hrl-content${panelLeaving ? " hrl-content--saliendo" : ""}`, children: [
-          banner && /* @__PURE__ */ jsx(
-            BandaMemo,
+          title && /* @__PURE__ */ jsx(
+            CabeceraMemo,
             {
               title,
               description: subtitle,
               breadcrumbs,
-              clock: banner.clock,
-              status: banner.status,
-              mascot: banner.mascot,
-              actions: accionesBanda
+              date,
+              clock: banner?.clock,
+              status: banner?.status,
+              actions: accionesCabecera
             }
           ),
           children

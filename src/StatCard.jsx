@@ -1,4 +1,5 @@
 import { Tooltip } from './Tooltip.jsx';
+import { Icon } from './icons.jsx';
 
 const SEVERIDAD = {
   neutral: 'var(--accent)',
@@ -8,12 +9,22 @@ const SEVERIDAD = {
   nodata: 'var(--subtle-foreground)',
 };
 
-const GLIFO = {
-  neutral: 'M12 8v8M8 12h8',
-  normal: 'M7.5 12.5l3 3 6-6.5',
-  suspect: 'M12 8v5M12 16.5h0',
-  abnormal: 'M12 7.5v6M12 16.6h0',
-  nodata: 'M8.5 12h7',
+/* El tono de texto de cada severidad: el icono va en él porque el color pleno
+   (el ámbar, sobre todo) no se lee sobre blanco. */
+const SEVERIDAD_TEXTO = {
+  neutral: 'var(--primary-text)',
+  normal: 'var(--success-text)',
+  suspect: 'var(--warning-fg)',
+  abnormal: 'var(--destructive-text)',
+  nodata: 'var(--subtle-foreground)',
+};
+
+const ICONO = {
+  neutral: 'sh-chart',
+  normal: 'sh-ok',
+  suspect: 'sh-warn',
+  abnormal: 'sh-crit',
+  nodata: 'sh-none',
 };
 
 export function StatCard({ label = 'Métrica', value = '—', note, severity = 'neutral', percent, delay = 0, info, onClick }) {
@@ -29,7 +40,7 @@ export function StatCard({ label = 'Métrica', value = '—', note, severity = '
     <Etiqueta
       type={onClick ? 'button' : undefined}
       className={`hrl-stat${onClick ? ' hrl-stat--clic' : ''}`}
-      style={{ '--sev': color, '--delay': `${delay}ms`, '--pct': `${pct}%` }}
+      style={{ '--sev': color, '--sev-texto': SEVERIDAD_TEXTO[severity] ?? SEVERIDAD_TEXTO.neutral, '--delay': `${delay}ms`, '--pct': `${pct}%` }}
       onClick={onClick}
       aria-label={onClick ? `${label}: ${value}` : undefined}
     >
@@ -38,28 +49,14 @@ export function StatCard({ label = 'Métrica', value = '—', note, severity = '
           <Tooltip title={label} body={info} focusable={!onClick}>
             <span className="hrl-stat__label hrl-stat__label--info">
               {label}
-              <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="2" />
-                <circle cx="12" cy="7.8" r="1.3" fill="currentColor" />
-                <path d="M12 11v6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </svg>
+              <Icon name="sh-info" size={14} />
             </span>
           </Tooltip>
         ) : (
           <span className="hrl-stat__label">{label}</span>
         )}
         <span className="hrl-stat__icon">
-          <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="9" fill="currentColor" opacity="0.2" />
-            <path
-              d={GLIFO[severity] ?? GLIFO.neutral}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <Icon name={ICONO[severity] ?? ICONO.neutral} size={18} />
         </span>
       </div>
       <strong className="hrl-stat__value">{value}</strong>

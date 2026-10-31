@@ -117,7 +117,7 @@ como colaborador.
   npm) la rechaza. Coméntala. El kit ya declara `allowScripts` para sus propias
   herramientas de desarrollo.
 
-Las fuentes (Public Sans e IBM Plex Mono) y la identidad del hospital —logo, escudo y las
+Las fuentes (Plus Jakarta Sans e IBM Plex Mono) y la identidad del hospital —logo, escudo y las
 fachadas de la pantalla de ingreso— **vienen en el paquete**: no dependen de internet ni
 de Google Fonts, y no hay que copiarlas ni configurar nada. `<AppShell>` dibuja el logo
 solo y `<LoginScreen>` trae el ingreso con la fachada según la hora.

@@ -1,40 +1,44 @@
 const preset = {
   color: {
-    "bg-app": "#f9fafb",
+    "bg-app": "#f1f2f4",
     "bg-surface": "#ffffff",
-    "text-primary": "#1c252e",
-    "text-secondary": "#5f6f7c",
-    "text-disabled": "#8493a1",
-    border: "rgba(145, 158, 171, 0.2)",
-    "border-soft": "rgba(145, 158, 171, 0.16)",
-    "row-hover": "rgba(145, 158, 171, 0.06)",
-    "head-bg": "rgba(145, 158, 171, 0.08)",
+    "text-primary": "#101828",
+    "text-secondary": "#5d677a",
+    "text-disabled": "#98a2b3",
+    border: "#eaecee",
+    "border-soft": "#f0f2f3",
+    "row-hover": "#f8f9fa",
+    "head-bg": "#f4f6f6",
+    "surface-sunken": "#f6f7f8",
+    "nav-icon": "#667085",
+    "nav-text": "#344054",
     /* Versiones opacas, para las celdas fijas de la matriz: al ser sticky se
      superponen a otras filas y con un color translúcido se transparentan. */
-    "head-solido": "#eff1f3",
+    "head-solido": "#f4f6f6",
     "fila-solida": "#fbfcfc",
-    "brand-deep": "#004b50",
-    brand: "#008659",
-    "brand-hover": "#007867",
+    "brand-deep": "#0b403a",
+    brand: "#107f6f",
+    "brand-hover": "#0c6b5e",
     /* El verde profundo se usa como fondo y como texto; en oscuro el texto
      necesita su propio tono, porque sobre fondo oscuro no se lee. */
-    "brand-texto": "#004b50",
-    "toast-bg": "#1c252e",
-    "action-blue": "#0e71f1",
+    "brand-texto": "#086c60",
+    "toast-bg": "#101828",
+    "action-blue": "#086c60",
+    "toast-icono": "#6fe0c8",
     /* Acento categórico, sin significado de estado: identifica módulos y series
      que no son ni acción ni alerta. */
     violet: "#8e33ff",
-    danger: "#e52a00",
-    "danger-text": "#b71d18",
+    danger: "#d1442b",
+    "danger-text": "#8e3a26",
     warning: "#ffab00",
-    "warning-text": "#7a4100",
+    "warning-text": "#7d550f",
     info: "#00b8d9",
-    "info-text": "#006c9c",
+    "info-text": "#1f5f86",
     /* Tonos de texto que acompañan a un fondo teñido pálido. En claro son
      oscuros; en oscuro tienen que invertirse o el badge queda ilegible. */
-    "ok-text": "#00544a",
-    "accent-text": "#0a56ae",
-    "neutral-text": "#4e5a64",
+    "ok-text": "#0a5a51",
+    "accent-text": "#086c60",
+    "neutral-text": "#475467",
     /* Identidad institucional del hospital. Son los colores del logotipo, no del
      sistema de diseño: se usan solo en la marca (login y cabecera) y no
      cambian con el tema, porque siempre van sobre fondo claro. */
@@ -68,9 +72,9 @@ const preset = {
      significado de estado. Cada serie mantiene el suyo en todos los paneles
      para que la misma categoría se reconozca de un vistazo. El orden es
      estable: cambiarlo reasigna colores en todo el sistema. */
-    "serie-1": "#004b50",
+    "serie-1": "#107f6f",
     "serie-2": "#0c7bb3",
-    "serie-3": "#b7560b",
+    "serie-3": "#c9822e",
     "serie-4": "#7a2fd1",
     "serie-5": "#c2185b",
     "serie-6": "#0e8c9c",
@@ -80,84 +84,95 @@ const preset = {
     "serie-10": "#96154c",
     "serie-11": "#5119b7",
     /* Superficies y texto */
-    background: "#f9fafb",
-    foreground: "#1c252e",
+    background: "#f1f2f4",
+    foreground: "#101828",
     surface: "#ffffff",
-    "surface-foreground": "#1c252e",
-    muted: "rgba(145, 158, 171, 0.08)",
-    "muted-foreground": "#5f6f7c",
-    "subtle-foreground": "#667482",
+    "surface-foreground": "#101828",
+    muted: "#f4f6f6",
+    "muted-foreground": "#5d677a",
+    "subtle-foreground": "#626b7f",
     /* Accion principal */
-    primary: "#008659",
+    primary: "#107f6f",
     "primary-foreground": "#ffffff",
-    "primary-strong": "#004b50",
-    "primary-hover": "#007867",
-    "primary-text": "#004b50",
+    "primary-strong": "#0b403a",
+    "primary-hover": "#0c6b5e",
+    "primary-text": "#086c60",
     /* Accion secundaria / enlaces */
-    accent: "#0e71f1",
+    accent: "#086c60",
     "accent-foreground": "#ffffff",
     /* Semaforo de estado. Cada uno con su par de texto legible sobre su propio
      fondo tenido. */
-    destructive: "#e52a00",
+    destructive: "#d1442b",
     "destructive-foreground": "#ffffff",
-    "destructive-text": "#b71d18",
-    "warning-fg": "#7a4100",
-    success: "#008659",
-    "success-text": "#00544a",
-    "info-fg": "#006c9c",
+    "destructive-text": "#8e3a26",
+    "warning-fg": "#7d550f",
+    success: "#107f6f",
+    "success-text": "#0a5a51",
+    "info-fg": "#1f5f86",
     /* Fondos tenidos de cada estado. Existen para no escribir el mismo
      `rgba(...)` suelto en cada aviso, y para poder subirles la opacidad en
      modo oscuro, donde un velo del 8 % no se ve. */
-    "info-soft": "rgba(0, 184, 217, 0.06)",
-    "success-soft": "rgba(0, 167, 111, 0.08)",
-    "warning-soft": "rgba(255, 171, 0, 0.10)",
-    "destructive-soft": "rgba(255, 86, 48, 0.08)",
-    "neutral-soft": "rgba(145, 158, 171, 0.10)",
+    "info-soft": "#eaf2f7",
+    "success-soft": "#e6f2f0",
+    "warning-soft": "#f7f0e2",
+    "destructive-soft": "#fcede9",
+    "neutral-soft": "#edf0f1",
     /* Bordes, campos y foco */
     input: "#ffffff",
-    "input-border": "#8493a1",
-    selection: "rgba(0, 134, 89, 0.18)",
-    scrim: "rgba(28, 37, 46, 0.32)",
-    ring: "#008659"
+    "input-border": "#8a94a6",
+    selection: "rgba(16, 127, 111, 0.18)",
+    scrim: "rgba(16, 24, 40, 0.36)",
+    ring: "#107f6f",
+    /* ---------------------------------------------- escala tipografica En rem y
+     multiplicada por --hrl-escala-texto (la preferencia «Tamaño del texto», de
+     1 a 1.5): así el texto respeta también el tamaño de letra del navegador,
+     no solo el zoom. */
+    "text-3xl": "calc(2.25rem * var(--hrl-escala-texto, 1))"
   },
   /* Equivalentes del tema oscuro. Solo los que cambian. */
   colorOscuro: {
-    "bg-app": "#10161b",
-    "bg-surface": "#18212a",
-    "text-primary": "#e9edf1",
-    "text-secondary": "#9fb0bd",
-    "text-disabled": "#788894",
-    border: "rgba(145, 158, 171, 0.26)",
-    "border-soft": "rgba(145, 158, 171, 0.16)",
-    "row-hover": "rgba(145, 158, 171, 0.1)",
-    "head-bg": "rgba(145, 158, 171, 0.12)",
-    "head-solido": "#222d37",
-    "fila-solida": "#1e2831",
-    "brand-texto": "#5be49b",
-    "toast-bg": "#2b3742",
+    "bg-app": "#0e1316",
+    "bg-surface": "#171d22",
+    "text-primary": "#eef1f4",
+    "text-secondary": "#a7b1be",
+    "text-disabled": "#6f7a88",
+    border: "#283139",
+    "border-soft": "#20282e",
+    "row-hover": "#1c2328",
+    "head-bg": "#1f272d",
+    "head-solido": "#1f272d",
+    "fila-solida": "#1a2126",
+    "brand-texto": "#5fd3bf",
+    "toast-bg": "#26313a",
     "danger-text": "#ffac9b",
-    "warning-text": "#ffd666",
-    "info-text": "#61f3f3",
-    "ok-text": "#5be49b",
-    "accent-text": "#8fc7ff",
-    "neutral-text": "#b3c0cb",
+    "warning-text": "#f3c969",
+    "info-text": "#8ccdf0",
+    "ok-text": "#6fe0c8",
+    "accent-text": "#5fd3bf",
+    "neutral-text": "#b8c1cc",
+    "action-blue": "#5fd3bf",
+    "surface-sunken": "#1c2328",
+    "nav-icon": "#8b96a4",
+    "nav-text": "#d5dbe2",
+    danger: "#c4432c",
+    "accent-foreground": "#062520",
     /* Sobre superficie oscura, un velo del 8 % desaparece: se refuerzan. */
-    "info-soft": "rgba(0, 184, 217, 0.14)",
-    "success-soft": "rgba(0, 167, 111, 0.18)",
-    "warning-soft": "rgba(255, 171, 0, 0.18)",
-    "destructive-soft": "rgba(255, 86, 48, 0.18)",
-    "neutral-soft": "rgba(145, 158, 171, 0.16)",
+    "info-soft": "rgba(140, 205, 240, 0.14)",
+    "success-soft": "rgba(43, 179, 159, 0.18)",
+    "warning-soft": "rgba(243, 201, 105, 0.16)",
+    "destructive-soft": "rgba(255, 120, 95, 0.16)",
+    "neutral-soft": "rgba(184, 193, 204, 0.12)",
     /* Los semanticos que no se derivan solos de los de implementacion. */
-    "primary-foreground": "#06231b",
-    "subtle-foreground": "#8696a2",
-    "input-border": "#66737f",
-    selection: "rgba(0, 167, 111, 0.34)",
+    "primary-foreground": "#062520",
+    "subtle-foreground": "#8b96a4",
+    "input-border": "#66727f",
+    selection: "rgba(43, 179, 159, 0.34)",
     scrim: "rgba(0, 0, 0, 0.55)",
-    /* El verde oscurecido en claro (para que el texto blanco del botón llegue a
-     4.5:1) deja muy poco margen para el texto casi negro que usa este tema: se
-     conserva aquí el verde original, que ya funcionaba bien con ese texto
-     (5.35:1). */
-    brand: "#00a76f"
+    /* La acción principal en oscuro es un verde agua más claro con texto casi
+     negro encima (primary-foreground): el verde del tema claro, con texto
+     blanco, se apagaba sobre el fondo oscuro. */
+    brand: "#2bb39f",
+    "brand-hover": "#3cc4af"
   },
   radius: {
     DEFAULT: "12px",
@@ -165,18 +180,20 @@ const preset = {
     sm: "8px",
     md: "10px",
     lg: "14px",
-    card: "16px",
+    card: "22px",
     xl: "18px",
-    full: "999px"
+    full: "999px",
+    nav: "13px",
+    tile: "18px"
   },
   shadow: {
-    card: "0 0 2px rgba(145, 158, 171, 0.2), 0 12px 24px -4px rgba(145, 158, 171, 0.12)",
-    "card-hover": "0 0 2px rgba(145, 158, 171, 0.2), 0 20px 40px -8px rgba(145, 158, 171, 0.28)",
-    drawer: "-24px 0 48px -12px rgba(145, 158, 171, 0.34)",
-    sm: "0 1px 2px rgba(28, 37, 46, 0.08)",
-    md: "0 0 2px rgba(145, 158, 171, 0.2), 0 12px 24px -4px rgba(145, 158, 171, 0.12)",
-    lg: "0 0 2px rgba(145, 158, 171, 0.2), 0 20px 40px -8px rgba(145, 158, 171, 0.28)",
-    overlay: "0 32px 64px -16px rgba(28, 37, 46, 0.44)"
+    card: "0 1px 3px rgba(16, 24, 40, 0.04), 0 12px 30px -16px rgba(16, 24, 40, 0.12)",
+    "card-hover": "0 1px 3px rgba(16, 24, 40, 0.06), 0 18px 36px -16px rgba(16, 24, 40, 0.2)",
+    drawer: "-24px 0 48px -12px rgba(16, 24, 40, 0.18)",
+    sm: "0 1px 2px rgba(16, 24, 40, 0.06)",
+    md: "0 1px 3px rgba(16, 24, 40, 0.04), 0 12px 30px -16px rgba(16, 24, 40, 0.12)",
+    lg: "0 1px 3px rgba(16, 24, 40, 0.06), 0 18px 36px -16px rgba(16, 24, 40, 0.2)",
+    overlay: "0 32px 64px -16px rgba(16, 24, 40, 0.32)"
   },
   text: {
     xs: "calc(0.6875rem * var(--hrl-escala-texto, 1))",
@@ -185,13 +202,14 @@ const preset = {
     md: "calc(0.875rem * var(--hrl-escala-texto, 1))",
     lg: "calc(1.0625rem * var(--hrl-escala-texto, 1))",
     xl: "calc(1.375rem * var(--hrl-escala-texto, 1))",
-    "2xl": "calc(1.875rem * var(--hrl-escala-texto, 1))"
+    "2xl": "calc(2rem * var(--hrl-escala-texto, 1))"
   },
   weight: {
     regular: 400,
     medium: 500,
     semibold: 600,
-    bold: 700
+    bold: 700,
+    extrabold: 800
   },
   leading: {
     tight: 1.25,
@@ -199,7 +217,7 @@ const preset = {
     loose: 1.6
   },
   font: {
-    sans: "'Public Sans', Helvetica, Arial, sans-serif",
+    sans: "'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif",
     mono: "'IBM Plex Mono', ui-monospace, monospace"
   },
   duration: {

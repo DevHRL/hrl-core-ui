@@ -51,7 +51,12 @@ const ICONS = Object.freeze([
   "sh-inbox",
   "sh-pencil",
   "sh-scissors",
-  "sh-box"
+  "sh-box",
+  /* Barra superior y tablas de la nueva interfaz (1.11.0). */
+  "sh-search",
+  "sh-plus",
+  "sh-sort",
+  "sh-more"
 ]);
 const ICON_ALIASES = Object.freeze({
   "sh-chevron-abajo": "sh-chevron-down",

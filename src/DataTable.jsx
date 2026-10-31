@@ -1,17 +1,22 @@
 import { Tooltip } from './Tooltip.jsx';
+import { Icon } from './icons.jsx';
 import { nextSort } from './sort.js';
 import { SkeletonRows } from './Skeleton.jsx';
 
+/* La flecha de orden: un solo triángulo cuando la columna manda el orden y
+   los dos, más tenues, cuando todavía se puede ordenar por ella. */
 function FlechaOrden({ estado }) {
   const activo = estado === 'asc' || estado === 'desc';
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style={{ color: activo ? 'var(--primary-strong)' : 'var(--subtle-foreground)', flex: '0 0 auto' }}>
-      {estado === 'asc' && <path d="M12 7l6 8H6z" fill="currentColor" />}
-      {estado === 'desc' && <path d="M12 17l-6-8h12z" fill="currentColor" />}
-      {!activo && (
-        <path d="M8 10l4-4 4 4M8 14l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-      )}
-    </svg>
+    <Icon
+      name={activo ? 'sh-chevron-down' : 'sh-sort'}
+      size={13}
+      style={{
+        color: activo ? 'var(--primary-text)' : 'var(--subtle-foreground)',
+        flex: '0 0 auto',
+        transform: estado === 'asc' ? 'rotate(180deg)' : undefined,
+      }}
+    />
   );
 }
 
