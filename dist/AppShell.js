@@ -451,13 +451,22 @@ function AppShell({
   const marca = logo === void 0 ? /* @__PURE__ */ jsx(MarcaPorDefecto, { brand }) : logo;
   const nombreCuenta = user?.name ?? "Sin sesi\xF3n";
   const detalleCuenta = user?.role ?? user?.email;
-  const refEngranaje = useRef(null);
-  const itemsCuenta = [
-    ...accountItems,
-    ...accountItems.length ? [{ separator: true }] : [],
-    { id: "hrl-personalizacion", label: "Personalizaci\xF3n", icon: "sh-gear", onSelect: () => abrirPreferencias(refEngranaje.current) },
-    { id: "hrl-salir", label: "Cerrar sesi\xF3n", icon: "sh-logout", tone: "danger", onSelect: () => onSignOut?.() }
-  ];
+  const perfil = /* @__PURE__ */ jsxs(Fragment, { children: [
+    /* @__PURE__ */ jsx(
+      Tooltip,
+      {
+        as: "span",
+        focusable: false,
+        title: plegado ? nombreCuenta : void 0,
+        body: plegado ? detalleCuenta ?? nombreCuenta : null,
+        children: /* @__PURE__ */ jsx("span", { className: "hrl-cuenta__avatar", "aria-hidden": "true", children: user?.avatar ? /* @__PURE__ */ jsx("img", { className: "hrl-avatar__foto", src: user.avatar, alt: "" }) : iniciales(user?.name) })
+      }
+    ),
+    /* @__PURE__ */ jsxs("span", { className: "hrl-cuenta__textos", children: [
+      /* @__PURE__ */ jsx("span", { className: "hrl-cuenta__nombre", children: nombreCuenta }),
+      detalleCuenta && /* @__PURE__ */ jsx("span", { className: "hrl-cuenta__detalle", children: detalleCuenta })
+    ] })
+  ] });
   const vistas = tabs?.items?.length > 1;
   return /* @__PURE__ */ jsxs("div", { className: "hrl-nuevo", children: [
     /* @__PURE__ */ jsx(Sprite, {}),
@@ -479,36 +488,21 @@ function AppShell({
           )
         ] }),
         /* @__PURE__ */ jsx(SidebarNav, { navItems, active, onSelect: alElegir, plegado, collapsibleGroups }),
-        user && /* @__PURE__ */ jsx("div", { className: "hrl-sidebar__pie", children: /* @__PURE__ */ jsx(
-          DropdownMenu,
-          {
-            label: `Cuenta de ${nombreCuenta}`,
-            align: "left",
-            items: itemsCuenta,
-            trigger: (
-              /* Desplegado, el nombre y el cargo ya se leen: el tooltip solo
-                 hace falta con el menú plegado, donde queda el avatar. */
-              /* @__PURE__ */ jsx(
-                Tooltip,
-                {
-                  as: "span",
-                  style: { display: "flex", width: "100%" },
-                  focusable: false,
-                  title: plegado ? nombreCuenta : void 0,
-                  body: plegado ? detalleCuenta ? `${detalleCuenta}. Abre el men\xFA de la cuenta.` : "Abre el men\xFA de la cuenta." : null,
-                  children: /* @__PURE__ */ jsxs("button", { type: "button", className: "hrl-cuenta", "aria-label": `Cuenta de ${nombreCuenta}`, children: [
-                    /* @__PURE__ */ jsx("span", { className: "hrl-cuenta__avatar", "aria-hidden": "true", children: user.avatar ? /* @__PURE__ */ jsx("img", { className: "hrl-avatar__foto", src: user.avatar, alt: "" }) : iniciales(user.name) }),
-                    /* @__PURE__ */ jsxs("span", { className: "hrl-cuenta__textos", children: [
-                      /* @__PURE__ */ jsx("span", { className: "hrl-cuenta__nombre", children: nombreCuenta }),
-                      detalleCuenta && /* @__PURE__ */ jsx("span", { className: "hrl-cuenta__detalle", children: detalleCuenta })
-                    ] }),
-                    /* @__PURE__ */ jsx(Icon, { name: "sh-more", size: 18, className: "hrl-cuenta__mas" })
-                  ] })
-                }
-              )
-            )
-          }
-        ) })
+        user && /* @__PURE__ */ jsxs("div", { className: "hrl-sidebar__pie", children: [
+          accountItems.length ? /* @__PURE__ */ jsx(
+            DropdownMenu,
+            {
+              label: `Cuenta de ${nombreCuenta}`,
+              align: "left",
+              items: accountItems,
+              trigger: /* @__PURE__ */ jsxs("button", { type: "button", className: "hrl-cuenta hrl-cuenta--menu", "aria-label": `Cuenta de ${nombreCuenta}: cambiar de \xE1mbito`, children: [
+                perfil,
+                /* @__PURE__ */ jsx(Icon, { name: "sh-chevron-down", size: 16, className: "hrl-cuenta__mas" })
+              ] })
+            }
+          ) : /* @__PURE__ */ jsx("div", { className: "hrl-cuenta", children: perfil }),
+          onSignOut && /* @__PURE__ */ jsx(Tooltip, { title: "Cerrar sesi\xF3n", body: "Sale del sistema en este equipo. Lo que no se envi\xF3 queda guardado como borrador.", focusable: false, children: /* @__PURE__ */ jsx("button", { type: "button", className: "hrl-iconbtn hrl-salir", onClick: onSignOut, "aria-label": "Cerrar sesi\xF3n", children: /* @__PURE__ */ jsx(Icon, { name: "sh-logout", size: 19 }) }) })
+        ] })
       ] }),
       menuMovil && /* @__PURE__ */ jsx("button", { type: "button", className: "hrl-sidebar__velo", onClick: () => setMenuMovil(false), "aria-label": "Cerrar el men\xFA" }),
       /* @__PURE__ */ jsxs("div", { className: "hrl-main", ref: mainRef, children: [
@@ -558,7 +552,6 @@ function AppShell({
               "button",
               {
                 type: "button",
-                ref: refEngranaje,
                 className: `hrl-barra-boton${prefsOpen ? " hrl-bell--on" : ""}`,
                 onClick: (e) => abrirPreferencias(e.currentTarget),
                 "aria-label": "Personalizaci\xF3n",

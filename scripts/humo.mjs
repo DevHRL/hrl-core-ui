@@ -176,13 +176,21 @@ const ASERCIONES = [
     const h = html('AppShell', { navItems: [], title: 'x', primaryAction: { label: 'Nuevo registro', onClick: () => {} } });
     return h.includes('hrl-barra-boton--primario') && h.includes('aria-label="Nuevo registro"');
   }],
+  ['la cuenta tiene un solo botón, el de cerrar sesión, con su nombre', () => {
+    const h = html('AppShell', { navItems: [], title: 'x', user: { name: 'Ana' }, onSignOut: () => {} });
+    return h.includes('aria-label="Cerrar sesión"') && !h.includes('hrl-cuenta--menu');
+  }],
+  ['StatCard con tendencia dibuja una barra por periodo y marca el hueco', () => {
+    const h = html('StatCard', { label: 'X', value: '3', trend: { label: 'Seis meses', points: [{ label: 'Ene', value: 2 }, { label: 'Feb', value: null }, { label: 'Mar', value: 3 }] } });
+    return (h.match(/<rect/g) ?? []).length === 2 && h.includes('hrl-stat__tendencia-hueco') && h.includes('Feb sin dato');
+  }],
   ['MascotAlert dice su etiqueta, su título y lleva a Dr. Mochi', () => {
     const h = html('MascotAlert', { title: 'Vence hoy', label: 'Plazo', tone: 'warning', state: 'thinking' });
     return h.includes('hrl-mochi-aviso--warning') && h.includes('hrl-mascota') && h.includes('Vence hoy') && h.includes('aria-labelledby');
   }],
   ['AppShell deja el centro de la barra libre para PageTabs y el engranaje abre la personalización', () => {
     const h = html('AppShell', { navItems: [], title: 'x', user: { name: 'Ana' } });
-    return h.includes('id="hrl-vistas-pagina"') && h.includes('aria-label="Personalización"') && !h.includes('Cerrar sesión');
+    return h.includes('id="hrl-vistas-pagina"') && h.includes('aria-label="Personalización"');
   }],
   ['la ruta va encima del título', () => {
     const h = html('PageHeader', { title: 'Vista', breadcrumbs: [{ label: 'Oficina' }] });

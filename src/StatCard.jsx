@@ -32,7 +32,85 @@ const ICONO = {
   nodata: 'sh-none',
 };
 
-export function StatCard({ label = 'Métrica', value = '—', note, severity = 'neutral', percent, delay = 0, info, onClick }) {
+/* La tendencia junto a la cifra: barras pequeñas de los últimos periodos, la
+   del periodo de la cifra en el color de la acción y las anteriores en gris.
+   Un periodo sin dato (`value: null`) no se dibuja como cero: queda su hueco,
+   marcado con un trazo punteado en la base. Se lee entera en su tooltip
+   («Mayo 1 234 · Junio 1 302 · …»), así que la forma no es la única señal.
+
+     trend  { points: { label, value, title? }[], label?, format? }
+            `label` nombra la serie («Últimos 6 meses»); `format` escribe cada
+            valor en el tooltip (por defecto, con separador de miles). La última
+            barra es la del periodo de la cifra. */
+const ANCHO_TENDENCIA = 104;
+const ALTO_TENDENCIA = 40;
+
+function Tendencia({ trend }) {
+  const puntos = trend.points ?? [];
+  if (puntos.length < 2) return null;
+  const valores = puntos.map((p) => p.value).filter((v) => typeof v === 'number');
+  const maximo = Math.max(...valores, 0);
+  const formato = trend.format ?? ((v) => v.toLocaleString('es-PE'));
+  const hueco = 3;
+  const ancho = (ANCHO_TENDENCIA - hueco * (puntos.length - 1)) / puntos.length;
+  const detalle = puntos.map((p) => `${p.title ?? p.label} ${p.value == null ? 'sin dato' : formato(p.value)}`).join(' · ');
+  /* Solo se rotulan el primer y el último periodo: seis rótulos no caben bajo
+     barras de 15 px a un tamaño legible. Los demás se leen en el tooltip. */
+  const rotulo = (p, i, actual) =>
+    i === 0 || actual ? (
+      <text
+        className={`hrl-stat__tendencia-mes${actual ? ' hrl-stat__tendencia-mes--actual' : ''}`}
+        x={actual ? ANCHO_TENDENCIA : 0}
+        y={ALTO_TENDENCIA + 13}
+        textAnchor={actual ? 'end' : 'start'}
+      >
+        {p.label}
+      </text>
+    ) : null;
+
+  return (
+    <Tooltip title={trend.label ?? 'Tendencia'} body={detalle} focusable={false}>
+      <svg
+        className="hrl-stat__tendencia"
+        width={ANCHO_TENDENCIA}
+        height={ALTO_TENDENCIA + 14}
+        viewBox={`0 0 ${ANCHO_TENDENCIA} ${ALTO_TENDENCIA + 14}`}
+        role="img"
+        aria-label={`${trend.label ?? 'Tendencia'}: ${detalle}`}
+      >
+        {puntos.map((p, i) => {
+          const x = i * (ancho + hueco);
+          const actual = i === puntos.length - 1;
+          if (p.value == null || maximo === 0) {
+            return (
+              <g key={p.label + i}>
+                <line className="hrl-stat__tendencia-hueco" x1={x} x2={x + ancho} y1={ALTO_TENDENCIA - 1} y2={ALTO_TENDENCIA - 1} />
+                {rotulo(p, i, actual)}
+              </g>
+            );
+          }
+          const alto = Math.max(3, (p.value / maximo) * (ALTO_TENDENCIA - 2));
+          return (
+            <g key={p.label + i}>
+              <rect
+                className={`hrl-stat__tendencia-barra${actual ? ' hrl-stat__tendencia-barra--actual' : ''}`}
+                x={x}
+                y={ALTO_TENDENCIA - alto}
+                width={ancho}
+                height={alto}
+                rx={Math.min(4, ancho / 2)}
+                style={{ animationDelay: `${i * 40}ms` }}
+              />
+              {rotulo(p, i, actual)}
+            </g>
+          );
+        })}
+      </svg>
+    </Tooltip>
+  );
+}
+
+export function StatCard({ label = 'Métrica', value = '—', note, severity = 'neutral', percent, delay = 0, info, onClick, trend }) {
   const color = SEVERIDAD[severity] ?? SEVERIDAD.neutral;
   const conBarra = typeof percent === 'number';
   const pct = conBarra ? Math.max(0, Math.min(100, percent)) : 0;
@@ -66,7 +144,14 @@ export function StatCard({ label = 'Métrica', value = '—', note, severity = '
           </span>
         )}
       </div>
-      <strong className="hrl-stat__value">{value}</strong>
+      {trend ? (
+        <div className="hrl-stat__cuerpo">
+          <strong className="hrl-stat__value">{value}</strong>
+          <Tendencia trend={trend} />
+        </div>
+      ) : (
+        <strong className="hrl-stat__value">{value}</strong>
+      )}
       {conBarra && (
         <div className="hrl-stat__track">
           <span className="hrl-stat__bar" />

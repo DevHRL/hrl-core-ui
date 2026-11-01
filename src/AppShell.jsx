@@ -607,14 +607,26 @@ export function AppShell({
   const marca = logo === undefined ? <MarcaPorDefecto brand={brand} /> : logo;
   const nombreCuenta = user?.name ?? 'Sin sesión';
   const detalleCuenta = user?.role ?? user?.email;
-  const refEngranaje = useRef(null);
-
-  const itemsCuenta = [
-    ...accountItems,
-    ...(accountItems.length ? [{ separator: true }] : []),
-    { id: 'hrl-personalizacion', label: 'Personalización', icon: 'sh-gear', onSelect: () => abrirPreferencias(refEngranaje.current) },
-    { id: 'hrl-salir', label: 'Cerrar sesión', icon: 'sh-logout', tone: 'danger', onSelect: () => onSignOut?.() },
-  ];
+  
+  /* Plegado, el nombre y el cargo no se ven: pasan al tooltip del avatar. */
+  const perfil = (
+    <>
+      <Tooltip
+        as="span"
+        focusable={false}
+        title={plegado ? nombreCuenta : undefined}
+        body={plegado ? detalleCuenta ?? nombreCuenta : null}
+      >
+        <span className="hrl-cuenta__avatar" aria-hidden="true">
+          {user?.avatar ? <img className="hrl-avatar__foto" src={user.avatar} alt="" /> : iniciales(user?.name)}
+        </span>
+      </Tooltip>
+      <span className="hrl-cuenta__textos">
+        <span className="hrl-cuenta__nombre">{nombreCuenta}</span>
+        {detalleCuenta && <span className="hrl-cuenta__detalle">{detalleCuenta}</span>}
+      </span>
+    </>
+  );
 
   const vistas = tabs?.items?.length > 1;
 
@@ -643,36 +655,32 @@ export function AppShell({
           <SidebarNav navItems={navItems} active={active} onSelect={alElegir} plegado={plegado} collapsibleGroups={collapsibleGroups} />
           {user && (
             <div className="hrl-sidebar__pie">
-              {/* La cuenta: abre un menú hacia arriba con lo propio del sistema
-                  (cambiar de ámbito), la personalización y el cierre de sesión.
-                  Cerrar sesión nunca es el clic directo: se pulsaría sin querer. */}
-              <DropdownMenu
-                label={`Cuenta de ${nombreCuenta}`}
-                align="left"
-                items={itemsCuenta}
-                trigger={
-                  /* Desplegado, el nombre y el cargo ya se leen: el tooltip solo
-                     hace falta con el menú plegado, donde queda el avatar. */
-                  <Tooltip
-                    as="span"
-                    style={{ display: 'flex', width: '100%' }}
-                    focusable={false}
-                    title={plegado ? nombreCuenta : undefined}
-                    body={plegado ? (detalleCuenta ? `${detalleCuenta}. Abre el menú de la cuenta.` : 'Abre el menú de la cuenta.') : null}
-                  >
-                    <button type="button" className="hrl-cuenta" aria-label={`Cuenta de ${nombreCuenta}`}>
-                      <span className="hrl-cuenta__avatar" aria-hidden="true">
-                        {user.avatar ? <img className="hrl-avatar__foto" src={user.avatar} alt="" /> : iniciales(user.name)}
-                      </span>
-                      <span className="hrl-cuenta__textos">
-                        <span className="hrl-cuenta__nombre">{nombreCuenta}</span>
-                        {detalleCuenta && <span className="hrl-cuenta__detalle">{detalleCuenta}</span>}
-                      </span>
-                      <Icon name="sh-more" size={18} className="hrl-cuenta__mas" />
+              {/* La cuenta: quién tiene la sesión y, al lado, cerrarla. La
+                  personalización está en el engranaje de la barra. Solo si el
+                  sistema da algo propio para la cuenta (`accountItems`: cambiar
+                  de ámbito) el perfil abre un menú con eso. */}
+              {accountItems.length ? (
+                <DropdownMenu
+                  label={`Cuenta de ${nombreCuenta}`}
+                  align="left"
+                  items={accountItems}
+                  trigger={
+                    <button type="button" className="hrl-cuenta hrl-cuenta--menu" aria-label={`Cuenta de ${nombreCuenta}: cambiar de ámbito`}>
+                      {perfil}
+                      <Icon name="sh-chevron-down" size={16} className="hrl-cuenta__mas" />
                     </button>
-                  </Tooltip>
-                }
-              />
+                  }
+                />
+              ) : (
+                <div className="hrl-cuenta">{perfil}</div>
+              )}
+              {onSignOut && (
+                <Tooltip title="Cerrar sesión" body="Sale del sistema en este equipo. Lo que no se envió queda guardado como borrador." focusable={false}>
+                  <button type="button" className="hrl-iconbtn hrl-salir" onClick={onSignOut} aria-label="Cerrar sesión">
+                    <Icon name="sh-logout" size={19} />
+                  </button>
+                </Tooltip>
+              )}
             </div>
           )}
         </aside>
@@ -734,7 +742,6 @@ export function AppShell({
                 <Tooltip title="Personalización" body="Modo oscuro, contraste, tamaño del texto y subrayado de enlaces." focusable={false}>
                   <button
                     type="button"
-                    ref={refEngranaje}
                     className={`hrl-barra-boton${prefsOpen ? ' hrl-bell--on' : ''}`}
                     onClick={(e) => abrirPreferencias(e.currentTarget)}
                     aria-label="Personalización"

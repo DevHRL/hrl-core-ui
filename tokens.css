@@ -441,6 +441,22 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
 
 .hrl-stat__note { font-size: var(--text-sm, 12.5px); color: var(--muted-foreground); }
 
+/* La cifra y, a su derecha, su tendencia (StatCard `trend`). */
+.hrl-stat__cuerpo { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-3); min-width: 0; }
+.hrl-stat__tendencia { flex: 0 0 auto; display: block; overflow: visible; }
+.hrl-stat__tendencia-barra {
+  fill: color-mix(in srgb, var(--primary) 22%, var(--muted));
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: hrl-barraCrece 0.6s var(--ease) both;
+}
+.hrl-stat__tendencia-barra--actual { fill: var(--primary); }
+.hrl-stat__tendencia-hueco { stroke: var(--subtle-foreground); stroke-width: 1.5; stroke-dasharray: 2 2; }
+.hrl-stat__tendencia-mes { fill: var(--subtle-foreground); font-size: var(--text-xs, 11px); }
+.hrl-stat__tendencia-mes--actual { fill: var(--foreground); font-weight: var(--weight-bold); }
+
+@keyframes hrl-barraCrece { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
 /* ------------------------------------------------------------------ UiBadge */
 
 /* Píldora de estado: fondo tenue del tono y su icono de relleno. */
@@ -895,8 +911,18 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
 
 /* El perfil, al pie del menú: avatar, nombre y cargo sobre una baldosa gris.
    Es un botón: abre el cajón del perfil. */
-.hrl-sidebar__pie { margin-top: auto; padding-top: var(--space-2); }
-.hrl-sidebar__pie > span { width: 100%; }
+.hrl-sidebar__pie {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: auto;
+  padding: 6px 6px 6px 0;
+  border-radius: var(--radius-lg);
+  background: var(--surface-sunken);
+}
+.hrl-sidebar__pie > span[aria-haspopup] { flex: 1; min-width: 0; }
+.hrl-salir { flex: 0 0 auto; color: var(--nav-icon); }
+.hrl-salir:hover { color: var(--danger-text); background: var(--destructive-soft); }
 .hrl-cuenta__mas { flex: 0 0 auto; margin-left: auto; color: var(--nav-icon); }
 
 .hrl-cuenta {
@@ -904,19 +930,20 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   align-items: center;
   gap: 10px;
   width: 100%;
-  min-height: 54px;
-  padding: 10px;
+  flex: 1;
+  min-width: 0;
+  min-height: 46px;
+  padding: 4px 4px 4px 10px;
   border: none;
-  border-radius: var(--radius-lg);
-  background: var(--surface-sunken);
+  border-radius: var(--radius);
+  background: transparent;
   color: var(--foreground);
   font-family: inherit;
   text-align: left;
-  cursor: pointer;
-  transition: background var(--transition-fast);
 }
 
-.hrl-cuenta:hover { background: var(--muted); }
+.hrl-cuenta--menu { cursor: pointer; transition: background var(--transition-fast); }
+.hrl-cuenta--menu:hover { background: var(--muted); }
 
 .hrl-cuenta__avatar {
   display: inline-grid;
@@ -963,6 +990,7 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
 .hrl-shell--plegado .hrl-cuenta__mas { display: none; }
 .hrl-shell--plegado .hrl-nav-item { justify-content: center; gap: 0; padding: 0; }
 .hrl-shell--plegado .hrl-cuenta { justify-content: center; padding-inline: 0; }
+.hrl-shell--plegado .hrl-sidebar__pie { flex-direction: column; padding: 6px 0; }
 
 /* Plegado, el rótulo de grupo no cabe, pero conserva su alto: sin texto, y en
    su lugar una línea que separa los bloques. Así cada módulo queda a la misma
@@ -1208,6 +1236,7 @@ body { margin: 0; background: #f1f2f4; }
   .hrl-shell--plegado .hrl-nav-item__badge { display: inline-block; }
   .hrl-shell--plegado .hrl-nav-item { justify-content: flex-start; gap: 11px; padding: 0 13px; }
   .hrl-shell--plegado .hrl-cuenta { justify-content: flex-start; padding-inline: 10px; }
+  .hrl-shell--plegado .hrl-sidebar__pie { flex-direction: row; padding: 6px 6px 6px 0; }
   .hrl-shell--plegado .hrl-sidebar__logo { justify-content: flex-start; padding-inline: 4px; }
   .hrl-shell--plegado .hrl-sidebar__section-label,
   .hrl-shell--plegado .hrl-sidebar__group-label { color: var(--subtle-foreground); }
