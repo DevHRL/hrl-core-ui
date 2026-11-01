@@ -6,6 +6,7 @@ import { Card } from "./Card.js";
 import { Stack, Grid, Mosaic } from "./Layout.js";
 import { HrlLogo } from "./HrlLogo.js";
 import { Mascot, MASCOT_STATES } from "./Mascot.js";
+import { MascotAlert } from "./MascotAlert.js";
 import { LoginScreen, ChangePasswordScreen, backdropForHour, LOGIN_BACKDROPS } from "./LoginScreen.js";
 import { StatCard } from "./StatCard.js";
 import { Alert } from "./Alert.js";
@@ -37,6 +38,7 @@ import { AppShell, ID_CONTENIDO } from "./AppShell.js";
 import { PageHeader } from "./PageHeader.js";
 import { PageBanner } from "./PageBanner.js";
 import { PageActions, PAGE_ACTIONS_ID } from "./PageActions.js";
+import { PageTabs, PAGE_TABS_ID } from "./PageTabs.js";
 import { FilterBar } from "./FilterBar.js";
 import { Icon, IconSprite, Sprite } from "./icons.js";
 import { ICONS, ICON_ALIASES } from "./icon-catalog.js";
@@ -83,15 +85,18 @@ export {
   LoginScreen,
   MASCOT_STATES,
   Mascot,
+  MascotAlert,
   Mosaic,
   NumberCell,
   PAGE_ACTIONS_ID,
   PAGE_SIZES,
+  PAGE_TABS_ID,
   PREFERENCE_DEFAULTS,
   PREFERENCE_OPTIONS,
   PageActions,
   PageBanner,
   PageHeader,
+  PageTabs,
   PaginatedTable,
   Pagination,
   Paginator,

@@ -15,6 +15,7 @@ const SEVERIDAD_TEXTO = {
   abnormal: "var(--destructive-text)",
   nodata: "var(--subtle-foreground)"
 };
+const AVISA = /* @__PURE__ */ new Set(["suspect", "abnormal"]);
 const ICONO = {
   neutral: "sh-chart",
   normal: "sh-ok",
@@ -41,7 +42,7 @@ function StatCard({ label = "M\xE9trica", value = "\u2014", note, severity = "ne
             label,
             /* @__PURE__ */ jsx(Icon, { name: "sh-info", size: 14 })
           ] }) }) : /* @__PURE__ */ jsx("span", { className: "hrl-stat__label", children: label }),
-          /* @__PURE__ */ jsx("span", { className: "hrl-stat__icon", children: /* @__PURE__ */ jsx(Icon, { name: ICONO[severity] ?? ICONO.neutral, size: 18 }) })
+          AVISA.has(severity) && /* @__PURE__ */ jsx("span", { className: "hrl-stat__icon", children: /* @__PURE__ */ jsx(Icon, { name: ICONO[severity], size: 18 }) })
         ] }),
         /* @__PURE__ */ jsx("strong", { className: "hrl-stat__value", children: value }),
         conBarra && /* @__PURE__ */ jsx("div", { className: "hrl-stat__track", children: /* @__PURE__ */ jsx("span", { className: "hrl-stat__bar" }) }),

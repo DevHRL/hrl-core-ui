@@ -56,7 +56,8 @@ const ICONS = Object.freeze([
   "sh-search",
   "sh-plus",
   "sh-sort",
-  "sh-more"
+  "sh-more",
+  "sh-logout"
 ]);
 const ICON_ALIASES = Object.freeze({
   "sh-chevron-abajo": "sh-chevron-down",

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/focus.js"],
+  "sourcesContent": ["/* Devuelve el foco a quien abri\u00F3 una capa (\u00A7 3.1 del contrato) sin que su\r\n   tooltip salte solo: al volver de un caj\u00F3n o de un men\u00FA, el aviso aparec\u00EDa\r\n   sobre el bot\u00F3n como si se acabara de llegar a \u00E9l. La marca la lee Tooltip\r\n   y la consume en ese mismo foco; con el siguiente, todo vuelve a ser normal.\r\n   El anillo de foco s\u00ED se ve: quien navega con teclado tiene que saber d\u00F3nde\r\n   qued\u00F3. */\r\nexport function devolverFoco(el) {\r\n  if (!el || typeof el.focus !== 'function') return;\r\n  el.setAttribute('data-hrl-foco-devuelto', '');\r\n  el.focus();\r\n}\r\n"],
+  "mappings": "AAMO,SAAS,aAAa,IAAI;AAC/B,MAAI,CAAC,MAAM,OAAO,GAAG,UAAU,WAAY;AAC3C,KAAG,aAAa,0BAA0B,EAAE;AAC5C,KAAG,MAAM;AACX;",
+  "names": []
+}

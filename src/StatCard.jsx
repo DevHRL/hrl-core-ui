@@ -19,6 +19,11 @@ const SEVERIDAD_TEXTO = {
   nodata: 'var(--subtle-foreground)',
 };
 
+/* El icono solo aparece cuando la cifra avisa de algo (sospechosa o
+   anormal). En una fila de cifras normales, cuatro iconos iguales no decían
+   nada, y un visto junto a «0 fuera de plazo» se leía como contradicción. */
+const AVISA = new Set(['suspect', 'abnormal']);
+
 const ICONO = {
   neutral: 'sh-chart',
   normal: 'sh-ok',
@@ -55,9 +60,11 @@ export function StatCard({ label = 'Métrica', value = '—', note, severity = '
         ) : (
           <span className="hrl-stat__label">{label}</span>
         )}
-        <span className="hrl-stat__icon">
-          <Icon name={ICONO[severity] ?? ICONO.neutral} size={18} />
-        </span>
+        {AVISA.has(severity) && (
+          <span className="hrl-stat__icon">
+            <Icon name={ICONO[severity]} size={18} />
+          </span>
+        )}
       </div>
       <strong className="hrl-stat__value">{value}</strong>
       {conBarra && (

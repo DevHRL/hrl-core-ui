@@ -11,6 +11,9 @@ import { SegmentedControl } from "./SegmentedControl.js";
 import { Switch } from "./Switch.js";
 import { Button } from "./Button.js";
 import { useExitAnimation } from "./useExitAnimation.js";
+import { DropdownMenu } from "./DropdownMenu.js";
+import { TabsPill, PAGE_TABS_ID } from "./PageTabs.js";
+import { devolverFoco } from "./focus.js";
 const TABS_NOTIF = ["Todas", "No le\xEDdas", "Archivadas"];
 function MarcaPorDefecto({ brand }) {
   return /* @__PURE__ */ jsxs("span", { className: "hrl-marca", children: [
@@ -152,7 +155,7 @@ function NotificationsDrawer({ items, tab, onTab, onMarkAllRead, onClose, leavin
             icon: "sh-bell",
             tone: "var(--info)",
             title: "Sin notificaciones",
-            body: "El sistema todav\xEDa no registra avisos. Este panel se llenar\xE1 cuando el backend exponga el endpoint de notificaciones."
+            body: "No hay avisos por ahora. Aqu\xED aparecer\xE1n los plazos que se acercan, los env\xEDos y las observaciones."
           }
         ) : visibles.map((n, i) => /* @__PURE__ */ jsxs(
           "div",
@@ -304,55 +307,25 @@ function Preferencias({ tema, onTema, prefs, onPrefs, onRestablecer }) {
     /* @__PURE__ */ jsx("p", { className: "hrl-oculto-visual", "aria-live": "polite", children: anuncio })
   ] });
 }
-function ProfileDrawer({ user, onClose, onSignOut, leaving, tema, onTema, prefs, onPrefs, onRestablecer }) {
+function PreferencesDrawer({ onClose, leaving, tema, onTema, prefs, onPrefs, onRestablecer }) {
   return /* @__PURE__ */ jsxs(
     "aside",
     {
       className: `hrl-drawer hrl-drawer--profile${leaving ? " hrl-drawer--saliendo" : ""}`,
       role: "dialog",
-      "aria-label": "Perfil",
+      "aria-label": "Personalizaci\xF3n",
       children: [
-        /* @__PURE__ */ jsx("div", { style: { padding: "16px 16px 0" }, children: /* @__PURE__ */ jsx("button", { type: "button", className: "hrl-iconbtn", onClick: onClose, "aria-label": "Cerrar", children: /* @__PURE__ */ jsx(Icon, { name: "sh-close", size: 18 }) }) }),
-        /* @__PURE__ */ jsxs("div", { className: "hrl-profile__head", children: [
-          /* @__PURE__ */ jsx("span", { className: "hrl-profile__ring", children: user?.avatar ? /* @__PURE__ */ jsx("img", { className: "hrl-profile__foto", src: user.avatar, alt: "" }) : /* @__PURE__ */ jsx("span", { className: "hrl-profile__initials", children: iniciales(user?.name) }) }),
-          /* @__PURE__ */ jsx("strong", { className: "hrl-profile__name", children: user?.name ?? "Sin sesi\xF3n" }),
-          /* @__PURE__ */ jsx("span", { className: "hrl-profile__mail", children: user?.email ?? user?.role ?? "\u2014" })
+        /* @__PURE__ */ jsxs("div", { className: "hrl-drawer__head", children: [
+          /* @__PURE__ */ jsx("h2", { children: "Personalizaci\xF3n" }),
+          /* @__PURE__ */ jsx("button", { type: "button", className: "hrl-iconbtn", onClick: onClose, "aria-label": "Cerrar", children: /* @__PURE__ */ jsx(Icon, { name: "sh-close", size: 18 }) })
         ] }),
-        /* @__PURE__ */ jsx("div", { className: "hrl-perfil__cuerpo", children: /* @__PURE__ */ jsx(Preferencias, { tema, onTema, prefs, onPrefs, onRestablecer }) }),
-        /* @__PURE__ */ jsx("div", { className: "hrl-profile__foot", children: /* @__PURE__ */ jsx("button", { type: "button", className: "hrl-signout", onClick: onSignOut, children: "Cerrar sesi\xF3n" }) })
+        /* @__PURE__ */ jsx("div", { className: "hrl-perfil__cuerpo", children: /* @__PURE__ */ jsx(Preferencias, { tema, onTema, prefs, onPrefs, onRestablecer }) })
       ]
     }
   );
 }
 const ID_CONTENIDO = "contenido-principal";
 const ANCHO_MOVIL = 899;
-function VistasBarra({ tabs }) {
-  const items = tabs?.items ?? [];
-  const ref = useRef(null);
-  useEffect(() => {
-    const activa = ref.current?.querySelector('[aria-current="page"]');
-    const nav = ref.current;
-    if (!activa || !nav || nav.scrollWidth <= nav.clientWidth) return;
-    nav.scrollLeft = activa.offsetLeft - (nav.clientWidth - activa.offsetWidth) / 2;
-  }, [tabs?.active]);
-  if (items.length < 2) return /* @__PURE__ */ jsx("div", { className: "hrl-topbar__spacer" });
-  return /* @__PURE__ */ jsx("nav", { className: "hrl-vistas", ref, "aria-label": tabs.label ?? "Vistas de la secci\xF3n", children: items.map((v) => {
-    const activa = v.id === tabs.active;
-    const Etiqueta = v.href ? "a" : "button";
-    return /* @__PURE__ */ jsx(
-      Etiqueta,
-      {
-        type: v.href ? void 0 : "button",
-        href: v.href,
-        className: `hrl-vistas__item${activa ? " hrl-vistas__item--on" : ""}`,
-        "aria-current": activa ? "page" : void 0,
-        onClick: () => tabs.onSelect?.(v.id),
-        children: v.label
-      },
-      v.id
-    );
-  }) });
-}
 function AppShell({
   navItems = [],
   collapsibleGroups,
@@ -363,10 +336,12 @@ function AppShell({
   breadcrumbs,
   date,
   actions,
+  notice,
   banner,
   primaryAction,
   tabs,
   user,
+  accountItems = [],
   logo,
   brand,
   themeKey,
@@ -377,7 +352,7 @@ function AppShell({
   children
 }) {
   const [notifOpen, setNotifOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
+  const [prefsOpen, setPrefsOpen] = useState(false);
   const [tab, setTab] = useState("Todas");
   const [leidas, setLeidas] = useState({});
   const [plegado, setPlegado] = useState(() => localStorage.getItem("hrl_menu") === "plegado");
@@ -408,7 +383,7 @@ function AppShell({
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
-  const abierto = notifOpen || profileOpen;
+  const abierto = notifOpen || prefsOpen;
   useEffect(() => {
     if (!menuMovil) return void 0;
     const alTeclear = (e) => {
@@ -424,10 +399,10 @@ function AppShell({
   const disparador = useRef(null);
   const ocultar = useCallback(() => {
     setNotifOpen(false);
-    setProfileOpen(false);
+    setPrefsOpen(false);
     const el = disparador.current;
     disparador.current = null;
-    if (el && typeof el.focus === "function") requestAnimationFrame(() => el.focus());
+    if (el) requestAnimationFrame(() => devolverFoco(el));
   }, []);
   const { leaving, close } = useExitAnimation(ocultar);
   useEffect(() => {
@@ -460,10 +435,10 @@ function AppShell({
     },
     [onSelect]
   );
-  const abrirPerfil = (e) => {
-    disparador.current = e?.currentTarget ?? null;
+  const abrirPreferencias = (el) => {
+    disparador.current = el ?? null;
     setMenuMovil(false);
-    setProfileOpen(true);
+    setPrefsOpen(true);
     setNotifOpen(false);
   };
   const accionesCabecera = useMemo(
@@ -476,28 +451,62 @@ function AppShell({
   const marca = logo === void 0 ? /* @__PURE__ */ jsx(MarcaPorDefecto, { brand }) : logo;
   const nombreCuenta = user?.name ?? "Sin sesi\xF3n";
   const detalleCuenta = user?.role ?? user?.email;
+  const refEngranaje = useRef(null);
+  const itemsCuenta = [
+    ...accountItems,
+    ...accountItems.length ? [{ separator: true }] : [],
+    { id: "hrl-personalizacion", label: "Personalizaci\xF3n", icon: "sh-gear", onSelect: () => abrirPreferencias(refEngranaje.current) },
+    { id: "hrl-salir", label: "Cerrar sesi\xF3n", icon: "sh-logout", tone: "danger", onSelect: () => onSignOut?.() }
+  ];
+  const vistas = tabs?.items?.length > 1;
   return /* @__PURE__ */ jsxs("div", { className: "hrl-nuevo", children: [
     /* @__PURE__ */ jsx(Sprite, {}),
     /* @__PURE__ */ jsx("a", { className: "hrl-saltar", href: `#${ID_CONTENIDO}`, onClick: saltarAlContenido, children: "Saltar al contenido" }),
     /* @__PURE__ */ jsxs("div", { className: `hrl-shell${plegado ? " hrl-shell--plegado" : ""}${menuMovil ? " hrl-shell--menu-abierto" : ""}`, children: [
       /* @__PURE__ */ jsxs("aside", { className: "hrl-sidebar", "aria-label": "Men\xFA principal", children: [
-        marca && /* @__PURE__ */ jsx("div", { className: "hrl-sidebar__logo", children: marca }),
+        /* @__PURE__ */ jsxs("div", { className: "hrl-sidebar__cabeza", children: [
+          marca && /* @__PURE__ */ jsx("div", { className: "hrl-sidebar__logo", children: marca }),
+          /* @__PURE__ */ jsx(
+            "button",
+            {
+              type: "button",
+              className: `hrl-iconbtn hrl-plegar${plegado ? " hrl-plegar--plegado" : ""}`,
+              onClick: alternarMenu,
+              "aria-label": menuMovil ? "Cerrar el men\xFA" : plegado ? "Mostrar el men\xFA lateral" : "Replegar el men\xFA lateral",
+              "aria-expanded": menuMovil || !plegado,
+              children: /* @__PURE__ */ jsx(Icon, { name: "sh-sidebar-collapse", size: 19 })
+            }
+          )
+        ] }),
         /* @__PURE__ */ jsx(SidebarNav, { navItems, active, onSelect: alElegir, plegado, collapsibleGroups }),
         user && /* @__PURE__ */ jsx("div", { className: "hrl-sidebar__pie", children: /* @__PURE__ */ jsx(
-          Tooltip,
+          DropdownMenu,
           {
-            as: "div",
-            style: { display: "block", width: "100%" },
-            focusable: false,
-            title: nombreCuenta,
-            body: detalleCuenta ? `${detalleCuenta} \xB7 abre el perfil, la apariencia y el cierre de sesi\xF3n` : "Abre el perfil, la apariencia y el cierre de sesi\xF3n",
-            children: /* @__PURE__ */ jsxs("button", { type: "button", className: "hrl-cuenta", onClick: abrirPerfil, "aria-label": `Perfil de ${nombreCuenta}`, children: [
-              /* @__PURE__ */ jsx("span", { className: "hrl-cuenta__avatar", "aria-hidden": "true", children: user.avatar ? /* @__PURE__ */ jsx("img", { className: "hrl-avatar__foto", src: user.avatar, alt: "" }) : iniciales(user.name) }),
-              /* @__PURE__ */ jsxs("span", { className: "hrl-cuenta__textos", children: [
-                /* @__PURE__ */ jsx("span", { className: "hrl-cuenta__nombre", children: nombreCuenta }),
-                detalleCuenta && /* @__PURE__ */ jsx("span", { className: "hrl-cuenta__detalle", children: detalleCuenta })
-              ] })
-            ] })
+            label: `Cuenta de ${nombreCuenta}`,
+            align: "left",
+            items: itemsCuenta,
+            trigger: (
+              /* Desplegado, el nombre y el cargo ya se leen: el tooltip solo
+                 hace falta con el menú plegado, donde queda el avatar. */
+              /* @__PURE__ */ jsx(
+                Tooltip,
+                {
+                  as: "span",
+                  style: { display: "flex", width: "100%" },
+                  focusable: false,
+                  title: plegado ? nombreCuenta : void 0,
+                  body: plegado ? detalleCuenta ? `${detalleCuenta}. Abre el men\xFA de la cuenta.` : "Abre el men\xFA de la cuenta." : null,
+                  children: /* @__PURE__ */ jsxs("button", { type: "button", className: "hrl-cuenta", "aria-label": `Cuenta de ${nombreCuenta}`, children: [
+                    /* @__PURE__ */ jsx("span", { className: "hrl-cuenta__avatar", "aria-hidden": "true", children: user.avatar ? /* @__PURE__ */ jsx("img", { className: "hrl-avatar__foto", src: user.avatar, alt: "" }) : iniciales(user.name) }),
+                    /* @__PURE__ */ jsxs("span", { className: "hrl-cuenta__textos", children: [
+                      /* @__PURE__ */ jsx("span", { className: "hrl-cuenta__nombre", children: nombreCuenta }),
+                      detalleCuenta && /* @__PURE__ */ jsx("span", { className: "hrl-cuenta__detalle", children: detalleCuenta })
+                    ] }),
+                    /* @__PURE__ */ jsx(Icon, { name: "sh-more", size: 18, className: "hrl-cuenta__mas" })
+                  ] })
+                }
+              )
+            )
           }
         ) })
       ] }),
@@ -505,27 +514,26 @@ function AppShell({
       /* @__PURE__ */ jsxs("div", { className: "hrl-main", ref: mainRef, children: [
         /* @__PURE__ */ jsx("header", { className: "hrl-topbar", ref: topbarRef, children: /* @__PURE__ */ jsxs("div", { className: "hrl-topbar__row", children: [
           /* @__PURE__ */ jsxs("div", { className: "hrl-topbar__inicio", children: [
-            /* @__PURE__ */ jsx(
-              "button",
-              {
-                type: "button",
-                className: `hrl-barra-boton hrl-plegar${plegado ? " hrl-plegar--plegado" : ""}`,
-                onClick: alternarMenu,
-                "aria-label": plegado ? "Mostrar el men\xFA lateral" : "Replegar el men\xFA lateral",
-                "aria-expanded": menuMovil || !plegado,
-                children: /* @__PURE__ */ jsx(Icon, { name: "sh-sidebar-collapse", size: 19 })
-              }
-            ),
+            /* @__PURE__ */ jsx("button", { type: "button", className: "hrl-barra-boton hrl-barra-boton--movil", onClick: alternarMenu, "aria-label": "Abrir el men\xFA", "aria-expanded": menuMovil, children: /* @__PURE__ */ jsx(Icon, { name: "sh-lines", size: 19 }) }),
             primaryAction && /* @__PURE__ */ jsx(Tooltip, { title: primaryAction.label, body: primaryAction.description ?? primaryAction.label, focusable: false, children: /* @__PURE__ */ jsx("button", { type: "button", className: "hrl-barra-boton hrl-barra-boton--primario", onClick: primaryAction.onClick, "aria-label": primaryAction.label, children: /* @__PURE__ */ jsx(Icon, { name: primaryAction.icon ?? "sh-plus", size: 20 }) }) })
           ] }),
-          /* @__PURE__ */ jsx(VistasBarra, { tabs }),
+          vistas ? /* @__PURE__ */ jsx(
+            TabsPill,
+            {
+              items: tabs.items.map((v) => ({ key: v.id, label: v.label, href: v.href })),
+              active: tabs.active,
+              onSelect: tabs.onSelect,
+              label: tabs.label ?? "Vistas de la secci\xF3n",
+              current: "page"
+            }
+          ) : /* @__PURE__ */ jsx("div", { className: "hrl-topbar__centro", id: PAGE_TABS_ID }),
           /* @__PURE__ */ jsxs("div", { className: "hrl-topbar__fin", children: [
             /* @__PURE__ */ jsx("div", { className: "hrl-topbar__acciones", id: "hrl-acciones-modulo" }),
             /* @__PURE__ */ jsx(
               Tooltip,
               {
                 title: "Notificaciones",
-                body: noLeidas ? `${noLeidas} sin leer. Avisos que el sistema deriva de lo que pasa ahora: plazos, env\xEDos, observaciones.` : "Avisos que el sistema deriva de lo que pasa ahora: plazos, env\xEDos, observaciones.",
+                body: noLeidas ? `${noLeidas} sin leer: plazos, env\xEDos y observaciones de ahora.` : "Plazos, env\xEDos y observaciones de ahora.",
                 focusable: false,
                 children: /* @__PURE__ */ jsxs(
                   "button",
@@ -535,7 +543,7 @@ function AppShell({
                     onClick: (e) => {
                       disparador.current = e.currentTarget;
                       setNotifOpen((v) => !v);
-                      setProfileOpen(false);
+                      setPrefsOpen(false);
                     },
                     "aria-label": `Notificaciones${noLeidas ? `: ${noLeidas} sin leer` : ""}`,
                     children: [
@@ -546,7 +554,17 @@ function AppShell({
                 )
               }
             ),
-            /* @__PURE__ */ jsx(Tooltip, { title: "Men\xFA de la cuenta", body: "Perfil, modo oscuro, tama\xF1o del texto, contraste y cierre de sesi\xF3n.", focusable: false, children: /* @__PURE__ */ jsx("button", { type: "button", className: "hrl-barra-boton", onClick: abrirPerfil, "aria-label": "Abrir el men\xFA de la cuenta", children: /* @__PURE__ */ jsx(Icon, { name: "sh-lines", size: 19 }) }) })
+            /* @__PURE__ */ jsx(Tooltip, { title: "Personalizaci\xF3n", body: "Modo oscuro, contraste, tama\xF1o del texto y subrayado de enlaces.", focusable: false, children: /* @__PURE__ */ jsx(
+              "button",
+              {
+                type: "button",
+                ref: refEngranaje,
+                className: `hrl-barra-boton${prefsOpen ? " hrl-bell--on" : ""}`,
+                onClick: (e) => abrirPreferencias(e.currentTarget),
+                "aria-label": "Personalizaci\xF3n",
+                children: /* @__PURE__ */ jsx(Icon, { name: "sh-gear", size: 19 })
+              }
+            ) })
           ] })
         ] }) }),
         /* @__PURE__ */ jsxs("main", { id: ID_CONTENIDO, tabIndex: -1, className: `hrl-content${panelLeaving ? " hrl-content--saliendo" : ""}`, children: [
@@ -562,6 +580,7 @@ function AppShell({
               actions: accionesCabecera
             }
           ),
+          notice && /* @__PURE__ */ jsx("div", { className: "hrl-aviso-pagina", children: notice }),
           children
         ] })
       ] }),
@@ -585,12 +604,10 @@ function AppShell({
           leaving
         }
       ),
-      profileOpen && /* @__PURE__ */ jsx(
-        ProfileDrawer,
+      prefsOpen && /* @__PURE__ */ jsx(
+        PreferencesDrawer,
         {
-          user,
           onClose: close,
-          onSignOut,
           leaving,
           tema,
           onTema: cambiarTema,

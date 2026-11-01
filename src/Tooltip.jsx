@@ -84,6 +84,12 @@ export function Tooltip({ title, body, children, as: Etiqueta = 'span', focusabl
   const mover = (e) => setPos({ x: e.clientX, y: e.clientY });
 
   const alEnfocar = (e) => {
+    /* El foco que devuelve un cajón o un menú al cerrarse (focus.js) no abre el
+       tooltip: no es que alguien haya llegado aquí, es que volvió. */
+    if (e.target.hasAttribute?.('data-hrl-foco-devuelto')) {
+      e.target.removeAttribute('data-hrl-foco-devuelto');
+      return;
+    }
     const r = e.currentTarget.getBoundingClientRect();
     setPos({ x: r.right, y: r.top + r.height / 2, gap: SEPARACION_ELEMENTO });
   };
@@ -103,7 +109,8 @@ export function Tooltip({ title, body, children, as: Etiqueta = 'span', focusabl
         {children}
       </Etiqueta>
 
-      <FloatingTip tip={pos ? { title, body, ...pos } : null} />
+      {/* Sin título ni cuerpo no hay nada que decir: no se abre una caja vacía. */}
+      <FloatingTip tip={pos && (title || body) ? { title, body, ...pos } : null} />
     </>
   );
 }

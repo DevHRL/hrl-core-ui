@@ -45,7 +45,25 @@ Lo que cambia y cuánto:
 - **Insignias** en píldora con icono de relleno; **StatCard** con la cifra a 32 px, el icono en un círculo con
   borde y sin el salto al pasar el cursor; **diálogos** y **cajones** con la esquina de tarjeta.
 
-Cambio de aspecto deliberado. API: solo se añaden props; nada se quita ni se renombra.
+- **`MascotAlert`** (nuevo): el aviso del momento dicho por Dr. Mochi. Mochi en una baldosa del color del tono
+  y, a su lado, un globo de diálogo con la etiqueta, el título y el detalle; las acciones al extremo. `state`,
+  `tone` (info·success·warning·danger), `label`, `icon`, `title`, `children`, `actions`. El `AppShell` lo pone
+  bajo la cabecera con la prop `notice`.
+- **`PageTabs`** (nuevo): una pantalla manda sus vistas a la píldora del centro de la barra por un portal, como
+  `PageActions` hace con sus botones. Sin vistas, el centro queda libre. `TabsPill` es la píldora compartida.
+- **La cuenta, al pie del menú, abre un menú** (hacia arriba) con `accountItems` del sistema, «Personalización» y
+  «Cerrar sesión»: cerrar sesión nunca es un clic directo. El **engranaje** de la barra abre la personalización
+  (modo oscuro, contraste, texto, enlaces); ya no hay hamburguesa en escritorio, solo en pantallas estrechas,
+  donde abre el menú. **Replegar** el menú pasa de la barra a la cabeza del propio menú.
+- **`PageHeader`**: la ruta va **encima** del título, pequeña, y no repite el título; a la derecha queda solo la
+  fecha. La hora (`clock`) sigue disponible.
+- **`StatCard`** solo dibuja su icono cuando la cifra avisa (`suspect`, `abnormal`): una fila de iconos iguales
+  no decía nada.
+- El foco que devuelve un cajón o un menú al cerrarse ya no abre el tooltip del botón (`focus.js`); el menú
+  desplegable devuelve el foco al botón de verdad, no al envoltorio.
+- Icono nuevo `sh-logout`. El cajón de notificaciones vacío ya no habla del «backend».
+
+Cambio de aspecto deliberado. API: solo se añaden props y componentes; nada se quita ni se renombra.
 
 ## 1.10.0-redesign.14 — 27/10/2026 (prelanzamiento, rama `redesign`)
 

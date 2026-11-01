@@ -19,6 +19,7 @@ export { Card } from './Card.jsx';
 export { Stack, Grid, Mosaic } from './Layout.jsx';
 export { HrlLogo } from './HrlLogo.jsx';
 export { Mascot, MASCOT_STATES } from './Mascot.jsx';
+export { MascotAlert } from './MascotAlert.jsx';
 export { LoginScreen, ChangePasswordScreen, backdropForHour, LOGIN_BACKDROPS } from './LoginScreen.jsx';
 export { StatCard } from './StatCard.jsx';
 export { Alert } from './Alert.jsx';
@@ -56,6 +57,7 @@ export { AppShell, ID_CONTENIDO } from './AppShell.jsx';
 export { PageHeader } from './PageHeader.jsx';
 export { PageBanner } from './PageBanner.jsx';
 export { PageActions, PAGE_ACTIONS_ID } from './PageActions.jsx';
+export { PageTabs, PAGE_TABS_ID } from './PageTabs.jsx';
 export { FilterBar } from './FilterBar.jsx';
 
 /* ------------------------------------------------- iconos y utilidades */

@@ -73,6 +73,8 @@ const CASOS = [
   ['SegmentedControl', { label: 'Contraste', options: [{ value: 'a', label: 'A' }, { value: 'b', label: 'B' }], value: 'b', onChange: () => {} }],
   ['PageBanner', { title: 'Portada', description: 'Hoy', clock: true, mascot: 'idle', status: { icon: 'sh-clock', label: 'Pendiente', detail: 'Hasta el 5', tone: 'warning' } }],
   ['FilterBar', { children: 'x' }],
+  ['MascotAlert', { title: 'El reporte de septiembre vence hoy', tone: 'warning', state: 'thinking', label: 'Vence hoy', children: 'Último día del plazo.' }],
+  ['PageTabs', { tabs: [{ key: 'a', label: 'A' }, { key: 'b', label: 'B' }], active: 'a', onChange: () => {} }],
   ['IconSprite', {}],
   ['Icon', { name: 'sh-ok' }],
 ];
@@ -173,6 +175,18 @@ const ASERCIONES = [
   ['AppShell con primaryAction dibuja el botón principal con su nombre', () => {
     const h = html('AppShell', { navItems: [], title: 'x', primaryAction: { label: 'Nuevo registro', onClick: () => {} } });
     return h.includes('hrl-barra-boton--primario') && h.includes('aria-label="Nuevo registro"');
+  }],
+  ['MascotAlert dice su etiqueta, su título y lleva a Dr. Mochi', () => {
+    const h = html('MascotAlert', { title: 'Vence hoy', label: 'Plazo', tone: 'warning', state: 'thinking' });
+    return h.includes('hrl-mochi-aviso--warning') && h.includes('hrl-mascota') && h.includes('Vence hoy') && h.includes('aria-labelledby');
+  }],
+  ['AppShell deja el centro de la barra libre para PageTabs y el engranaje abre la personalización', () => {
+    const h = html('AppShell', { navItems: [], title: 'x', user: { name: 'Ana' } });
+    return h.includes('id="hrl-vistas-pagina"') && h.includes('aria-label="Personalización"') && !h.includes('Cerrar sesión');
+  }],
+  ['la ruta va encima del título', () => {
+    const h = html('PageHeader', { title: 'Vista', breadcrumbs: [{ label: 'Oficina' }] });
+    return h.indexOf('hrl-migas') < h.indexOf('<h1');
   }],
   ['los iconos son de relleno: el sprite no dibuja ningún trazo', () => {
     const h = html('IconSprite', {});

@@ -66,7 +66,8 @@ export const ICONS = Object.freeze([
   'sh-search',
   'sh-plus',
   'sh-sort',
-  'sh-more'
+  'sh-more',
+  'sh-logout'
 ]);
 
 /* Nombres anteriores, en español, de iconos ya renombrados. Se siguen

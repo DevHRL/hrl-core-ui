@@ -222,6 +222,10 @@ export const IconSprite = memo(function IconSprite() {
       <symbol id="sh-sort" viewBox="0 0 24 24">
         <P d="M12 3.5l5 6H7zm0 17l-5-6h10z" />
       </symbol>
+      <symbol id="sh-logout" viewBox="0 0 24 24">
+        <P d="M5 3h8a2 2 0 0 1 2 2v3h-2.6V5.6H5.6v12.8h6.8V16H15v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
+        <P d="M16.4 7.6L21 12l-4.6 4.4v-3.1H9v-2.6h7.4z" />
+      </symbol>
       <symbol id="sh-more" viewBox="0 0 24 24">
         <P d="M5.5 9.8a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4zm6.5 0a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4zm6.5 0a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4z" />
       </symbol>

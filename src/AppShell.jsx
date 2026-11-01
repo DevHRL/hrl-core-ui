@@ -10,6 +10,9 @@ import { SegmentedControl } from './SegmentedControl.jsx';
 import { Switch } from './Switch.jsx';
 import { Button } from './Button.jsx';
 import { useExitAnimation } from './useExitAnimation.js';
+import { DropdownMenu } from './DropdownMenu.jsx';
+import { TabsPill, PAGE_TABS_ID } from './PageTabs.jsx';
+import { devolverFoco } from './focus.js';
 
 const TABS_NOTIF = ['Todas', 'No leídas', 'Archivadas'];
 
@@ -216,7 +219,7 @@ function NotificationsDrawer({ items, tab, onTab, onMarkAllRead, onClose, leavin
             icon="sh-bell"
             tone="var(--info)"
             title="Sin notificaciones"
-            body="El sistema todavía no registra avisos. Este panel se llenará cuando el backend exponga el endpoint de notificaciones."
+            body="No hay avisos por ahora. Aquí aparecerán los plazos que se acercan, los envíos y las observaciones."
           />
         ) : (
           visibles.map((n, i) => (
@@ -382,74 +385,61 @@ function Preferencias({ tema, onTema, prefs, onPrefs, onRestablecer }) {
   );
 }
 
-function ProfileDrawer({ user, onClose, onSignOut, leaving, tema, onTema, prefs, onPrefs, onRestablecer }) {
+/* Personalización: apariencia y accesibilidad. Se abre con el engranaje de la
+   barra. La cuenta (quién es, cambiar de ámbito, cerrar sesión) está en el
+   menú del perfil, al pie del menú lateral: así cada botón hace una sola cosa. */
+function PreferencesDrawer({ onClose, leaving, tema, onTema, prefs, onPrefs, onRestablecer }) {
   return (
     <aside
       className={`hrl-drawer hrl-drawer--profile${leaving ? ' hrl-drawer--saliendo' : ''}`}
       role="dialog"
-      aria-label="Perfil"
+      aria-label="Personalización"
     >
-      <div style={{ padding: '16px 16px 0' }}>
+      <div className="hrl-drawer__head">
+        <h2>Personalización</h2>
         <button type="button" className="hrl-iconbtn" onClick={onClose} aria-label="Cerrar">
           <Icon name="sh-close" size={18} />
         </button>
       </div>
 
-      <div className="hrl-profile__head">
-        <span className="hrl-profile__ring">
-          {user?.avatar ? (
-            <img className="hrl-profile__foto" src={user.avatar} alt="" />
-          ) : (
-            <span className="hrl-profile__initials">{iniciales(user?.name)}</span>
-          )}
-        </span>
-        <strong className="hrl-profile__name">{user?.name ?? 'Sin sesión'}</strong>
-        <span className="hrl-profile__mail">{user?.email ?? user?.role ?? '—'}</span>
-      </div>
-
       <div className="hrl-perfil__cuerpo">
         <Preferencias tema={tema} onTema={onTema} prefs={prefs} onPrefs={onPrefs} onRestablecer={onRestablecer} />
-      </div>
-
-      <div className="hrl-profile__foot">
-        <button type="button" className="hrl-signout" onClick={onSignOut}>
-          Cerrar sesión
-        </button>
       </div>
     </aside>
   );
 }
 
-/* Layout maestro: menú lateral replegable con el perfil al pie, barra superior
-   (replegar, acción principal, vistas al centro, notificaciones y menú de la
-   cuenta), cajones de notificaciones y de perfil, y la cabecera de la página al
-   principio del contenido. Todo lo que muestra llega por props; no consulta
-   nada.
+/* Layout maestro: menú lateral replegable (marca y botón de replegar arriba,
+   la cuenta al pie), barra superior (las vistas al centro; notificaciones y
+   personalización al final), cajones de notificaciones y de personalización,
+   y al principio del contenido la cabecera de la página y el aviso del momento.
+   Todo lo que muestra llega por props; no consulta nada.
 
      navItems  { id, label, icon, group?, badge?, href? }[]
      collapsibleGroups  títulos de `group` que se pliegan y despliegan con un
                clic en su rótulo; se abren solos si contienen la pantalla
                activa. Pásalo como constante: el menú está memorizado
-     user      { name, email?, role?, avatar? }: se muestra al pie del menú
-               lateral, y al pulsarlo se abre el cajón del perfil
+     user      { name, email?, role?, avatar? }: al pie del menú lateral. Al
+               pulsarlo se abre el menú de la cuenta: `accountItems`, la
+               personalización y «Cerrar sesión»
+     accountItems  ítems de DropdownMenu propios del sistema para ese menú (por
+               ejemplo, cambiar de ámbito)
      logo      nodo libre para la marca; si se omite, el escudo del hospital con
                su nombre y el de `brand`. `logo={null}` deja el menú sin marca
      brand     nombre del sistema, bajo el del hospital; el kit no lo sabe
      title, subtitle, breadcrumbs
-               la cabecera de la página (PageHeader): el título grande, el
-               mensaje debajo y, al otro lado, la ruta
-     date      la fecha que la cabecera muestra bajo la ruta («Sábado, 31 de
-               octubre de 2026»); la decide la aplicación, que sabe qué día es
-               para ella
-     actions   controles junto al estado de la cabecera (y destino de PageActions)
-     banner    { status?, actions?, clock?, mascot? }: el estado de la vista
-               (icono, etiqueta, detalle y tono), sus acciones y la hora junto a
-               la fecha. `mascot` se acepta y por ahora no se dibuja: la nueva
-               cabecera ya no lleva la banda verde con la mascota
-     primaryAction  { icon, label, description?, onClick }: la acción de crear
-               del sistema, en el botón verde agua al inicio de la barra
-     tabs      { items: { id, label }[], active, onSelect, label? }: las vistas
-               de la sección, en la píldora del centro de la barra
+               la cabecera de la página (PageHeader): la ruta encima, el título
+               grande y el mensaje debajo
+     date      la fecha, a la derecha de la cabecera; la decide la aplicación
+     actions   controles de la cabecera (y destino de PageActions)
+     notice    nodo bajo la cabecera: el aviso del momento (MascotAlert)
+     banner    { status?, actions?, clock? }: compatibilidad con 1.10. Su estado
+               y sus acciones van a la cabecera; `mascot` no se dibuja
+     tabs      { items: { id, label }[], active, onSelect, label? }: las vistas,
+               en la píldora del centro de la barra. Sin `tabs`, el centro es el
+               destino de PageTabs, y si nadie lo llena queda libre
+     primaryAction  { icon, label, description?, onClick }: botón de crear al
+               inicio de la barra (opcional)
      themeKey  clave con la que se recuerda el modo oscuro
      preferencesKey  clave de contraste, tamaño del texto y subrayado de
                enlaces (usePreferences); por defecto, la de themeKey con «_prefs» */
@@ -459,43 +449,6 @@ export const ID_CONTENIDO = 'contenido-principal';
 
 /* Por debajo de este ancho el menú lateral es un cajón (tokens.css). */
 const ANCHO_MOVIL = 899;
-
-/* Las vistas de la sección, al centro de la barra: una píldora con la activa
-   rellena. Es navegación (enlaces o botones con aria-current), no un grupo de
-   pestañas con paneles: cada vista es una pantalla con su propia dirección. */
-function VistasBarra({ tabs }) {
-  const items = tabs?.items ?? [];
-  const ref = useRef(null);
-  /* Con muchas vistas la píldora se desplaza de lado: la activa se trae a la
-     parte visible, o quien entra a «Epidemiología» no vería cuál está abierta. */
-  useEffect(() => {
-    const activa = ref.current?.querySelector('[aria-current="page"]');
-    const nav = ref.current;
-    if (!activa || !nav || nav.scrollWidth <= nav.clientWidth) return;
-    nav.scrollLeft = activa.offsetLeft - (nav.clientWidth - activa.offsetWidth) / 2;
-  }, [tabs?.active]);
-  if (items.length < 2) return <div className="hrl-topbar__spacer" />;
-  return (
-    <nav className="hrl-vistas" ref={ref} aria-label={tabs.label ?? 'Vistas de la sección'}>
-      {items.map((v) => {
-        const activa = v.id === tabs.active;
-        const Etiqueta = v.href ? 'a' : 'button';
-        return (
-          <Etiqueta
-            key={v.id}
-            type={v.href ? undefined : 'button'}
-            href={v.href}
-            className={`hrl-vistas__item${activa ? ' hrl-vistas__item--on' : ''}`}
-            aria-current={activa ? 'page' : undefined}
-            onClick={() => tabs.onSelect?.(v.id)}
-          >
-            {v.label}
-          </Etiqueta>
-        );
-      })}
-    </nav>
-  );
-}
 
 export function AppShell({
   navItems = [],
@@ -507,10 +460,12 @@ export function AppShell({
   breadcrumbs,
   date,
   actions,
+  notice,
   banner,
   primaryAction,
   tabs,
   user,
+  accountItems = [],
   logo,
   brand,
   themeKey,
@@ -521,7 +476,7 @@ export function AppShell({
   children,
 }) {
   const [notifOpen, setNotifOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
+  const [prefsOpen, setPrefsOpen] = useState(false);
   const [tab, setTab] = useState('Todas');
   const [leidas, setLeidas] = useState({});
   /* La preferencia se recuerda entre sesiones: quien trabaja en pantallas
@@ -567,7 +522,7 @@ export function AppShell({
     return () => ro.disconnect();
   }, []);
 
-  const abierto = notifOpen || profileOpen;
+  const abierto = notifOpen || prefsOpen;
 
   useEffect(() => {
     if (!menuMovil) return undefined;
@@ -586,17 +541,16 @@ export function AppShell({
     document.getElementById(ID_CONTENIDO)?.focus();
   };
 
-  /* Quien abrió un cajón recupera el foco al cerrarlo (§ 3.1): el perfil se
-     abre desde el pie del menú o desde la barra, y la campana desde la barra. */
+  /* Quien abrió un cajón recupera el foco al cerrarlo (§ 3.1). */
   const disparador = useRef(null);
 
   /* Antes del efecto que lo usa: `close` es una constante y no se iza. */
   const ocultar = useCallback(() => {
     setNotifOpen(false);
-    setProfileOpen(false);
+    setPrefsOpen(false);
     const el = disparador.current;
     disparador.current = null;
-    if (el && typeof el.focus === 'function') requestAnimationFrame(() => el.focus());
+    if (el) requestAnimationFrame(() => devolverFoco(el));
   }, []);
   const { leaving, close } = useExitAnimation(ocultar);
 
@@ -637,10 +591,10 @@ export function AppShell({
     [onSelect],
   );
 
-  const abrirPerfil = (e) => {
-    disparador.current = e?.currentTarget ?? null;
+  const abrirPreferencias = (el) => {
+    disparador.current = el ?? null;
     setMenuMovil(false);
-    setProfileOpen(true);
+    setPrefsOpen(true);
     setNotifOpen(false);
   };
 
@@ -653,6 +607,16 @@ export function AppShell({
   const marca = logo === undefined ? <MarcaPorDefecto brand={brand} /> : logo;
   const nombreCuenta = user?.name ?? 'Sin sesión';
   const detalleCuenta = user?.role ?? user?.email;
+  const refEngranaje = useRef(null);
+
+  const itemsCuenta = [
+    ...accountItems,
+    ...(accountItems.length ? [{ separator: true }] : []),
+    { id: 'hrl-personalizacion', label: 'Personalización', icon: 'sh-gear', onSelect: () => abrirPreferencias(refEngranaje.current) },
+    { id: 'hrl-salir', label: 'Cerrar sesión', icon: 'sh-logout', tone: 'danger', onSelect: () => onSignOut?.() },
+  ];
+
+  const vistas = tabs?.items?.length > 1;
 
   return (
     <div className="hrl-nuevo">
@@ -662,30 +626,53 @@ export function AppShell({
       </a>
       <div className={`hrl-shell${plegado ? ' hrl-shell--plegado' : ''}${menuMovil ? ' hrl-shell--menu-abierto' : ''}`}>
         <aside className="hrl-sidebar" aria-label="Menú principal">
-          {marca && <div className="hrl-sidebar__logo">{marca}</div>}
+          <div className="hrl-sidebar__cabeza">
+            {marca && <div className="hrl-sidebar__logo">{marca}</div>}
+            {/* Replegar vive junto a lo que repliega: en la barra quedaba solo
+                en una esquina. Sin tooltip a propósito: el gesto se explica solo. */}
+            <button
+              type="button"
+              className={`hrl-iconbtn hrl-plegar${plegado ? ' hrl-plegar--plegado' : ''}`}
+              onClick={alternarMenu}
+              aria-label={menuMovil ? 'Cerrar el menú' : plegado ? 'Mostrar el menú lateral' : 'Replegar el menú lateral'}
+              aria-expanded={menuMovil || !plegado}
+            >
+              <Icon name="sh-sidebar-collapse" size={19} />
+            </button>
+          </div>
           <SidebarNav navItems={navItems} active={active} onSelect={alElegir} plegado={plegado} collapsibleGroups={collapsibleGroups} />
           {user && (
             <div className="hrl-sidebar__pie">
-              {/* El perfil vive aquí, al pie del menú: abre el cajón con la
-                  apariencia, la accesibilidad y el cierre de sesión. Plegado,
-                  queda el avatar y el nombre pasa al tooltip. */}
-              <Tooltip
-                as="div"
-                style={{ display: 'block', width: '100%' }}
-                focusable={false}
-                title={nombreCuenta}
-                body={detalleCuenta ? `${detalleCuenta} · abre el perfil, la apariencia y el cierre de sesión` : 'Abre el perfil, la apariencia y el cierre de sesión'}
-              >
-                <button type="button" className="hrl-cuenta" onClick={abrirPerfil} aria-label={`Perfil de ${nombreCuenta}`}>
-                  <span className="hrl-cuenta__avatar" aria-hidden="true">
-                    {user.avatar ? <img className="hrl-avatar__foto" src={user.avatar} alt="" /> : iniciales(user.name)}
-                  </span>
-                  <span className="hrl-cuenta__textos">
-                    <span className="hrl-cuenta__nombre">{nombreCuenta}</span>
-                    {detalleCuenta && <span className="hrl-cuenta__detalle">{detalleCuenta}</span>}
-                  </span>
-                </button>
-              </Tooltip>
+              {/* La cuenta: abre un menú hacia arriba con lo propio del sistema
+                  (cambiar de ámbito), la personalización y el cierre de sesión.
+                  Cerrar sesión nunca es el clic directo: se pulsaría sin querer. */}
+              <DropdownMenu
+                label={`Cuenta de ${nombreCuenta}`}
+                align="left"
+                items={itemsCuenta}
+                trigger={
+                  /* Desplegado, el nombre y el cargo ya se leen: el tooltip solo
+                     hace falta con el menú plegado, donde queda el avatar. */
+                  <Tooltip
+                    as="span"
+                    style={{ display: 'flex', width: '100%' }}
+                    focusable={false}
+                    title={plegado ? nombreCuenta : undefined}
+                    body={plegado ? (detalleCuenta ? `${detalleCuenta}. Abre el menú de la cuenta.` : 'Abre el menú de la cuenta.') : null}
+                  >
+                    <button type="button" className="hrl-cuenta" aria-label={`Cuenta de ${nombreCuenta}`}>
+                      <span className="hrl-cuenta__avatar" aria-hidden="true">
+                        {user.avatar ? <img className="hrl-avatar__foto" src={user.avatar} alt="" /> : iniciales(user.name)}
+                      </span>
+                      <span className="hrl-cuenta__textos">
+                        <span className="hrl-cuenta__nombre">{nombreCuenta}</span>
+                        {detalleCuenta && <span className="hrl-cuenta__detalle">{detalleCuenta}</span>}
+                      </span>
+                      <Icon name="sh-more" size={18} className="hrl-cuenta__mas" />
+                    </button>
+                  </Tooltip>
+                }
+              />
             </div>
           )}
         </aside>
@@ -695,16 +682,9 @@ export function AppShell({
           <header className="hrl-topbar" ref={topbarRef}>
             <div className="hrl-topbar__row">
               <div className="hrl-topbar__inicio">
-                {/* Sin tooltip a propósito: el gesto se explica solo y el aviso
-                    estorbaba justo donde está el cursor al navegar. */}
-                <button
-                  type="button"
-                  className={`hrl-barra-boton hrl-plegar${plegado ? ' hrl-plegar--plegado' : ''}`}
-                  onClick={alternarMenu}
-                  aria-label={plegado ? 'Mostrar el menú lateral' : 'Replegar el menú lateral'}
-                  aria-expanded={menuMovil || !plegado}
-                >
-                  <Icon name="sh-sidebar-collapse" size={19} />
+                {/* Solo en pantallas estrechas, donde el menú es un cajón. */}
+                <button type="button" className="hrl-barra-boton hrl-barra-boton--movil" onClick={alternarMenu} aria-label="Abrir el menú" aria-expanded={menuMovil}>
+                  <Icon name="sh-lines" size={19} />
                 </button>
                 {primaryAction && (
                   <Tooltip title={primaryAction.label} body={primaryAction.description ?? primaryAction.label} focusable={false}>
@@ -715,7 +695,17 @@ export function AppShell({
                 )}
               </div>
 
-              <VistasBarra tabs={tabs} />
+              {vistas ? (
+                <TabsPill
+                  items={tabs.items.map((v) => ({ key: v.id, label: v.label, href: v.href }))}
+                  active={tabs.active}
+                  onSelect={tabs.onSelect}
+                  label={tabs.label ?? 'Vistas de la sección'}
+                  current="page"
+                />
+              ) : (
+                <div className="hrl-topbar__centro" id={PAGE_TABS_ID} />
+              )}
 
               <div className="hrl-topbar__fin">
                 {/* Ranura para controles del módulo activo. La llena el propio
@@ -724,7 +714,7 @@ export function AppShell({
                 <div className="hrl-topbar__acciones" id="hrl-acciones-modulo" />
                 <Tooltip
                   title="Notificaciones"
-                  body={noLeidas ? `${noLeidas} sin leer. Avisos que el sistema deriva de lo que pasa ahora: plazos, envíos, observaciones.` : 'Avisos que el sistema deriva de lo que pasa ahora: plazos, envíos, observaciones.'}
+                  body={noLeidas ? `${noLeidas} sin leer: plazos, envíos y observaciones de ahora.` : 'Plazos, envíos y observaciones de ahora.'}
                   focusable={false}
                 >
                   <button
@@ -733,7 +723,7 @@ export function AppShell({
                     onClick={(e) => {
                       disparador.current = e.currentTarget;
                       setNotifOpen((v) => !v);
-                      setProfileOpen(false);
+                      setPrefsOpen(false);
                     }}
                     aria-label={`Notificaciones${noLeidas ? `: ${noLeidas} sin leer` : ''}`}
                   >
@@ -741,9 +731,15 @@ export function AppShell({
                     {noLeidas > 0 && <span className="hrl-bell__badge">{noLeidas}</span>}
                   </button>
                 </Tooltip>
-                <Tooltip title="Menú de la cuenta" body="Perfil, modo oscuro, tamaño del texto, contraste y cierre de sesión." focusable={false}>
-                  <button type="button" className="hrl-barra-boton" onClick={abrirPerfil} aria-label="Abrir el menú de la cuenta">
-                    <Icon name="sh-lines" size={19} />
+                <Tooltip title="Personalización" body="Modo oscuro, contraste, tamaño del texto y subrayado de enlaces." focusable={false}>
+                  <button
+                    type="button"
+                    ref={refEngranaje}
+                    className={`hrl-barra-boton${prefsOpen ? ' hrl-bell--on' : ''}`}
+                    onClick={(e) => abrirPreferencias(e.currentTarget)}
+                    aria-label="Personalización"
+                  >
+                    <Icon name="sh-gear" size={19} />
                   </button>
                 </Tooltip>
               </div>
@@ -764,6 +760,7 @@ export function AppShell({
                 actions={accionesCabecera}
               />
             )}
+            {notice && <div className="hrl-aviso-pagina">{notice}</div>}
             {children}
           </main>
         </div>
@@ -788,11 +785,9 @@ export function AppShell({
           />
         )}
 
-        {profileOpen && (
-          <ProfileDrawer
-            user={user}
+        {prefsOpen && (
+          <PreferencesDrawer
             onClose={close}
-            onSignOut={onSignOut}
             leaving={leaving}
             tema={tema}
             onTema={cambiarTema}

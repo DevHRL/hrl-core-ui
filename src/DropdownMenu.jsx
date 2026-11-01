@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Icon } from './icons.jsx';
+import { devolverFoco as devolverFocoA } from './focus.js';
 import { aliasObsoleto, PROP_ALIASES } from './deprecated.js';
 import { anchoVisible } from './viewport.js';
 
@@ -44,10 +45,10 @@ export function DropdownMenu({ trigger, items = [], align: alineacionPedida = 'r
 
   const seleccionables = items.filter((i) => !i.separator && !i.disabled);
 
-  const cerrar = useCallback((devolverFoco = true) => {
+  const cerrar = useCallback((conFoco = true) => {
     setAbierto(false);
     setActivo(-1);
-    if (devolverFoco) refDisparador.current?.focus();
+    if (conFoco) devolverFocoA(refDisparador.current?.querySelector('button, a, [tabindex]') ?? refDisparador.current);
   }, []);
 
   const abrir = () => {

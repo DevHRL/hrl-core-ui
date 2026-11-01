@@ -117,6 +117,10 @@ const IconSprite = memo(function IconSprite2() {
     /* @__PURE__ */ jsx("symbol", { id: "sh-search", viewBox: "0 0 24 24", children: /* @__PURE__ */ jsx(P, { d: "M10 2a8 8 0 0 1 6.3 12.9l5.1 5.1-1.7 1.7-5.1-5.1A8 8 0 1 1 10 2zm0 2.6a5.4 5.4 0 1 0 0 10.8 5.4 5.4 0 0 0 0-10.8z" }) }),
     /* @__PURE__ */ jsx("symbol", { id: "sh-plus", viewBox: "0 0 24 24", children: /* @__PURE__ */ jsx(P, { d: "M10.7 4h2.6v6.7H20v2.6h-6.7V20h-2.6v-6.7H4v-2.6h6.7z" }) }),
     /* @__PURE__ */ jsx("symbol", { id: "sh-sort", viewBox: "0 0 24 24", children: /* @__PURE__ */ jsx(P, { d: "M12 3.5l5 6H7zm0 17l-5-6h10z" }) }),
+    /* @__PURE__ */ jsxs("symbol", { id: "sh-logout", viewBox: "0 0 24 24", children: [
+      /* @__PURE__ */ jsx(P, { d: "M5 3h8a2 2 0 0 1 2 2v3h-2.6V5.6H5.6v12.8h6.8V16H15v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" }),
+      /* @__PURE__ */ jsx(P, { d: "M16.4 7.6L21 12l-4.6 4.4v-3.1H9v-2.6h7.4z" })
+    ] }),
     /* @__PURE__ */ jsx("symbol", { id: "sh-more", viewBox: "0 0 24 24", children: /* @__PURE__ */ jsx(P, { d: "M5.5 9.8a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4zm6.5 0a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4zm6.5 0a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4z" }) })
   ] });
 });

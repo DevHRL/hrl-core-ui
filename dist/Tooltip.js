@@ -41,6 +41,10 @@ function Tooltip({ title, body, children, as: Etiqueta = "span", focusable = tru
   const [pos, setPos] = useState(null);
   const mover = (e) => setPos({ x: e.clientX, y: e.clientY });
   const alEnfocar = (e) => {
+    if (e.target.hasAttribute?.("data-hrl-foco-devuelto")) {
+      e.target.removeAttribute("data-hrl-foco-devuelto");
+      return;
+    }
     const r = e.currentTarget.getBoundingClientRect();
     setPos({ x: r.right, y: r.top + r.height / 2, gap: SEPARACION_ELEMENTO });
   };
@@ -59,7 +63,7 @@ function Tooltip({ title, body, children, as: Etiqueta = "span", focusable = tru
         children
       }
     ),
-    /* @__PURE__ */ jsx(FloatingTip, { tip: pos ? { title, body, ...pos } : null })
+    /* @__PURE__ */ jsx(FloatingTip, { tip: pos && (title || body) ? { title, body, ...pos } : null })
   ] });
 }
 export {
