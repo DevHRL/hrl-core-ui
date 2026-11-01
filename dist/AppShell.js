@@ -473,20 +473,7 @@ function AppShell({
     /* @__PURE__ */ jsx("a", { className: "hrl-saltar", href: `#${ID_CONTENIDO}`, onClick: saltarAlContenido, children: "Saltar al contenido" }),
     /* @__PURE__ */ jsxs("div", { className: `hrl-shell${plegado ? " hrl-shell--plegado" : ""}${menuMovil ? " hrl-shell--menu-abierto" : ""}`, children: [
       /* @__PURE__ */ jsxs("aside", { className: "hrl-sidebar", "aria-label": "Men\xFA principal", children: [
-        /* @__PURE__ */ jsxs("div", { className: "hrl-sidebar__cabeza", children: [
-          marca && /* @__PURE__ */ jsx("div", { className: "hrl-sidebar__logo", children: marca }),
-          /* @__PURE__ */ jsx(
-            "button",
-            {
-              type: "button",
-              className: `hrl-iconbtn hrl-plegar${plegado ? " hrl-plegar--plegado" : ""}`,
-              onClick: alternarMenu,
-              "aria-label": menuMovil ? "Cerrar el men\xFA" : plegado ? "Mostrar el men\xFA lateral" : "Replegar el men\xFA lateral",
-              "aria-expanded": menuMovil || !plegado,
-              children: /* @__PURE__ */ jsx(Icon, { name: "sh-sidebar-collapse", size: 19 })
-            }
-          )
-        ] }),
+        marca && /* @__PURE__ */ jsx("div", { className: "hrl-sidebar__logo", children: marca }),
         /* @__PURE__ */ jsx(SidebarNav, { navItems, active, onSelect: alElegir, plegado, collapsibleGroups }),
         user && /* @__PURE__ */ jsxs("div", { className: "hrl-sidebar__pie", children: [
           accountItems.length ? /* @__PURE__ */ jsx(
@@ -508,7 +495,17 @@ function AppShell({
       /* @__PURE__ */ jsxs("div", { className: "hrl-main", ref: mainRef, children: [
         /* @__PURE__ */ jsx("header", { className: "hrl-topbar", ref: topbarRef, children: /* @__PURE__ */ jsxs("div", { className: "hrl-topbar__row", children: [
           /* @__PURE__ */ jsxs("div", { className: "hrl-topbar__inicio", children: [
-            /* @__PURE__ */ jsx("button", { type: "button", className: "hrl-barra-boton hrl-barra-boton--movil", onClick: alternarMenu, "aria-label": "Abrir el men\xFA", "aria-expanded": menuMovil, children: /* @__PURE__ */ jsx(Icon, { name: "sh-lines", size: 19 }) }),
+            /* @__PURE__ */ jsx(
+              "button",
+              {
+                type: "button",
+                className: `hrl-barra-boton hrl-plegar${plegado ? " hrl-plegar--plegado" : ""}`,
+                onClick: alternarMenu,
+                "aria-label": menuMovil ? "Cerrar el men\xFA" : plegado ? "Mostrar el men\xFA lateral" : "Replegar el men\xFA lateral",
+                "aria-expanded": menuMovil || !plegado,
+                children: /* @__PURE__ */ jsx(Icon, { name: "sh-sidebar-collapse", size: 19 })
+              }
+            ),
             primaryAction && /* @__PURE__ */ jsx(Tooltip, { title: primaryAction.label, body: primaryAction.description ?? primaryAction.label, focusable: false, children: /* @__PURE__ */ jsx("button", { type: "button", className: "hrl-barra-boton hrl-barra-boton--primario", onClick: primaryAction.onClick, "aria-label": primaryAction.label, children: /* @__PURE__ */ jsx(Icon, { name: primaryAction.icon ?? "sh-plus", size: 20 }) }) })
           ] }),
           vistas ? /* @__PURE__ */ jsx(

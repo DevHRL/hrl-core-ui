@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Tooltip } from './Tooltip.jsx';
+import { Icon } from './icons.jsx';
 
 /* Las vistas de una pantalla, en la píldora del centro de la barra superior.
 
@@ -33,31 +34,65 @@ export function TabsPill({ items, active, onSelect, label, current = 'true', ale
     nav.scrollLeft = activa.offsetLeft - (nav.clientWidth - activa.offsetWidth) / 2;
   }, [active]);
 
+  /* Las flechas de los lados pasan a la vista anterior o a la siguiente: con
+     muchas vistas (nueve consolidados) es más ordenado que buscar en la
+     píldora, que además puede quedar desplazada. En un extremo, la flecha de
+     ese lado se desactiva. */
+  const indice = items.findIndex((v) => v.key === active);
+  const vecina = (paso) => items[indice + paso];
+  const ir = (paso) => {
+    if (vecina(paso)) onSelect?.(vecina(paso).key);
+  };
+
   return (
-    <nav className="hrl-vistas" ref={ref} aria-label={label}>
-      {items.map((v) => {
-        const activa = v.key === active;
-        const Etiqueta = v.href ? 'a' : 'button';
-        const aviso = !activa ? alerts[v.key] : null;
-        return (
-          <Etiqueta
-            key={v.key}
-            type={v.href ? undefined : 'button'}
-            href={v.href}
-            className={`hrl-vistas__item${activa ? ' hrl-vistas__item--on' : ''}`}
-            aria-current={activa ? current : undefined}
-            onClick={() => onSelect?.(v.key)}
-          >
-            {v.label}
-            {aviso && (
-              <Tooltip title="Requiere atención" body={aviso} focusable={false}>
-                <span className="hrl-punto-vivo" role="img" aria-label={`Requiere atención: ${aviso}`} />
-              </Tooltip>
-            )}
-          </Etiqueta>
-        );
-      })}
-    </nav>
+    <div className="hrl-vistas-marco">
+      <Tooltip title="Vista anterior" body={vecina(-1)?.label ?? 'Ya está en la primera vista.'} focusable={false}>
+        <button
+          type="button"
+          className="hrl-vistas__flecha"
+          onClick={() => ir(-1)}
+          disabled={!vecina(-1)}
+          aria-label={vecina(-1) ? `Vista anterior: ${vecina(-1).label}` : 'Vista anterior'}
+        >
+          <Icon name="sh-chevron" size={16} style={{ transform: 'rotate(180deg)' }} />
+        </button>
+      </Tooltip>
+      <nav className="hrl-vistas" ref={ref} aria-label={label}>
+        {items.map((v) => {
+          const activa = v.key === active;
+          const Etiqueta = v.href ? 'a' : 'button';
+          const aviso = !activa ? alerts[v.key] : null;
+          return (
+            <Etiqueta
+              key={v.key}
+              type={v.href ? undefined : 'button'}
+              href={v.href}
+              className={`hrl-vistas__item${activa ? ' hrl-vistas__item--on' : ''}`}
+              aria-current={activa ? current : undefined}
+              onClick={() => onSelect?.(v.key)}
+            >
+              {v.label}
+              {aviso && (
+                <Tooltip title="Requiere atención" body={aviso} focusable={false}>
+                  <span className="hrl-punto-vivo" role="img" aria-label={`Requiere atención: ${aviso}`} />
+                </Tooltip>
+              )}
+            </Etiqueta>
+          );
+        })}
+      </nav>
+      <Tooltip title="Vista siguiente" body={vecina(1)?.label ?? 'Ya está en la última vista.'} focusable={false}>
+        <button
+          type="button"
+          className="hrl-vistas__flecha"
+          onClick={() => ir(1)}
+          disabled={indice < 0 || !vecina(1)}
+          aria-label={vecina(1) ? `Vista siguiente: ${vecina(1).label}` : 'Vista siguiente'}
+        >
+          <Icon name="sh-chevron" size={16} />
+        </button>
+      </Tooltip>
+    </div>
   );
 }
 

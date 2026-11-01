@@ -756,13 +756,8 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
 }
 
 /* La cabeza del menú: la marca y, a su lado, el botón de replegar. */
-.hrl-sidebar__cabeza { display: flex; align-items: center; gap: 4px; padding: 2px 0 8px 4px; }
-
 /* La marca: el escudo en su baldosa y dos líneas (hospital y sistema). */
-.hrl-sidebar__logo { display: flex; align-items: center; flex: 1; min-width: 0; min-height: 50px; }
-
-.hrl-sidebar__cabeza .hrl-plegar { flex: 0 0 auto; color: var(--nav-icon); }
-.hrl-sidebar__cabeza .hrl-plegar:hover { color: var(--foreground); }
+.hrl-sidebar__logo { display: flex; align-items: center; min-width: 0; min-height: 50px; padding: 2px 4px 8px; }
 
 .hrl-marca { display: flex; align-items: center; gap: 11px; min-width: 0; }
 
@@ -985,8 +980,7 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
 .hrl-shell--plegado .hrl-cuenta__textos,
 .hrl-shell--plegado .hrl-nav-item__label,
 .hrl-shell--plegado .hrl-nav-item__badge { display: none; }
-.hrl-shell--plegado .hrl-sidebar__logo { justify-content: center; flex: 0 0 auto; }
-.hrl-shell--plegado .hrl-sidebar__cabeza { flex-direction: column; gap: var(--space-2); padding-left: 0; }
+.hrl-shell--plegado .hrl-sidebar__logo { justify-content: center; padding-inline: 0; }
 .hrl-shell--plegado .hrl-cuenta__mas { display: none; }
 .hrl-shell--plegado .hrl-nav-item { justify-content: center; gap: 0; padding: 0; }
 .hrl-shell--plegado .hrl-cuenta { justify-content: center; padding-inline: 0; }
@@ -1071,7 +1065,28 @@ body { margin: 0; background: #f1f2f4; }
 
 /* El botón que abre el menú lateral solo existe en pantallas estrechas, donde
    el menú es un cajón; en escritorio, replegar vive dentro del propio menú. */
-.hrl-barra-boton.hrl-barra-boton--movil { display: none; }
+/* La píldora de vistas entre sus dos flechas. */
+.hrl-vistas-marco { display: flex; align-items: center; gap: 6px; flex: 0 1 auto; min-width: 0; max-width: 100%; margin: 0 auto; }
+.hrl-vistas-marco .hrl-vistas { margin: 0; }
+
+.hrl-vistas__flecha {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  color: var(--nav-text);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast), opacity var(--transition-fast);
+}
+
+.hrl-vistas__flecha:hover:not(:disabled) { background: var(--muted); color: var(--foreground); }
+.hrl-vistas__flecha:disabled { opacity: 0.4; cursor: default; }
 
 /* Botón cuadrado de la barra: 44 px, esquina de 14 y un borde fino. */
 .hrl-barra-boton {
@@ -1175,8 +1190,9 @@ body { margin: 0; background: #f1f2f4; }
    desplazan de lado si no caben: nunca empujan la campana fuera de la barra. */
 @media (max-width: 1180px) {
   .hrl-topbar__row { flex-wrap: wrap; }
-  .hrl-vistas,
+  .hrl-vistas-marco,
   .hrl-topbar__centro { order: 3; flex: 1 0 100%; margin: 0; justify-content: flex-start; }
+  .hrl-vistas-marco .hrl-vistas { flex: 0 1 auto; }
   /* Vacío, no abre una segunda fila en la barra. */
   .hrl-topbar__centro:empty { display: none; }
   .hrl-topbar__centro .hrl-vistas { flex: 0 1 auto; }
@@ -1223,7 +1239,6 @@ body { margin: 0; background: #f1f2f4; }
   }
 
   .hrl-topbar__row { padding: 10px var(--space-4); gap: var(--space-2); }
-  .hrl-barra-boton.hrl-barra-boton--movil { display: inline-flex; }
 
   /* En un teléfono un botón sí parte su etiqueta, en vez de salirse de su
      tarjeta. En escritorio sigue sin partirla (ver .hrl-btn). */

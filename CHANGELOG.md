@@ -68,6 +68,10 @@ Lo que cambia y cuánto:
 - **La cuenta, al pie del menú**, ya no abre personalización ni cierre: a su lado hay un solo botón con el icono de
   cerrar sesión y su tooltip. Solo con `accountItems` (cambiar de ámbito) el perfil abre un menú, con eso.
 - `CompactSelect` toma la esquina y el relleno de los botones.
+- **Replegar el menú vuelve a la barra**, al inicio, como en 1.10 (en pantallas estrechas abre el menú como
+  cajón). La cabeza del menú queda solo con la marca.
+- **Flechas a los lados de las vistas** (`TabsPill`, también en `PageTabs`): pasan a la vista anterior o a la
+  siguiente, con tooltip que dice cuál es; en un extremo, la flecha de ese lado se desactiva.
 
 Cambio de aspecto deliberado. API: solo se añaden props y componentes; nada se quita ni se renombra.
 

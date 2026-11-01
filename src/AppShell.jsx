@@ -638,20 +638,7 @@ export function AppShell({
       </a>
       <div className={`hrl-shell${plegado ? ' hrl-shell--plegado' : ''}${menuMovil ? ' hrl-shell--menu-abierto' : ''}`}>
         <aside className="hrl-sidebar" aria-label="Menú principal">
-          <div className="hrl-sidebar__cabeza">
-            {marca && <div className="hrl-sidebar__logo">{marca}</div>}
-            {/* Replegar vive junto a lo que repliega: en la barra quedaba solo
-                en una esquina. Sin tooltip a propósito: el gesto se explica solo. */}
-            <button
-              type="button"
-              className={`hrl-iconbtn hrl-plegar${plegado ? ' hrl-plegar--plegado' : ''}`}
-              onClick={alternarMenu}
-              aria-label={menuMovil ? 'Cerrar el menú' : plegado ? 'Mostrar el menú lateral' : 'Replegar el menú lateral'}
-              aria-expanded={menuMovil || !plegado}
-            >
-              <Icon name="sh-sidebar-collapse" size={19} />
-            </button>
-          </div>
+          {marca && <div className="hrl-sidebar__logo">{marca}</div>}
           <SidebarNav navItems={navItems} active={active} onSelect={alElegir} plegado={plegado} collapsibleGroups={collapsibleGroups} />
           {user && (
             <div className="hrl-sidebar__pie">
@@ -690,9 +677,18 @@ export function AppShell({
           <header className="hrl-topbar" ref={topbarRef}>
             <div className="hrl-topbar__row">
               <div className="hrl-topbar__inicio">
-                {/* Solo en pantallas estrechas, donde el menú es un cajón. */}
-                <button type="button" className="hrl-barra-boton hrl-barra-boton--movil" onClick={alternarMenu} aria-label="Abrir el menú" aria-expanded={menuMovil}>
-                  <Icon name="sh-lines" size={19} />
+                {/* Replegar o extender el menú, al inicio de la barra, junto al
+                    borde del menú que mueve. En pantallas estrechas abre el
+                    menú como cajón. Sin tooltip a propósito: el gesto se explica
+                    solo y el aviso estorbaba justo donde está el cursor. */}
+                <button
+                  type="button"
+                  className={`hrl-barra-boton hrl-plegar${plegado ? ' hrl-plegar--plegado' : ''}`}
+                  onClick={alternarMenu}
+                  aria-label={menuMovil ? 'Cerrar el menú' : plegado ? 'Mostrar el menú lateral' : 'Replegar el menú lateral'}
+                  aria-expanded={menuMovil || !plegado}
+                >
+                  <Icon name="sh-sidebar-collapse" size={19} />
                 </button>
                 {primaryAction && (
                   <Tooltip title={primaryAction.label} body={primaryAction.description ?? primaryAction.label} focusable={false}>
