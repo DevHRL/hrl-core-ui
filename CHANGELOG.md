@@ -62,6 +62,12 @@ Lo que cambia y cuánto:
 - El foco que devuelve un cajón o un menú al cerrarse ya no abre el tooltip del botón (`focus.js`); el menú
   desplegable devuelve el foco al botón de verdad, no al envoltorio.
 - Icono nuevo `sh-logout`. El cajón de notificaciones vacío ya no habla del «backend».
+- **`StatCard` con tendencia** (`trend` `{points:{label,value,title?}[],label?,format?}`): barras pequeñas de los
+  últimos periodos a la derecha de la cifra, la última en el color de la acción. Un periodo sin dato queda como
+  hueco punteado, no como cero; el detalle de cada periodo se lee en el tooltip.
+- **La cuenta, al pie del menú**, ya no abre personalización ni cierre: a su lado hay un solo botón con el icono de
+  cerrar sesión y su tooltip. Solo con `accountItems` (cambiar de ámbito) el perfil abre un menú, con eso.
+- `CompactSelect` toma la esquina y el relleno de los botones.
 
 Cambio de aspecto deliberado. API: solo se añaden props y componentes; nada se quita ni se renombra.
 
