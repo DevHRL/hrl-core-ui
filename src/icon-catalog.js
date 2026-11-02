@@ -16,6 +16,7 @@ export const ICONS = Object.freeze([
   'sh-bell',
   'sh-close',
   'sh-chevron',
+  'sh-arrow-right',
   'sh-crit',
   'sh-eye',
   'sh-eye-off',

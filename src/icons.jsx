@@ -63,6 +63,9 @@ export const IconSprite = memo(function IconSprite() {
       <symbol id="sh-chevron" viewBox="0 0 24 24">
         <P d="M9 5.2l7 6.8-7 6.8z" />
       </symbol>
+      <symbol id="sh-arrow-right" viewBox="0 0 24 24">
+        <P d="M13.2 5.3L20 12l-6.8 6.7-1.7-1.7 3.8-3.8H4v-2.4h11.3L11.5 7z" />
+      </symbol>
       <symbol id="sh-crit" viewBox="0 0 24 24">
         <P d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.2 4.6h2.4v8h-2.4zm0 10h2.4V19h-2.4z" />
       </symbol>

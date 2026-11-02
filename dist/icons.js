@@ -22,6 +22,7 @@ const IconSprite = memo(function IconSprite2() {
     /* @__PURE__ */ jsx("symbol", { id: "sh-bell", viewBox: "0 0 24 24", children: /* @__PURE__ */ jsx(P, { d: "M12 2a6 6 0 0 0-6 6v3.6L4 15v1.4h16V15l-2-3.4V8a6 6 0 0 0-6-6zm0 20a3 3 0 0 0 2.9-2.3H9.1A3 3 0 0 0 12 22z" }) }),
     /* @__PURE__ */ jsx("symbol", { id: "sh-close", viewBox: "0 0 24 24", children: /* @__PURE__ */ jsx(P, { d: "M6.3 4.3L12 10l5.7-5.7 2 2L14 12l5.7 5.7-2 2L12 14l-5.7 5.7-2-2L10 12 4.3 6.3z" }) }),
     /* @__PURE__ */ jsx("symbol", { id: "sh-chevron", viewBox: "0 0 24 24", children: /* @__PURE__ */ jsx(P, { d: "M9 5.2l7 6.8-7 6.8z" }) }),
+    /* @__PURE__ */ jsx("symbol", { id: "sh-arrow-right", viewBox: "0 0 24 24", children: /* @__PURE__ */ jsx(P, { d: "M13.2 5.3L20 12l-6.8 6.7-1.7-1.7 3.8-3.8H4v-2.4h11.3L11.5 7z" }) }),
     /* @__PURE__ */ jsx("symbol", { id: "sh-crit", viewBox: "0 0 24 24", children: /* @__PURE__ */ jsx(P, { d: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.2 4.6h2.4v8h-2.4zm0 10h2.4V19h-2.4z" }) }),
     /* @__PURE__ */ jsx("symbol", { id: "sh-eye", viewBox: "0 0 24 24", children: /* @__PURE__ */ jsx(P, { d: "M12 5C6.6 5 2.8 9.2 1.5 12c1.3 2.8 5.1 7 10.5 7s9.2-4.2 10.5-7C21.2 9.2 17.4 5 12 5zm0 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4z" }) }),
     /* @__PURE__ */ jsxs("symbol", { id: "sh-eye-off", viewBox: "0 0 24 24", children: [

@@ -3,6 +3,11 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.11.0-redesign.2 — 02/11/2026 (prelanzamiento)
+
+**Icono `sh-arrow-right`.** Una flecha de relleno para «entrar al detalle». El chevrón `sh-chevron` dice
+«desplegar» o «pasar a la vista siguiente», y no se leía como abrir un registro. No cambia nada de lo existente.
+
 ## 1.11.0-redesign.1 — 31/10/2026 (prelanzamiento, rama `nueva-interfaz`)
 
 **Nueva interfaz.** Cambio de aspecto de todo el kit, a partir del boceto «Dashboard estadístico» del equipo.
