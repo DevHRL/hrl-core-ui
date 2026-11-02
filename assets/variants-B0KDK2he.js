@@ -1,0 +1,1 @@
+function f(n,t={},r={}){return(a={})=>{const o={...r,...a},s=[n];for(const[c,i]of Object.entries(t)){const e=i[o[c]];e&&s.push(e)}return o.className&&s.push(o.className),s.filter(Boolean).join(" ")}}function l(...n){return n.filter(Boolean).join(" ")}export{l as c,f as v};
