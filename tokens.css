@@ -1186,6 +1186,18 @@ body { margin: 0; background: #f1f2f4; }
   font-weight: var(--weight-bold);
 }
 
+/* Las vistas van al centro de la barra, no al centro de lo que sobra: los dos
+   lados casi nunca miden igual (un botón a un lado, dos o más al otro), y con una
+   fila flexible la píldora se corría hacia el lado más corto. Cada lado mide al
+   menos su contenido, así una píldora larga se desplaza sin montarse sobre ellos. */
+@media (min-width: 1181px) {
+  .hrl-topbar__row { display: grid; grid-template-columns: minmax(max-content, 1fr) minmax(0, auto) minmax(max-content, 1fr); }
+  .hrl-topbar__inicio { justify-self: start; }
+  .hrl-topbar__fin { justify-self: end; margin-left: 0; }
+  .hrl-vistas-marco,
+  .hrl-topbar__centro { justify-self: center; margin: 0; }
+}
+
 /* Con poco ancho, las vistas bajan a su propia fila, a lo ancho, y se
    desplazan de lado si no caben: nunca empujan la campana fuera de la barra. */
 @media (max-width: 1180px) {

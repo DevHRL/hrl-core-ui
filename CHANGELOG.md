@@ -3,6 +3,12 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.11.0-redesign.3 — 02/11/2026 (prelanzamiento)
+
+**Las vistas de la barra, centradas de verdad.** La píldora se centraba en lo que sobraba entre los dos lados de
+la barra, y como casi nunca miden igual quedaba corrida hacia el más corto. Ahora, con ancho de escritorio, la
+fila es una rejilla con lados iguales. Con poco ancho no cambia nada. No cambia ninguna prop.
+
 ## 1.11.0-redesign.2 — 02/11/2026 (prelanzamiento)
 
 **Icono `sh-arrow-right`.** Una flecha de relleno para «entrar al detalle». El chevrón `sh-chevron` dice
