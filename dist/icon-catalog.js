@@ -58,7 +58,13 @@ const ICONS = Object.freeze([
   "sh-plus",
   "sh-sort",
   "sh-more",
-  "sh-logout"
+  "sh-logout",
+  /* Agendas y programación (1.11.0-redesign.4). */
+  "sh-refresh",
+  "sh-stethoscope",
+  "sh-door",
+  "sh-print",
+  "sh-fullscreen"
 ]);
 const ICON_ALIASES = Object.freeze({
   "sh-chevron-abajo": "sh-chevron-down",

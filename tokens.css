@@ -94,6 +94,7 @@
   --ok-text: #0a5a51;
   --accent-text: #086c60;
   --neutral-text: #475467;
+  --violet-text: #5b2bb5;
 
   /* Identidad institucional del hospital. Son los colores del logotipo, no del
      sistema de diseño: se usan solo en la marca (login y cabecera) y no cambian
@@ -192,6 +193,7 @@
   --warning-soft: #f7f0e2;
   --destructive-soft: #fcede9;
   --neutral-soft: #edf0f1;
+  --violet-soft: #f1ecfb;
 
   /* Bordes, campos y foco */
   --input: var(--bg-surface);
@@ -2693,6 +2695,7 @@ body { margin: 0; background: #f1f2f4; }
   --ok-text: #6fe0c8;
   --accent-text: #5fd3bf;
   --neutral-text: #b8c1cc;
+  --violet-text: #c4a8ff;
   --action-blue: #5fd3bf;
   --surface-sunken: #1c2328;
   --nav-icon: #8b96a4;
@@ -2706,6 +2709,7 @@ body { margin: 0; background: #f1f2f4; }
   --warning-soft: rgba(243, 201, 105, 0.16);
   --destructive-soft: rgba(255, 120, 95, 0.16);
   --neutral-soft: rgba(184, 193, 204, 0.12);
+  --violet-soft: rgba(196, 168, 255, 0.14);
 
   /* Los semanticos que no se derivan solos de los de implementacion. */
   --primary-foreground: #062520;
@@ -2754,6 +2758,7 @@ body { margin: 0; background: #f1f2f4; }
   --info-text: #164a69;
   --accent-text: #064d45;
   --neutral-text: #344054;
+  --violet-text: #45198f;
   --action-blue: #064d45;
   --banda-hasta: #0a5a51;
   --subtle-foreground: #344054;
@@ -2780,6 +2785,7 @@ body { margin: 0; background: #f1f2f4; }
   --ok-text: #8ff0dc;
   --accent-text: #8ff0dc;
   --neutral-text: #d0dae2;
+  --violet-text: #ddcbff;
   --brand-texto: #8ff0dc;
   --banda-hasta: #0a5a51;
   --subtle-foreground: #cfd6de;
@@ -3833,6 +3839,368 @@ body { margin: 0; background: #f1f2f4; }
    era adorno en bucle (la campana, el anillo de alerta) se queda quieto. Las
    transiciones de color siguen, más cortas; las de posición las anula cada
    componente que se desplaza (ver el menú en cajón). */
+/* ------------------------------------------------------------------ Avatar
+
+   Iniciales en un círculo del tono de la persona. Mismo par texto/fondo que
+   Badge: el contraste ya está medido. */
+.hrl-avatar {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--tone-bg);
+  color: var(--tone-fg);
+  box-shadow: inset 0 0 0 1px var(--tone-line);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  user-select: none;
+}
+
+.hrl-avatar--sm { width: 28px; height: 28px; font-size: var(--text-xs, 11px); }
+.hrl-avatar--md { width: 40px; height: 40px; font-size: var(--text-md, 14px); }
+.hrl-avatar--lg { width: 56px; height: 56px; font-size: var(--text-lg, 17px); }
+
+/* -------------------------------------------------------- Medidor de capacidad */
+.hrl-capacidad { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.hrl-capacidad--compacta { min-width: 72px; }
+
+.hrl-capacidad__barra {
+  display: flex;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--neutral-soft);
+  overflow: hidden;
+}
+
+.hrl-capacidad__tramo {
+  display: block;
+  height: 100%;
+  transform-origin: left;
+  animation: hrl-barGrowX 0.85s var(--ease) both;
+}
+
+.hrl-capacidad__tramo + .hrl-capacidad__tramo { box-shadow: inset 2px 0 0 var(--surface); }
+.hrl-capacidad__tramo:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
+.hrl-capacidad__texto {
+  font-size: var(--text-sm, 12.5px);
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-foreground);
+}
+
+.hrl-capacidad__texto--exceso { color: var(--warning-text); font-weight: var(--weight-semibold); }
+
+/* -------------------------------------------------------------- Cupos (SlotGrid)
+
+   Cada cupo dice su estado con fondo e icono. Los elegibles son botones de
+   alto táctil completo; los demás, del mismo tamaño para que la rejilla no
+   salte cuando un cupo cambia de estado. */
+.hrl-cupos { display: flex; flex-direction: column; gap: 8px; }
+
+.hrl-cupos__rejilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: 6px;
+}
+
+.hrl-cupo {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 2px 4px;
+  min-height: var(--touch-target);
+  padding: 4px 6px;
+  border: 1px solid var(--tone-line);
+  border-radius: var(--radius-sm);
+  background: var(--tone-bg);
+  color: var(--tone-fg);
+  font-family: inherit;
+  font-size: var(--text-sm, 12.5px);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--leading-tight);
+}
+
+.hrl-cupo--taken,
+.hrl-cupo--held,
+.hrl-cupo--blocked { border-color: transparent; }
+.hrl-cupo--past { opacity: 0.55; text-decoration: line-through; }
+
+.hrl-cupo--elegible {
+  cursor: pointer;
+  transition: background var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.hrl-cupo--elegible:hover { box-shadow: inset 0 0 0 1px var(--tone-line); }
+.hrl-cupo--elegible:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; }
+.hrl-cupo--on { box-shadow: inset 0 0 0 2px var(--primary); }
+
+.hrl-cupo__hora { font-weight: var(--weight-bold); }
+.hrl-cupo__extra { margin-left: 1px; font-weight: var(--weight-extrabold); }
+
+.hrl-cupo__nota {
+  flex-basis: 100%;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-xs, 11px);
+  font-weight: var(--weight-semibold);
+  opacity: 0.85;
+}
+
+.hrl-cupos__vacio { margin: 0; font-size: var(--text-sm, 12.5px); color: var(--muted-foreground); }
+
+.hrl-cupos__leyenda,
+.hrl-rol__leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  font-size: var(--text-sm, 12.5px);
+  color: var(--muted-foreground);
+}
+
+.hrl-cupos__muestra,
+.hrl-rol__muestra { display: inline-flex; align-items: center; gap: 6px; }
+
+.hrl-cupos__cuadro {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  min-height: 0;
+  padding: 0;
+  border: 1px solid var(--tone-line);
+  border-radius: var(--radius-xs);
+  background: var(--tone-bg);
+  opacity: 1;
+  text-decoration: none;
+}
+
+/* ------------------------------------------------------------ Rol (ScheduleGrid)
+
+   La primera columna queda fija al desplazar: sin el nombre a la vista la fila
+   no se lee. */
+.hrl-rol { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+
+.hrl-rol__marco {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  transition: opacity var(--transition-base);
+}
+
+.hrl-rol__marco--cargando { opacity: 0.55; }
+
+.hrl-rol__tabla {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--text-sm, 12.5px);
+  font-variant-numeric: tabular-nums;
+}
+
+.hrl-rol__tabla th,
+.hrl-rol__tabla td {
+  padding: 4px;
+  border-bottom: 1px solid var(--border-soft);
+  border-right: 1px solid var(--border-soft);
+  vertical-align: middle;
+}
+
+.hrl-rol__tabla tbody tr:last-child > * { border-bottom: 0; }
+.hrl-rol__tabla tr > *:last-child { border-right: 0; }
+.hrl-rol__tabla tbody tr:hover > * { background: var(--row-hover); }
+
+.hrl-rol__fija {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  min-width: 180px;
+  max-width: 240px;
+  padding: 6px 10px !important;
+  background: var(--surface);
+  text-align: left;
+  box-shadow: 1px 0 0 var(--border);
+}
+
+.hrl-rol__dia {
+  min-width: 40px;
+  font-weight: var(--weight-bold);
+  color: var(--foreground);
+  text-align: center;
+  line-height: var(--leading-tight);
+}
+
+.hrl-rol__dia > span { display: block; }
+.hrl-rol__dia--suave { color: var(--danger-text); }
+.hrl-rol__celda--suave { background: var(--surface-sunken); }
+
+.hrl-rol__nombre {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: var(--weight-semibold);
+  color: var(--foreground);
+}
+
+.hrl-rol__sub {
+  display: block;
+  font-size: var(--text-xs, 11px);
+  font-weight: var(--weight-medium, 500);
+  color: var(--subtle-foreground);
+  text-transform: capitalize;
+}
+
+.hrl-rol__celda { display: flex; flex-wrap: wrap; justify-content: center; gap: 3px; }
+
+/* 28 px: en un mes entero no cabe el alto táctil completo; queda por encima
+   del mínimo de 24 px de WCAG 2.2 (2.5.8) y cada píldora tiene su tooltip. */
+.hrl-rol__turno {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 6px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: var(--tone-bg);
+  color: var(--tone-fg);
+  font-family: inherit;
+  font-size: var(--text-xs, 11px);
+  font-weight: var(--weight-bold);
+  cursor: default;
+}
+
+.hrl-rol__turno--contorno { border-color: var(--tone-line); border-style: dashed; }
+button.hrl-rol__turno { cursor: pointer; transition: box-shadow var(--transition-fast); }
+button.hrl-rol__turno:hover { box-shadow: inset 0 0 0 1px var(--tone-line); }
+.hrl-rol__turno:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; }
+.hrl-rol__turno--muestra { min-width: 14px; width: 14px; height: 14px; padding: 0; border-color: var(--tone-line); border-radius: var(--radius-xs); }
+
+.hrl-rol__vacio { padding: 18px !important; text-align: center; color: var(--muted-foreground); }
+
+/* ------------------------------------------------------ Agenda (DayTimeline) */
+.hrl-agenda { display: flex; flex-direction: column; gap: 10px; min-width: 0; --agenda-carril: 46px; }
+
+.hrl-agenda__marco {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.hrl-agenda__fila {
+  display: grid;
+  grid-template-columns: minmax(150px, 200px) minmax(560px, 1fr);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.hrl-agenda__fila:last-child { border-bottom: 0; }
+.hrl-agenda__fila--eje { position: sticky; top: 0; z-index: 2; background: var(--surface); }
+
+.hrl-agenda__recurso {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 8px 12px;
+  background: var(--surface);
+  box-shadow: 1px 0 0 var(--border);
+}
+
+.hrl-agenda__nombre {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-base, 13.5px);
+  font-weight: var(--weight-semibold);
+  color: var(--foreground);
+}
+
+.hrl-agenda__sub { font-size: var(--text-xs, 11px); color: var(--subtle-foreground); }
+
+.hrl-agenda__pista {
+  position: relative;
+  display: block;
+  min-height: calc(var(--carriles, 1) * var(--agenda-carril) + 8px);
+  margin: 0 18px;
+}
+
+.hrl-agenda__fila--eje .hrl-agenda__pista { min-height: 30px; }
+
+.hrl-agenda__marca {
+  position: absolute;
+  top: 8px;
+  transform: translateX(-50%);
+  font-size: var(--text-xs, 11px);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--subtle-foreground);
+  white-space: nowrap;
+}
+
+.hrl-agenda__guia { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--border-soft); }
+.hrl-agenda__ahora { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--destructive); z-index: 1; }
+
+.hrl-agenda__libre {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding-left: 4px;
+  font-size: var(--text-sm, 12.5px);
+  color: var(--subtle-foreground);
+}
+
+.hrl-agenda__bloque {
+  position: absolute;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  height: calc(var(--agenda-carril) - 6px);
+  padding: 2px 8px;
+  overflow: hidden;
+  border: 1px solid var(--tone-line);
+  border-left-width: 4px;
+  border-radius: var(--radius-sm);
+  background: var(--tone-bg);
+  color: var(--tone-fg);
+  font-family: inherit;
+  text-align: left;
+  z-index: 1;
+}
+
+.hrl-agenda__bloque--contorno { border-style: dashed; border-left-style: solid; }
+button.hrl-agenda__bloque { cursor: pointer; transition: box-shadow var(--transition-fast); }
+button.hrl-agenda__bloque:hover { box-shadow: var(--shadow-sm); }
+.hrl-agenda__bloque:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; z-index: 2; }
+
+.hrl-agenda__bloque-hora,
+.hrl-agenda__bloque-texto {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: var(--leading-tight);
+}
+
+.hrl-agenda__bloque-hora { font-size: var(--text-xs, 11px); font-weight: var(--weight-bold); font-variant-numeric: tabular-nums; }
+.hrl-agenda__bloque-texto { font-size: var(--text-sm, 12.5px); font-weight: var(--weight-semibold); }
+
+.hrl-agenda__vacio { margin: 0; padding: 18px; text-align: center; font-size: var(--text-sm, 12.5px); color: var(--muted-foreground); }
+
 @media (prefers-reduced-motion: reduce) {
   .hrl-nuevo *,
   .hrl-nuevo *::before,

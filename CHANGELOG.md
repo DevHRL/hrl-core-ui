@@ -3,6 +3,27 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.11.0-redesign.4 — 12/11/2026 (prelanzamiento)
+
+**Componentes de agenda y programación.** Roles, salas y cupos se resolvían en cada sistema con tablas y
+chips propios; ahora tienen su pieza en el kit. Todo es nuevo: no cambia ninguna prop ni el aspecto de lo
+que ya existía.
+
+- **`ScheduleGrid`**: personas en filas y días en columnas, con la primera columna fija y cada asignación
+  como píldora de 28 px con tooltip (en un mes entero no cabe el alto táctil completo; queda sobre el
+  mínimo de 24 px de WCAG 2.2).
+- **`DayTimeline`**: un día a escala por recurso (sala, persona, equipo); los bloques que se cruzan bajan
+  a otro carril en vez de taparse, y se marca la hora actual con `now`.
+- **`SlotGrid`**: cupos hora por hora con estado por fondo e icono (libre, ocupado, retenido, bloqueado,
+  ya pasó), marca de adicional y selección por teclado.
+- **`CapacityMeter`**: capacidad usada por tramos, `role="meter"`, «12 de 20 · 8 libres». `total: null`
+  es «sin dato», no cero, y el exceso sobre la capacidad se dice en vez de recortarse.
+- **`Avatar`**: iniciales en un círculo del tono de la persona.
+- **Tonos compartidos** (`TONES`, `toneVars()`), los mismos pares que `Badge`, más **`violet`** para
+  distinguir un origen (otro sistema, otra sede) de un estado. Tokens nuevos `--violet-text` y
+  `--violet-soft` en los cuatro temas (7,4:1 en claro y 8,4:1 en oscuro; AAA en alto contraste).
+- **Iconos** `sh-refresh`, `sh-stethoscope`, `sh-door`, `sh-print` y `sh-fullscreen`.
+
 ## 1.11.0-redesign.3 — 02/11/2026 (prelanzamiento)
 
 **Las vistas de la barra, centradas de verdad.** La píldora se centraba en lo que sobraba entre los dos lados de

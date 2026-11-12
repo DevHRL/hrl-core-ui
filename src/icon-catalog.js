@@ -68,7 +68,14 @@ export const ICONS = Object.freeze([
   'sh-plus',
   'sh-sort',
   'sh-more',
-  'sh-logout'
+  'sh-logout',
+
+  /* Agendas y programación (1.11.0-redesign.4). */
+  'sh-refresh',
+  'sh-stethoscope',
+  'sh-door',
+  'sh-print',
+  'sh-fullscreen'
 ]);
 
 /* Nombres anteriores, en español, de iconos ya renombrados. Se siguen

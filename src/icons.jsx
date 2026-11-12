@@ -232,6 +232,24 @@ export const IconSprite = memo(function IconSprite() {
       <symbol id="sh-more" viewBox="0 0 24 24">
         <P d="M5.5 9.8a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4zm6.5 0a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4zm6.5 0a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4z" />
       </symbol>
+      <symbol id="sh-refresh" viewBox="0 0 24 24">
+        <P d="M12 4A8 8 0 0 0 4.1 10.7l2.4.4A5.6 5.6 0 0 1 16.2 8.2l-2.6 2.6H21V3.4l-3.1 3.1A8 8 0 0 0 12 4z" />
+        <P d="M12 20a8 8 0 0 0 7.9-6.7l-2.4-.4a5.6 5.6 0 0 1-9.7 2.9l2.6-2.6H3v7.4l3.1-3.1A8 8 0 0 0 12 20z" />
+      </symbol>
+      <symbol id="sh-stethoscope" viewBox="0 0 24 24">
+        <P d="M5 2.5h2.4v6.3a3.6 3.6 0 0 0 7.2 0V2.5H17v6.3a6 6 0 0 1-4.8 5.9v1.8a3.3 3.3 0 0 0 6.6 0v-1.1a2.8 2.8 0 1 1 2.4 0v1.1a5.7 5.7 0 0 1-11.4 0v-1.8A6 6 0 0 1 5 8.8zm15 9.1a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6z" />
+      </symbol>
+      <symbol id="sh-door" viewBox="0 0 24 24">
+        <P d="M6 2.5h12a1 1 0 0 1 1 1v16.1h2V22H3v-2.4h2V3.5a1 1 0 0 1 1-1zm8.6 8.3a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z" />
+      </symbol>
+      <symbol id="sh-print" viewBox="0 0 24 24">
+        <P d="M7 2.5h10V7H7z" />
+        <P d="M5 8.2h14a2 2 0 0 1 2 2V16h-2.8v-3.4H5.8V16H3v-5.8a2 2 0 0 1 2-2zm12.2 1.9a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+        <P d="M7.4 14.2h9.2v7.3H7.4z" />
+      </symbol>
+      <symbol id="sh-fullscreen" viewBox="0 0 24 24">
+        <P d="M3 3h6.5v2.4H5.4v4.1H3zm11.5 0H21v6.5h-2.4V5.4h-4.1zM21 21h-6.5v-2.4h4.1v-4.1H21zM3 21v-6.5h2.4v4.1h4.1V21z" />
+      </symbol>
     </svg>
   );
 });

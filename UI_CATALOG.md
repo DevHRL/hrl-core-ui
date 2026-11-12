@@ -119,6 +119,20 @@ tokensToCss();                    // el bloque CSS completo, para otro bundler
 }
 ```
 
+## 3.1 Agenda y programación
+
+Para roles, turnos, salas y cupos. Comparten los tonos `ok`·`info`·`warn`·`crit`·`none`·`violet`
+(`TONES`, `toneVars()`): los mismos pares texto/fondo que `Badge`. `violet` distingue un **origen**
+(otro sistema, otra sede), no un estado. Con `outline` el tono va en el borde (borrador, pendiente).
+
+| Componente | Import | Props principales |
+|---|---|---|
+| `ScheduleGrid` | `@/core-ui` | `columns` `{key,label,sublabel?,muted?}[]` · `rows` `{key,title,subtitle?}[]` · `entriesOf(row,col)` → `{key,label,tone?,outline?,tip?,ariaLabel?,onSelect?}[]` · `label` **(req.)** · `rowHeader` · `legend` `{label,tone,outline?}[]` · `empty` · `loading`. Rol de un mes: primera columna fija al desplazar; cada asignación es una píldora corta (28 px) con tooltip |
+| `DayTimeline` | `@/core-ui` | `rows` `{key,title,subtitle?,blocks}[]` (bloque: `{key,start,end,label,detail?,tone?,outline?,tip?,onSelect?}`, horas `HH:MM`) · `start` (07:00) · `end` (20:00) · `step` (60) · `now` · `label` **(req.)** · `legend` · `empty`. Un día a escala: los bloques que se cruzan bajan a otro carril; lo que sale del eje se recorta y lo dice el tooltip |
+| `SlotGrid` | `@/core-ui` | `slots` `{key,time,status,extra?,note?,tip?,tone?}[]` (`status` free·taken·held·blocked·past) · `label` **(req.)** · `onSelect` · `selectable(slot)` (por defecto, libres) · `selected` · `legend` · `empty`. Los cupos hora por hora, con fondo **e** icono; un solo punto de tabulación, flechas entre los elegibles |
+| `CapacityMeter` | `@/core-ui` | `total` (`null` = sin dato, no cero) · `segments` `{key,label,value,tone?}[]` · `label` **(req.)** · `unit` · `compact` · `format`. Barra `role="meter"` con «12 de 20 · 8 libres» y tooltip por tramo; el exceso sobre la capacidad se dice, no se recorta |
+| `Avatar` | `@/core-ui` | `name` · `size` sm·md·lg · `tone` · `label` (sin él es decorativo: el nombre va al lado) |
+
 ## 4. Gráficos
 
 `GaugeArc` · `Sparkline` · `StackedBars` · `SeriesBars` · `Funnel` · `Ranking` ·

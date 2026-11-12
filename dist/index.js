@@ -34,6 +34,12 @@ import { usePagination, ROWS_PER_PAGE, PAGE_SIZES } from "./paginate.js";
 import { sortRows, nextSort } from "./sort.js";
 import { GaugeArc, Sparkline, StackedBars, SeriesBars, Funnel, Ranking, SplitBar } from "./Charts.js";
 import { Calendar } from "./Calendar.js";
+import { Avatar } from "./Avatar.js";
+import { CapacityMeter } from "./CapacityMeter.js";
+import { SlotGrid } from "./SlotGrid.js";
+import { ScheduleGrid } from "./ScheduleGrid.js";
+import { DayTimeline } from "./DayTimeline.js";
+import { TONES, toneVars } from "./tones.js";
 import { AppShell, ID_CONTENIDO } from "./AppShell.js";
 import { PageHeader } from "./PageHeader.js";
 import { PageBanner } from "./PageBanner.js";
@@ -53,15 +59,18 @@ import { memoize, invalidate } from "./cache.js";
 export {
   Alert,
   AppShell,
+  Avatar,
   Badge,
   Button,
   Calendar,
+  CapacityMeter,
   Card,
   ChangePasswordScreen,
   Checkbox,
   CompactSelect,
   DEPRECATED,
   DataTable,
+  DayTimeline,
   DetailDialog,
   Dialog,
   DropdownMenu,
@@ -103,11 +112,13 @@ export {
   ProgressSteps,
   ROWS_PER_PAGE,
   Ranking,
+  ScheduleGrid,
   SegmentedControl,
   SelectionStrip,
   SeriesBars,
   Skeleton,
   SkeletonRows,
+  SlotGrid,
   Sparkline,
   Spinner,
   SplitBar,
@@ -117,6 +128,7 @@ export {
   StatCard,
   Steps,
   Switch,
+  TONES,
   Tabs,
   Timeline,
   Toast,
@@ -137,6 +149,7 @@ export {
   sortRows,
   token,
   tokensToCss,
+  toneVars,
   useExitAnimation,
   useExpandedRows,
   useFloatingTip,

@@ -39,6 +39,7 @@ const preset = {
     "ok-text": "#0a5a51",
     "accent-text": "#086c60",
     "neutral-text": "#475467",
+    "violet-text": "#5b2bb5",
     /* Identidad institucional del hospital. Son los colores del logotipo, no del
      sistema de diseño: se usan solo en la marca (login y cabecera) y no
      cambian con el tema, porque siempre van sobre fondo claro. */
@@ -117,6 +118,7 @@ const preset = {
     "warning-soft": "#f7f0e2",
     "destructive-soft": "#fcede9",
     "neutral-soft": "#edf0f1",
+    "violet-soft": "#f1ecfb",
     /* Bordes, campos y foco */
     input: "#ffffff",
     "input-border": "#8a94a6",
@@ -150,6 +152,7 @@ const preset = {
     "ok-text": "#6fe0c8",
     "accent-text": "#5fd3bf",
     "neutral-text": "#b8c1cc",
+    "violet-text": "#c4a8ff",
     "action-blue": "#5fd3bf",
     "surface-sunken": "#1c2328",
     "nav-icon": "#8b96a4",
@@ -162,6 +165,7 @@ const preset = {
     "warning-soft": "rgba(243, 201, 105, 0.16)",
     "destructive-soft": "rgba(255, 120, 95, 0.16)",
     "neutral-soft": "rgba(184, 193, 204, 0.12)",
+    "violet-soft": "rgba(196, 168, 255, 0.14)",
     /* Los semanticos que no se derivan solos de los de implementacion. */
     "primary-foreground": "#062520",
     "subtle-foreground": "#8b96a4",

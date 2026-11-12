@@ -60,7 +60,7 @@ const SUPERFICIES = ['background', 'surface'];
 const TEXTOS = [
   'foreground', 'surface-foreground', 'muted-foreground', 'subtle-foreground',
   'destructive-text', 'success-text', 'warning-fg', 'info-fg',
-  'primary-text', 'accent-text', 'neutral-text',
+  'primary-text', 'accent-text', 'neutral-text', 'violet-text',
 ];
 // Texto sobre su propio fondo de acción (el botón primario, no una tarjeta).
 const SOBRE_SI_MISMO = [
@@ -73,6 +73,8 @@ const SOBRE_SI_MISMO = [
   ['banda-texto', 'banda-hasta'],
   ['banda-desde', 'banda-texto'],
   ['mascota-tinta', 'warning'],
+  // El tono `violet` de las agendas: texto sobre su fondo tenue (sólido en claro).
+  ['violet-text', 'violet-soft'],
 ];
 
 // Lo que no es texto pero tiene que verse (WCAG 1.4.11, 3:1): bordes de los

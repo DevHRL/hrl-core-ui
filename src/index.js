@@ -51,6 +51,12 @@ export { sortRows, nextSort } from './sort.js';
 /* ------------------------------------------------------------ gráficos */
 export { GaugeArc, Sparkline, StackedBars, SeriesBars, Funnel, Ranking, SplitBar } from './Charts.jsx';
 export { Calendar } from './Calendar.jsx';
+export { Avatar } from './Avatar.jsx';
+export { CapacityMeter } from './CapacityMeter.jsx';
+export { SlotGrid } from './SlotGrid.jsx';
+export { ScheduleGrid } from './ScheduleGrid.jsx';
+export { DayTimeline } from './DayTimeline.jsx';
+export { TONES, toneVars } from './tones.js';
 
 /* -------------------------------------------------------------- layout */
 export { AppShell, ID_CONTENIDO } from './AppShell.jsx';
