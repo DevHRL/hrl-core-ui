@@ -3,6 +3,12 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.11.0-redesign.5 — 12/11/2026 (prelanzamiento)
+
+**`Input kind="time"` y `kind="month"`.** Programar turnos pide una hora de inicio y fin, y un rol se arma por
+mes; sin estos tipos cada sistema volvía a su propio campo. Se delegan al control nativo del navegador, como
+`date`: su selector ya es accesible y sigue el idioma del sistema. No cambia nada de lo existente.
+
 ## 1.11.0-redesign.4 — 12/11/2026 (prelanzamiento)
 
 **Componentes de agenda y programación.** Roles, salas y cupos se resolvían en cada sistema con tablas y

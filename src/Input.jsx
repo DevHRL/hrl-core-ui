@@ -2,6 +2,10 @@ import { useId, useState } from 'react';
 import { Tooltip } from './Tooltip.jsx';
 import { Icon } from './icons.jsx';
 
+/* Tipos que se delegan al control nativo del navegador: su selector (calendario,
+   reloj, mes) ya es accesible y respeta el idioma del sistema. */
+const NATIVOS = ['date', 'time', 'month'];
+
 export function Input({
   label = 'Campo',
   kind = 'text',
@@ -101,7 +105,7 @@ export function Input({
               desplazarse sin que nadie lo note. */}
           <input
             className="hrl-field__input"
-            type={kind === 'date' ? 'date' : kind === 'password' && !verClave ? 'password' : 'text'}
+            type={NATIVOS.includes(kind) ? kind : kind === 'password' && !verClave ? 'password' : 'text'}
             inputMode={kind === 'number' ? 'decimal' : undefined}
             style={kind === 'number' ? { textAlign: 'right' } : undefined}
             disabled={disabled}

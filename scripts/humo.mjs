@@ -21,6 +21,8 @@ const CASOS = [
   ['Input', { label: 'Clave', kind: 'password', autoComplete: 'current-password', error: 'Requerida', hint: 'Mínimo 10' }],
   ['Input', { label: 'Lista', kind: 'select', options: [{ value: 'a', label: 'A' }] }],
   ['Input', { label: 'Monto', kind: 'number', disabled: true }],
+  ['Input', { label: 'Hora', kind: 'time', value: '08:00', onChange: () => {} }],
+  ['Input', { label: 'Mes', kind: 'month', value: '2026-11', onChange: () => {} }],
   ['CompactSelect', { 'aria-label': 'Año', options: ['2026'] }],
   ['Checkbox', { label: 'Incluir', checked: true, onChange: () => {} }],
   ['NumberCell', { 'aria-label': 'Atenciones', value: 4.5, onChange: () => {} }],

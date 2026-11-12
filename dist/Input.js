@@ -2,6 +2,7 @@ import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import { useId, useState } from "react";
 import { Tooltip } from "./Tooltip.js";
 import { Icon } from "./icons.js";
+const NATIVOS = ["date", "time", "month"];
 function Input({
   label = "Campo",
   kind = "text",
@@ -63,7 +64,7 @@ function Input({
         "input",
         {
           className: "hrl-field__input",
-          type: kind === "date" ? "date" : kind === "password" && !verClave ? "password" : "text",
+          type: NATIVOS.includes(kind) ? kind : kind === "password" && !verClave ? "password" : "text",
           inputMode: kind === "number" ? "decimal" : void 0,
           style: kind === "number" ? { textAlign: "right" } : void 0,
           disabled,
