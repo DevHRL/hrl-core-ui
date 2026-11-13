@@ -23,12 +23,28 @@ import { toneVars } from './tones.js';
      legend      muestra la leyenda con el conteo de cada estado
      empty       texto cuando no hay cupos */
 const SLOT_STATUS = {
-  free: { texto: 'Libre', tono: 'ok', icono: null, contorno: true },
-  taken: { texto: 'Ocupado', tono: 'info', icono: 'sh-profile', contorno: false },
-  held: { texto: 'Retenido', tono: 'warn', icono: 'sh-clock', contorno: false },
-  blocked: { texto: 'Bloqueado', tono: 'none', icono: 'sh-close', contorno: false },
-  past: { texto: 'Ya pasó', tono: 'none', icono: null, contorno: true },
+  free: { texto: 'Libre', tono: 'ok', icono: null, contorno: true, uno: 'libre', varios: 'libres' },
+  taken: { texto: 'Ocupado', tono: 'info', icono: 'sh-profile', contorno: false, uno: 'ocupado', varios: 'ocupados' },
+  held: { texto: 'Retenido', tono: 'warn', icono: 'sh-clock', contorno: false, uno: 'retenido', varios: 'retenidos' },
+  blocked: { texto: 'Bloqueado', tono: 'none', icono: 'sh-close', contorno: false, uno: 'bloqueado', varios: 'bloqueados' },
+  past: { texto: 'Ya pasó', tono: 'none', icono: null, contorno: true, uno: 'ya pasó', varios: 'ya pasaron' },
 };
+
+/* Leyenda: un grupo por estado, tono y nota, en el orden de SLOT_STATUS. Así
+   «ocupado en SIGH» (violeta) y «ocupado en EVA» (azul) se ven por separado,
+   con la misma muestra que el cupo de la rejilla y la cantidad delante. */
+function gruposDeLeyenda(slots) {
+  const orden = Object.keys(SLOT_STATUS);
+  const grupos = new Map();
+  for (const s of slots) {
+    const status = SLOT_STATUS[s.status] ? s.status : 'free';
+    const clave = `${status}|${s.tone ?? ''}|${s.note ?? ''}`;
+    const g = grupos.get(clave) ?? { clave, status, tone: s.tone, note: s.note, n: 0 };
+    g.n += 1;
+    grupos.set(clave, g);
+  }
+  return [...grupos.values()].sort((a, b) => orden.indexOf(a.status) - orden.indexOf(b.status));
+}
 
 export function SlotGrid({
   slots = [],
@@ -54,9 +70,6 @@ export function SlotGrid({
   };
 
   if (!slots.length) return <p className="hrl-cupos__vacio">{empty}</p>;
-
-  const conteo = {};
-  for (const s of slots) conteo[s.status] = (conteo[s.status] ?? 0) + 1;
 
   return (
     <div className="hrl-cupos">
@@ -116,15 +129,31 @@ export function SlotGrid({
       </div>
 
       {legend && (
-        <div className="hrl-cupos__leyenda">
-          {Object.entries(SLOT_STATUS).filter(([k]) => conteo[k]).map(([k, e]) => (
-            <span key={k} className="hrl-cupos__muestra">
-              <span className={`hrl-cupos__cuadro hrl-cupo--${k}`} style={toneVars(e.tono, e.contorno)} />
-              {e.texto} · {conteo[k]}
-            </span>
-          ))}
-          {slots.some((s) => s.extra) && <span className="hrl-cupos__muestra">+ adicional</span>}
-        </div>
+        <ul className="hrl-cupos__leyenda" aria-label={`Leyenda de ${label}`}>
+          {gruposDeLeyenda(slots).map((g) => {
+            const e = SLOT_STATUS[g.status];
+            return (
+              <li key={g.clave} className="hrl-cupos__muestra">
+                <span
+                  className={`hrl-cupo hrl-cupo--${g.status} hrl-cupos__cuadro`}
+                  style={toneVars(g.tone ?? e.tono, e.contorno)}
+                  aria-hidden="true"
+                >
+                  {e.icono && <Icon name={e.icono} size={10} />}
+                </span>
+                <span>
+                  <strong>{g.n}</strong> {g.n === 1 ? e.uno : e.varios}{g.note ? ` en ${g.note}` : ''}
+                </span>
+              </li>
+            );
+          })}
+          {slots.some((s) => s.extra) && (
+            <li className="hrl-cupos__muestra">
+              <span className="hrl-cupos__cuadro hrl-cupos__cuadro--extra" aria-hidden="true">+</span>
+              <span>adicional (sobrecupo)</span>
+            </li>
+          )}
+        </ul>
       )}
 
       <FloatingTip tip={tip} />

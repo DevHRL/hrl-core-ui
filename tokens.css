@@ -500,7 +500,12 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
 
 .hrl-field__control,
 .hrl-field__wrap {
+  box-sizing: border-box;
+  /* Alto fijo y no mínimo: un campo de texto y una lista quedan iguales en
+     la misma fila aunque la aplicación anfitriona dé estilos a input/select. */
+  height: var(--touch-target-lg);
   min-height: var(--touch-target-lg);
+  margin: 0;
   padding: 0 14px;
   border-radius: var(--radius);
   border: 1px solid var(--input-border);
@@ -556,6 +561,13 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
 .hrl-field__input {
   flex: 1;
   min-width: 0;
+  height: 100%;
+  /* La aplicación anfitriona puede rellenar todo input (p. ej. padding: 0.8rem):
+     el control del kit no hereda eso, el relleno lo pone su contenedor. */
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
   border: none;
   outline: none;
   background: transparent;
@@ -1891,8 +1903,16 @@ body { margin: 0; background: #f1f2f4; }
    que repartía los campos de forma imprevisible y dejaba el último solo en
    una fila con un hueco al lado.
 
-   Con 6 campos en 4 columnas quedan dos filas exactas y los botones ocupan el
-   hueco libre de la segunda (columnas 3 y 4) en lugar de bajar a una tercera. */
+   Los botones van en la última columna de la primera fila con hueco: con 3
+   campos en 4 columnas quedan a su lado y no dejan una fila vacía. Las
+   columnas siguen el ancho de la barra (consulta de contenedor): 4, 2 en una
+   tarjeta angosta y 1 en un celular. */
+.hrl-filtros {
+  width: 100%;
+  min-width: 0;
+  container-type: inline-size;
+}
+
 .hrl-filtros-barra {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1902,8 +1922,19 @@ body { margin: 0; background: #f1f2f4; }
   align-items: start;
 }
 
+@container (max-width: 760px) {
+  .hrl-filtros-barra:not(.hrl-filtros-barra--fija) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@container (max-width: 420px) {
+  .hrl-filtros-barra:not(.hrl-filtros-barra--fija) { grid-template-columns: minmax(0, 1fr); }
+}
+
 .hrl-filtros-barra__acciones {
-  grid-column: 3 / -1;
+  /* Solo el final fijo: la colocación automática la pone en la última columna
+     de la primera fila que la tenga libre. */
+  grid-column-end: -1;
+  justify-self: end;
   /* Los botones sí bajan, para quedar a la altura de los controles. */
   align-self: end;
   display: flex;
@@ -1911,6 +1942,14 @@ body { margin: 0; background: #f1f2f4; }
   justify-content: flex-end;
   gap: 10px;
   flex-wrap: wrap;
+}
+
+/* Las etiquetas de los filtros, en una sola línea: si una se parte, su control
+   baja y la fila se descuadra. La consulta de contenedor ya da el ancho. */
+.hrl-filtros-barra .hrl-field__label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ---------------------------------------------- Pestañas dentro de un panel */
@@ -3965,18 +4004,36 @@ body { margin: 0; background: #f1f2f4; }
 .hrl-cupos__muestra,
 .hrl-rol__muestra { display: inline-flex; align-items: center; gap: 6px; }
 
+/* La muestra de la leyenda es un cupo en miniatura (mismo fondo, borde e
+   icono que en la rejilla, «ya pasó» igual de atenuado), no un círculo que
+   se confunde con una casilla de opción. */
+.hrl-cupos__leyenda { margin: 0; padding: 0; list-style: none; }
+
+.hrl-cupos__cuadro.hrl-cupo,
 .hrl-cupos__cuadro {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 22px;
+  height: 16px;
   min-height: 0;
   padding: 0;
-  border: 1px solid var(--tone-line);
-  border-radius: var(--radius-xs);
-  background: var(--tone-bg);
-  opacity: 1;
+  border-radius: 4px;
   text-decoration: none;
 }
+
+.hrl-cupos__cuadro--extra {
+  border: 1px dashed var(--input-border);
+  background: var(--surface);
+  color: var(--foreground);
+  font-size: var(--text-xs, 11px);
+  font-weight: var(--weight-extrabold);
+  line-height: 1;
+}
+
+.hrl-cupos__muestra strong { color: var(--foreground); font-variant-numeric: tabular-nums; }
 
 /* ------------------------------------------------------------ Rol (ScheduleGrid)
 

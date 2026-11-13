@@ -3,6 +3,22 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.11.0-redesign.6 — 13/11/2026 (prelanzamiento)
+
+Arreglos de alineación vistos al usar el kit dentro de EVA (React 18, MUI y su CSS global):
+
+- **`FilterBar`**: los botones van en la última columna de la primera fila con hueco; con 3 filtros
+  quedan a su lado en vez de dejar una fila vacía. Las columnas siguen el ancho de la propia barra
+  (consulta de contenedor): 4, 2 dentro de una tarjeta angosta y 1 en un celular, y las etiquetas no se
+  parten en dos líneas. La barra y su pie van ahora dentro de un `div.hrl-filtros`; `columns` sigue fijando
+  las columnas.
+- **`Input`**: el campo de texto y la lista tienen el mismo alto (44 px) aunque la aplicación dé estilos a
+  todo `input` (p. ej. `padding: 0.8rem`); antes el de texto quedaba 4 px más alto y la fila se descuadraba.
+- **`SlotGrid`**: la leyenda muestra cada estado con un cupo en miniatura (mismo color, borde e icono que en
+  la rejilla) y la cantidad delante: «2 ocupados en SIGH», «14 ya pasaron». Separa los grupos por tono y
+  nota, así dos orígenes del mismo estado ya no se suman en una sola entrada. Es una lista (`ul`).
+- **Dependencias**: `react` y `react-dom` `>=18`. El kit no usa nada exclusivo de React 19 y EVA usa 18.
+
 ## 1.11.0-redesign.5 — 12/11/2026 (prelanzamiento)
 
 **`Input kind="time"` y `kind="month"`.** Programar turnos pide una hora de inicio y fin, y un rol se arma por

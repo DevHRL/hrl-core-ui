@@ -5,12 +5,24 @@ import { useFloatingTip } from "./useFloatingTip.js";
 import { FloatingTip } from "./Tooltip.js";
 import { toneVars } from "./tones.js";
 const SLOT_STATUS = {
-  free: { texto: "Libre", tono: "ok", icono: null, contorno: true },
-  taken: { texto: "Ocupado", tono: "info", icono: "sh-profile", contorno: false },
-  held: { texto: "Retenido", tono: "warn", icono: "sh-clock", contorno: false },
-  blocked: { texto: "Bloqueado", tono: "none", icono: "sh-close", contorno: false },
-  past: { texto: "Ya pas\xF3", tono: "none", icono: null, contorno: true }
+  free: { texto: "Libre", tono: "ok", icono: null, contorno: true, uno: "libre", varios: "libres" },
+  taken: { texto: "Ocupado", tono: "info", icono: "sh-profile", contorno: false, uno: "ocupado", varios: "ocupados" },
+  held: { texto: "Retenido", tono: "warn", icono: "sh-clock", contorno: false, uno: "retenido", varios: "retenidos" },
+  blocked: { texto: "Bloqueado", tono: "none", icono: "sh-close", contorno: false, uno: "bloqueado", varios: "bloqueados" },
+  past: { texto: "Ya pas\xF3", tono: "none", icono: null, contorno: true, uno: "ya pas\xF3", varios: "ya pasaron" }
 };
+function gruposDeLeyenda(slots) {
+  const orden = Object.keys(SLOT_STATUS);
+  const grupos = /* @__PURE__ */ new Map();
+  for (const s of slots) {
+    const status = SLOT_STATUS[s.status] ? s.status : "free";
+    const clave = `${status}|${s.tone ?? ""}|${s.note ?? ""}`;
+    const g = grupos.get(clave) ?? { clave, status, tone: s.tone, note: s.note, n: 0 };
+    g.n += 1;
+    grupos.set(clave, g);
+  }
+  return [...grupos.values()].sort((a, b) => orden.indexOf(a.status) - orden.indexOf(b.status));
+}
 function SlotGrid({
   slots = [],
   label,
@@ -33,8 +45,6 @@ function SlotGrid({
     refs.current[siguiente]?.focus();
   };
   if (!slots.length) return /* @__PURE__ */ jsx("p", { className: "hrl-cupos__vacio", children: empty });
-  const conteo = {};
-  for (const s of slots) conteo[s.status] = (conteo[s.status] ?? 0) + 1;
   return /* @__PURE__ */ jsxs("div", { className: "hrl-cupos", children: [
     /* @__PURE__ */ jsx("div", { className: "hrl-cupos__rejilla", role: "group", "aria-label": label, children: slots.map((s, i) => {
       const estado = SLOT_STATUS[s.status] ?? SLOT_STATUS.free;
@@ -90,14 +100,31 @@ function SlotGrid({
         s.key
       );
     }) }),
-    legend && /* @__PURE__ */ jsxs("div", { className: "hrl-cupos__leyenda", children: [
-      Object.entries(SLOT_STATUS).filter(([k]) => conteo[k]).map(([k, e]) => /* @__PURE__ */ jsxs("span", { className: "hrl-cupos__muestra", children: [
-        /* @__PURE__ */ jsx("span", { className: `hrl-cupos__cuadro hrl-cupo--${k}`, style: toneVars(e.tono, e.contorno) }),
-        e.texto,
-        " \xB7 ",
-        conteo[k]
-      ] }, k)),
-      slots.some((s) => s.extra) && /* @__PURE__ */ jsx("span", { className: "hrl-cupos__muestra", children: "+ adicional" })
+    legend && /* @__PURE__ */ jsxs("ul", { className: "hrl-cupos__leyenda", "aria-label": `Leyenda de ${label}`, children: [
+      gruposDeLeyenda(slots).map((g) => {
+        const e = SLOT_STATUS[g.status];
+        return /* @__PURE__ */ jsxs("li", { className: "hrl-cupos__muestra", children: [
+          /* @__PURE__ */ jsx(
+            "span",
+            {
+              className: `hrl-cupo hrl-cupo--${g.status} hrl-cupos__cuadro`,
+              style: toneVars(g.tone ?? e.tono, e.contorno),
+              "aria-hidden": "true",
+              children: e.icono && /* @__PURE__ */ jsx(Icon, { name: e.icono, size: 10 })
+            }
+          ),
+          /* @__PURE__ */ jsxs("span", { children: [
+            /* @__PURE__ */ jsx("strong", { children: g.n }),
+            " ",
+            g.n === 1 ? e.uno : e.varios,
+            g.note ? ` en ${g.note}` : ""
+          ] })
+        ] }, g.clave);
+      }),
+      slots.some((s) => s.extra) && /* @__PURE__ */ jsxs("li", { className: "hrl-cupos__muestra", children: [
+        /* @__PURE__ */ jsx("span", { className: "hrl-cupos__cuadro hrl-cupos__cuadro--extra", "aria-hidden": "true", children: "+" }),
+        /* @__PURE__ */ jsx("span", { children: "adicional (sobrecupo)" })
+      ] })
     ] }),
     /* @__PURE__ */ jsx(FloatingTip, { tip })
   ] });
