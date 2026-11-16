@@ -3,6 +3,21 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.11.0-redesign.7 — 15/11/2026 (prelanzamiento)
+
+Arreglos del menú lateral vistos en el Sistema de Reporte Estadístico (Windows, con la barra de
+desplazamiento clásica):
+
+- **`AppShell`, perfil**: al pasar el cursor por la cuenta, un tooltip da el nombre completo, el cargo y
+  el correo, con el menú abierto o plegado. En el menú se recortan con puntos suspensivos y antes solo
+  se podían leer completos con el menú plegado. Ahora el tooltip abarca el avatar y los textos.
+- **`AppShell`, menú**: ya no aparece una barra de desplazamiento horizontal. Un rótulo de grupo largo
+  («Reportes de hospitalización») no se partía y ensanchaba el menú 8 px cuando la barra vertical de
+  Windows ocupaba 15 px de su ancho. Ahora el rótulo se recorta con puntos suspensivos y el menú solo se
+  desplaza en vertical (`overflow-x: hidden`; el relleno de 4 px sigue dejando ver el anillo de foco).
+
+No cambia ninguna prop.
+
 ## 1.11.0-redesign.6 — 13/11/2026 (prelanzamiento)
 
 Arreglos de alineación vistos al usar el kit dentro de EVA (React 18, MUI y su CSS global):

@@ -820,8 +820,11 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   color: var(--subtle-foreground);
   text-transform: uppercase;
   /* Una línea siempre: mientras el menú cambia de ancho, un rótulo que se
-     partiera en dos haría saltar de alto a todos los módulos de debajo. */
+     partiera en dos haría saltar de alto a todos los módulos de debajo. Si no
+     cabe, se recorta con puntos suspensivos en vez de ensanchar el menú. */
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .hrl-sidebar__section-label,
@@ -831,6 +834,9 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  /* Solo se desplaza en vertical: con la barra de desplazamiento clásica de
+     Windows (15 px dentro del menú) nada debe abrir una horizontal. */
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   gap: var(--space-3);

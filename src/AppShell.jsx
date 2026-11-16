@@ -607,25 +607,20 @@ export function AppShell({
   const marca = logo === undefined ? <MarcaPorDefecto brand={brand} /> : logo;
   const nombreCuenta = user?.name ?? 'Sin sesión';
   const detalleCuenta = user?.role ?? user?.email;
-  
-  /* Plegado, el nombre y el cargo no se ven: pasan al tooltip del avatar. */
+  /* El nombre y el cargo se recortan en el menú: el tooltip los da completos, con el
+     correo, abierto o plegado. */
+  const detalleCompleto = [user?.role, user?.email].filter(Boolean).join('. ') || nombreCuenta;
+
   const perfil = (
-    <>
-      <Tooltip
-        as="span"
-        focusable={false}
-        title={plegado ? nombreCuenta : undefined}
-        body={plegado ? detalleCuenta ?? nombreCuenta : null}
-      >
-        <span className="hrl-cuenta__avatar" aria-hidden="true">
-          {user?.avatar ? <img className="hrl-avatar__foto" src={user.avatar} alt="" /> : iniciales(user?.name)}
-        </span>
-      </Tooltip>
+    <Tooltip as="span" focusable={false} title={nombreCuenta} body={detalleCompleto} style={{ minWidth: 0, gap: 'inherit' }}>
+      <span className="hrl-cuenta__avatar" aria-hidden="true">
+        {user?.avatar ? <img className="hrl-avatar__foto" src={user.avatar} alt="" /> : iniciales(user?.name)}
+      </span>
       <span className="hrl-cuenta__textos">
         <span className="hrl-cuenta__nombre">{nombreCuenta}</span>
         {detalleCuenta && <span className="hrl-cuenta__detalle">{detalleCuenta}</span>}
       </span>
-    </>
+    </Tooltip>
   );
 
   const vistas = tabs?.items?.length > 1;

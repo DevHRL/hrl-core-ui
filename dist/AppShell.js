@@ -451,17 +451,9 @@ function AppShell({
   const marca = logo === void 0 ? /* @__PURE__ */ jsx(MarcaPorDefecto, { brand }) : logo;
   const nombreCuenta = user?.name ?? "Sin sesi\xF3n";
   const detalleCuenta = user?.role ?? user?.email;
-  const perfil = /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsx(
-      Tooltip,
-      {
-        as: "span",
-        focusable: false,
-        title: plegado ? nombreCuenta : void 0,
-        body: plegado ? detalleCuenta ?? nombreCuenta : null,
-        children: /* @__PURE__ */ jsx("span", { className: "hrl-cuenta__avatar", "aria-hidden": "true", children: user?.avatar ? /* @__PURE__ */ jsx("img", { className: "hrl-avatar__foto", src: user.avatar, alt: "" }) : iniciales(user?.name) })
-      }
-    ),
+  const detalleCompleto = [user?.role, user?.email].filter(Boolean).join(". ") || nombreCuenta;
+  const perfil = /* @__PURE__ */ jsxs(Tooltip, { as: "span", focusable: false, title: nombreCuenta, body: detalleCompleto, style: { minWidth: 0, gap: "inherit" }, children: [
+    /* @__PURE__ */ jsx("span", { className: "hrl-cuenta__avatar", "aria-hidden": "true", children: user?.avatar ? /* @__PURE__ */ jsx("img", { className: "hrl-avatar__foto", src: user.avatar, alt: "" }) : iniciales(user?.name) }),
     /* @__PURE__ */ jsxs("span", { className: "hrl-cuenta__textos", children: [
       /* @__PURE__ */ jsx("span", { className: "hrl-cuenta__nombre", children: nombreCuenta }),
       detalleCuenta && /* @__PURE__ */ jsx("span", { className: "hrl-cuenta__detalle", children: detalleCuenta })
