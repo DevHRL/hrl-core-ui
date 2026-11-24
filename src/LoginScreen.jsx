@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Alert } from './Alert.jsx';
 import { Button } from './Button.jsx';
+import { Checkbox } from './Checkbox.jsx';
 import { HrlLogo } from './HrlLogo.jsx';
 import { Sprite } from './icons.jsx';
 import { Input } from './Input.jsx';
@@ -83,13 +84,21 @@ function useEnvio() {
 }
 
 /*   systemName  nombre del sistema, bajo el logo
-     onSubmit    ({ username, password }) => Promise; lanzar un Error muestra su mensaje
+     onSubmit    ({ username, password, remember }) => Promise; lanzar un Error muestra su mensaje
      labels      textos que sustituyen a los de fábrica (ver TEXTOS)
-     footer      nodo bajo el formulario (versión, ayuda) */
-export function LoginScreen({ systemName, onSubmit, backdrop = 'auto', labels, footer }) {
+     footer      nodo bajo el formulario (versión, ayuda)
+     remember    { label, hint?, defaultChecked? }: una casilla para mantener la
+                 sesión iniciada, entre la contraseña y el botón (1.11.0-redesign.8).
+                 Su valor llega en `onSubmit` como `remember`. Sin la prop no se
+                 dibuja y `remember` llega en false: qué significa «mantener» lo
+                 decide cada sistema (el kit no guarda sesiones). `hint` va debajo,
+                 en texto de apoyo, no en un tooltip: en el ingreso tiene que leerse
+                 sin buscarlo (p. ej. «No la marque en una computadora compartida»). */
+export function LoginScreen({ systemName, onSubmit, backdrop = 'auto', labels, footer, remember }) {
   const t = { ...TEXTOS, ...labels };
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [recordar, setRecordar] = useState(Boolean(remember?.defaultChecked));
   const { error, enviando, enviar } = useEnvio();
 
   return (
@@ -102,12 +111,18 @@ export function LoginScreen({ systemName, onSubmit, backdrop = 'auto', labels, f
         className="hrl-login__form"
         onSubmit={(e) => {
           e.preventDefault();
-          enviar(() => onSubmit({ username: username.trim(), password }));
+          enviar(() => onSubmit({ username: username.trim(), password, remember: Boolean(remember) && recordar }));
         }}
       >
         {error && <Alert tone="error" title={t.errorTitle}>{error}</Alert>}
         <Input label={t.username} required autoFocus autoComplete="username" value={username} onChange={(e) => setUsername(e.target.value)} />
         <Input label={t.password} kind="password" required autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        {remember && (
+          <div className="hrl-login__recordar">
+            <Checkbox label={remember.label} checked={recordar} onChange={setRecordar} />
+            {remember.hint && <p className="hrl-login__recordar-ayuda">{remember.hint}</p>}
+          </div>
+        )}
         <Button type="submit" tone="cta" loading={enviando} loadingText={t.submitting} className="hrl-login__enviar">
           {t.submit}
         </Button>

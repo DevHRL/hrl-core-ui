@@ -443,8 +443,22 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
 
 .hrl-stat__note { font-size: var(--text-sm, 12.5px); color: var(--muted-foreground); }
 
-/* La cifra y, a su derecha, su tendencia (StatCard `trend`). */
-.hrl-stat__cuerpo { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-3); min-width: 0; }
+/* La cifra y, a su derecha, su tendencia (StatCard `trend`).
+
+   Una cifra nunca pasa por debajo de su tendencia (1.11.0-redesign.8; venía como
+   parche del Sistema de Reporte Estadístico, 07/11/2026: «S/ 43,938.00» se partía y
+   se montaba sobre las barras en una tarjeta angosta). Cada tarjeta mide su propio
+   ancho: si es angosta, la cifra baja un escalón; si aun así no cabe junto a la
+   tendencia, la tendencia pasa a su propia línea, a la derecha; y una cifra más
+   ancha que la tarjeta se corta dentro de ella, no fuera. */
+.hrl-stat { container-type: inline-size; min-width: 0; }
+.hrl-stat__cuerpo { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-3); row-gap: var(--space-2); min-width: 0; }
+.hrl-stat__cuerpo > .hrl-stat__value { min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
+.hrl-stat__cuerpo > :not(.hrl-stat__value) { margin-left: auto; }
+.hrl-stat__note, .hrl-stat__label { min-width: 0; overflow-wrap: anywhere; }
+@container (max-width: 330px) {
+  .hrl-stat__value { font-size: var(--text-xl); }
+}
 .hrl-stat__tendencia { flex: 0 0 auto; display: block; overflow: visible; }
 .hrl-stat__tendencia-barra {
   fill: color-mix(in srgb, var(--primary) 22%, var(--muted));
@@ -3439,6 +3453,10 @@ body { margin: 0; background: #f1f2f4; }
 
 /* ------------------------------------------------- Serie de barras simple */
 .hrl-barras__col--serie { cursor: default; }
+/* SeriesBars a ancho de teléfono: el mes no se parte; si no cabe, se oculta uno de
+   cada dos (o tres) y su hueco queda (ver `usePasoDeEtiquetas`). */
+.hrl-barras__col--serie .hrl-barras__etiqueta { white-space: nowrap; }
+.hrl-barras__etiqueta--oculta { visibility: hidden; }
 .hrl-barras__col--serie .hrl-barras__pila { flex: 1 1 auto; height: auto; min-height: 0; }
 .hrl-barras__col--serie .hrl-barras__pila:hover .hrl-barras__tramo { opacity: 1; }
 .hrl-barras__col--serie:hover .hrl-barras__tramo { filter: brightness(1.08); }
@@ -3831,6 +3849,11 @@ body { margin: 0; background: #f1f2f4; }
   gap: var(--space-3);
   text-align: left;
 }
+
+/* «Mantener la sesión iniciada» (LoginScreen `remember`): entre la contraseña y el
+   botón, con su ayuda debajo en texto de apoyo. */
+.hrl-login__recordar { display: flex; flex-direction: column; gap: var(--space-1); }
+.hrl-login__recordar-ayuda { margin: 0; font-size: var(--text-xs, 11px); line-height: var(--leading-normal, 1.5); color: var(--muted-foreground); }
 
 .hrl-login__enviar {
   width: 100%;

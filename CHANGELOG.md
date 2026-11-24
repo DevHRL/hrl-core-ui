@@ -3,6 +3,26 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.11.0-redesign.8 — 24/11/2026 (prelanzamiento)
+
+Tres cosas que el Sistema de Reporte Estadístico resolvía por su cuenta y vuelven al kit:
+
+- **`LoginScreen`, prop `remember`** (`{ label, hint?, defaultChecked? }`): una casilla para mantener
+  la sesión iniciada, entre la contraseña y el botón, con su ayuda debajo en texto de apoyo (en el
+  ingreso tiene que leerse sin buscarla). Su valor llega en `onSubmit` como `remember`. Sin la prop no
+  se dibuja y `remember` llega en `false`: qué significa «mantener» lo decide cada sistema. Antes había
+  que meterla en `footer`, debajo del botón.
+- **`StatCard` angosta**: la cifra ya no pasa por debajo de su tendencia. Cada tarjeta mide su ancho
+  (consulta de contenedor): si es angosta, la cifra baja un escalón (`--text-xl`); si aun así no cabe,
+  la tendencia pasa a su propia línea; una cifra más ancha que la tarjeta se corta dentro de ella.
+  «S/ 43,938.00» se partía y se montaba sobre las barras.
+- **`SeriesBars` a ancho de teléfono**: si los meses no caben bajo sus barras, se muestra uno de cada dos
+  (o tres…), siempre el último, y los demás dejan su hueco. Se mide con el gráfico dibujado y se vuelve a
+  medir al cambiar de ancho. Cada barra sigue diciendo su mes en el tooltip y en su `aria-label`. Antes
+  se montaban unos sobre otros.
+
+No quita ni renombra ninguna prop.
+
 ## 1.11.0-redesign.7 — 15/11/2026 (prelanzamiento)
 
 Arreglos del menú lateral vistos en el Sistema de Reporte Estadístico (Windows, con la barra de
