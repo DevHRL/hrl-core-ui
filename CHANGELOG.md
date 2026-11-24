@@ -3,6 +3,23 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 1.11.0-redesign.9 — 24/11/2026 (prelanzamiento)
+
+Tres arreglos de accesibilidad que encontró axe-core en las pruebas en navegador del Sistema de Reporte
+Estadístico:
+
+- **`Calendar`**: los días van en filas, una por semana (`role="row"`, `display: contents`, así la rejilla
+  se ve igual). Una `role="grid"` con sus celdas sueltas no se recorría como tabla en un lector de
+  pantalla (`aria-required-children` y `aria-required-parent`, críticas).
+- **`DropdownMenu`**: `aria-haspopup`, `aria-expanded` y `aria-controls` van en el botón que abre el menú,
+  no en el `span` que lo envuelve, que no los admite y el lector no los anunciaba (`aria-allowed-attr`,
+  crítica). Si el disparador no es un elemento, el `span` se vuelve botón.
+- **`Input kind="password"`**: el campo se nombra solo con su etiqueta (`aria-labelledby`). El botón
+  «Mostrar la contraseña» va dentro del `<label>` y el campo se anunciaba como «Contraseña * Mostrar la
+  contraseña».
+
+No cambia ninguna prop.
+
 ## 1.11.0-redesign.8 — 24/11/2026 (prelanzamiento)
 
 Tres cosas que el Sistema de Reporte Estadístico resolvía por su cuenta y vuelven al kit:

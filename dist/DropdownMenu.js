@@ -1,5 +1,5 @@
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { cloneElement, isValidElement, useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Icon } from "./icons.js";
 import { devolverFoco as devolverFocoA } from "./focus.js";
@@ -91,6 +91,8 @@ function DropdownMenu({ trigger, items = [], align: alineacionPedida = "right", 
       refMenu.current?.querySelectorAll('[role="menuitem"]')[activo]?.focus();
     }
   }, [abierto, colocacion, activo]);
+  const aria = { "aria-haspopup": "menu", "aria-expanded": abierto, "aria-controls": abierto ? id : void 0 };
+  const esElemento = isValidElement(trigger);
   return /* @__PURE__ */ jsxs(Fragment, { children: [
     /* @__PURE__ */ jsx(
       "span",
@@ -105,10 +107,8 @@ function DropdownMenu({ trigger, items = [], align: alineacionPedida = "right", 
           }
         },
         style: { display: "inline-flex" },
-        "aria-haspopup": "menu",
-        "aria-expanded": abierto,
-        "aria-controls": abierto ? id : void 0,
-        children: trigger
+        ...esElemento ? {} : { role: "button", tabIndex: 0, ...aria },
+        children: esElemento ? cloneElement(trigger, aria) : trigger
       }
     ),
     abierto && ancla && createPortal(

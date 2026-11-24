@@ -29,6 +29,7 @@ function Input({
 }) {
   const esSelect = kind === "select";
   const base = useId();
+  const idEtiqueta = `${base}-etiqueta`;
   const idError = error ? `${base}-error` : void 0;
   const idPista = hint ? `${base}-pista` : void 0;
   const describe = [idError, idPista].filter(Boolean).join(" ") || void 0;
@@ -39,7 +40,7 @@ function Input({
     info && /* @__PURE__ */ jsx(Icon, { name: "sh-info", size: 14, style: { color: "var(--subtle-foreground)", flex: "0 0 auto" } })
   ] });
   return /* @__PURE__ */ jsxs("label", { className: `hrl-field${error ? " hrl-field--error" : ""}`, children: [
-    info ? /* @__PURE__ */ jsx(Tooltip, { title: label, body: info, as: "span", children: /* @__PURE__ */ jsx("span", { className: "hrl-field__label", style: { cursor: "help" }, children: etiquetaVisible }) }) : /* @__PURE__ */ jsx("span", { className: labelHidden ? "hrl-oculto-visual" : "hrl-field__label", children: etiquetaVisible }),
+    info ? /* @__PURE__ */ jsx(Tooltip, { title: label, body: info, as: "span", children: /* @__PURE__ */ jsx("span", { id: idEtiqueta, className: "hrl-field__label", style: { cursor: "help" }, children: etiquetaVisible }) }) : /* @__PURE__ */ jsx("span", { id: idEtiqueta, className: labelHidden ? "hrl-oculto-visual" : "hrl-field__label", children: etiquetaVisible }),
     esSelect ? /* @__PURE__ */ jsxs(
       "select",
       {
@@ -73,6 +74,7 @@ function Input({
           onChange,
           autoComplete,
           autoFocus,
+          "aria-labelledby": kind === "password" ? idEtiqueta : void 0,
           "aria-invalid": error ? true : void 0,
           "aria-describedby": describe
         }

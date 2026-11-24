@@ -35,6 +35,10 @@ export function Input({
      parte de su nombre, pero un lector de pantalla no los anunciaba como lo
      que son, ni marcaba el campo como inválido. */
   const base = useId();
+  /* El nombre del campo es su etiqueta y nada más: dentro del <label> también estaba
+     el botón «Mostrar la contraseña», y el campo se llamaba «Contraseña * Mostrar la
+     contraseña» (1.11.0-redesign.9). */
+  const idEtiqueta = `${base}-etiqueta`;
   const idError = error ? `${base}-error` : undefined;
   const idPista = hint ? `${base}-pista` : undefined;
   const describe = [idError, idPista].filter(Boolean).join(' ') || undefined;
@@ -56,12 +60,12 @@ export function Input({
     <label className={`hrl-field${error ? ' hrl-field--error' : ''}`}>
       {info ? (
         <Tooltip title={label} body={info} as="span">
-          <span className="hrl-field__label" style={{ cursor: 'help' }}>
+          <span id={idEtiqueta} className="hrl-field__label" style={{ cursor: 'help' }}>
             {etiquetaVisible}
           </span>
         </Tooltip>
       ) : (
-        <span className={labelHidden ? 'hrl-oculto-visual' : 'hrl-field__label'}>{etiquetaVisible}</span>
+        <span id={idEtiqueta} className={labelHidden ? 'hrl-oculto-visual' : 'hrl-field__label'}>{etiquetaVisible}</span>
       )}
 
       {esSelect ? (
@@ -114,6 +118,7 @@ export function Input({
             onChange={onChange}
             autoComplete={autoComplete}
             autoFocus={autoFocus}
+            aria-labelledby={kind === 'password' ? idEtiqueta : undefined}
             aria-invalid={error ? true : undefined}
             aria-describedby={describe}
           />
