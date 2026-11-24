@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
+import { cloneElement, isValidElement, useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Icon } from './icons.jsx';
 import { devolverFoco as devolverFocoA } from './focus.js';
@@ -141,6 +141,13 @@ export function DropdownMenu({ trigger, items = [], align: alineacionPedida = 'r
     }
   }, [abierto, colocacion, activo]);
 
+  /* `aria-haspopup` y `aria-expanded` van en el botón que abre el menú, no en el
+     `span` que lo envuelve: un `span` sin rol no los admite y el lector de pantalla
+     no los anunciaba (axe, aria-allowed-attr; 1.11.0-redesign.9). Si el disparador
+     no es un elemento, el `span` se vuelve botón. */
+  const aria = { 'aria-haspopup': 'menu', 'aria-expanded': abierto, 'aria-controls': abierto ? id : undefined };
+  const esElemento = isValidElement(trigger);
+
   return (
     <>
       <span
@@ -154,11 +161,9 @@ export function DropdownMenu({ trigger, items = [], align: alineacionPedida = 'r
           }
         }}
         style={{ display: 'inline-flex' }}
-        aria-haspopup="menu"
-        aria-expanded={abierto}
-        aria-controls={abierto ? id : undefined}
+        {...(esElemento ? {} : { role: 'button', tabIndex: 0, ...aria })}
       >
-        {trigger}
+        {esElemento ? cloneElement(trigger, aria) : trigger}
       </span>
 
       {abierto &&

@@ -53,6 +53,42 @@ function Calendar({
       ir(totalDias);
     }
   };
+  const celdas = [...Array.from({ length: desfase }, (_, i) => ({ hueco: i })), ...dias.map((d) => ({ dia: d }))];
+  const semanas = Array.from({ length: Math.ceil(celdas.length / 7) }, (_, i) => celdas.slice(i * 7, i * 7 + 7));
+  const diaDe = (d) => {
+    const estado = statusOf(d) ?? "empty";
+    const marca = MARCAS[estado] ?? MARCAS.empty;
+    const indice = (desfase + d - 1) % 7;
+    const nombre = `${SEMANA[indice].largo} ${d}`;
+    const detalle = detailOf?.(d);
+    const descripcion = descriptionOf?.(d) ?? marca.texto;
+    const elegido = d === selected;
+    return /* @__PURE__ */ jsxs(
+      "button",
+      {
+        ref: (n) => {
+          refs.current[d] = n;
+        },
+        type: "button",
+        role: "gridcell",
+        "aria-selected": elegido,
+        "aria-label": `${nombre}. ${marca.texto}.${detalle ? ` ${detalle}.` : ""}`,
+        tabIndex: elegido ? 0 : -1,
+        className: `hrl-cal__dia${marca.clase}${elegido ? " hrl-cal__dia--on" : ""}${indice >= 5 ? " hrl-cal__dia--finde" : ""}`,
+        onClick: () => onSelect?.(d),
+        onKeyDown: (e) => alTeclear(e, d),
+        onMouseEnter: (e) => follow(e, nombre, descripcion),
+        onMouseMove: (e) => follow(e, nombre, descripcion),
+        onMouseLeave: hide,
+        children: [
+          /* @__PURE__ */ jsx("span", { className: "hrl-cal__num", children: d }),
+          marca.icono && /* @__PURE__ */ jsx("span", { className: "hrl-cal__marca", children: /* @__PURE__ */ jsx(Icon, { name: marca.icono, size: 12 }) }),
+          detalle && /* @__PURE__ */ jsx("span", { className: "hrl-cal__detalle", children: detalle })
+        ]
+      },
+      d
+    );
+  };
   return /* @__PURE__ */ jsxs("div", { className: "hrl-cal", children: [
     /* @__PURE__ */ jsx("div", { className: "hrl-cal__semana", "aria-hidden": "true", children: SEMANA.map((s) => /* @__PURE__ */ jsx(
       Tooltip,
@@ -65,43 +101,7 @@ function Calendar({
       },
       s.corto
     )) }),
-    /* @__PURE__ */ jsxs("div", { className: "hrl-cal__rejilla", role: "grid", "aria-label": label, children: [
-      Array.from({ length: desfase }, (_, i) => /* @__PURE__ */ jsx("span", { className: "hrl-cal__hueco", "aria-hidden": "true" }, `hueco-${i}`)),
-      dias.map((d) => {
-        const estado = statusOf(d) ?? "empty";
-        const marca = MARCAS[estado] ?? MARCAS.empty;
-        const indice = (desfase + d - 1) % 7;
-        const nombre = `${SEMANA[indice].largo} ${d}`;
-        const detalle = detailOf?.(d);
-        const descripcion = descriptionOf?.(d) ?? marca.texto;
-        const elegido = d === selected;
-        return /* @__PURE__ */ jsxs(
-          "button",
-          {
-            ref: (n) => {
-              refs.current[d] = n;
-            },
-            type: "button",
-            role: "gridcell",
-            "aria-selected": elegido,
-            "aria-label": `${nombre}. ${marca.texto}.${detalle ? ` ${detalle}.` : ""}`,
-            tabIndex: elegido ? 0 : -1,
-            className: `hrl-cal__dia${marca.clase}${elegido ? " hrl-cal__dia--on" : ""}${indice >= 5 ? " hrl-cal__dia--finde" : ""}`,
-            onClick: () => onSelect?.(d),
-            onKeyDown: (e) => alTeclear(e, d),
-            onMouseEnter: (e) => follow(e, nombre, descripcion),
-            onMouseMove: (e) => follow(e, nombre, descripcion),
-            onMouseLeave: hide,
-            children: [
-              /* @__PURE__ */ jsx("span", { className: "hrl-cal__num", children: d }),
-              marca.icono && /* @__PURE__ */ jsx("span", { className: "hrl-cal__marca", children: /* @__PURE__ */ jsx(Icon, { name: marca.icono, size: 12 }) }),
-              detalle && /* @__PURE__ */ jsx("span", { className: "hrl-cal__detalle", children: detalle })
-            ]
-          },
-          d
-        );
-      })
-    ] }),
+    /* @__PURE__ */ jsx("div", { className: "hrl-cal__rejilla", role: "grid", "aria-label": label, children: semanas.map((semana, s) => /* @__PURE__ */ jsx("div", { role: "row", className: "hrl-cal__fila", children: semana.map((celda) => celda.hueco != null ? /* @__PURE__ */ jsx("span", { className: "hrl-cal__hueco", "aria-hidden": "true" }, `hueco-${celda.hueco}`) : diaDe(celda.dia)) }, `semana-${s}`)) }),
     legend && /* @__PURE__ */ jsxs("div", { className: "hrl-cal__leyenda", children: [
       /* @__PURE__ */ jsxs("span", { className: "hrl-cal__muestra", children: [
         /* @__PURE__ */ jsx("span", { className: "hrl-cal__cuadro hrl-cal__cuadro--lleno" }),

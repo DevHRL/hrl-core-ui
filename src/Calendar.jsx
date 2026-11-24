@@ -76,6 +76,48 @@ export function Calendar({
     }
   };
 
+  /* Las celdas en semanas de siete: los huecos antes del día 1 y los días del mes. */
+  const celdas = [...Array.from({ length: desfase }, (_, i) => ({ hueco: i })), ...dias.map((d) => ({ dia: d }))];
+  const semanas = Array.from({ length: Math.ceil(celdas.length / 7) }, (_, i) => celdas.slice(i * 7, i * 7 + 7));
+
+  const diaDe = (d) => {
+    const estado = statusOf(d) ?? 'empty';
+    const marca = MARCAS[estado] ?? MARCAS.empty;
+    const indice = (desfase + d - 1) % 7;
+    const nombre = `${SEMANA[indice].largo} ${d}`;
+    const detalle = detailOf?.(d);
+    const descripcion = descriptionOf?.(d) ?? marca.texto;
+    const elegido = d === selected;
+
+    return (
+      <button
+        key={d}
+        ref={(n) => {
+          refs.current[d] = n;
+        }}
+        type="button"
+        role="gridcell"
+        aria-selected={elegido}
+        aria-label={`${nombre}. ${marca.texto}.${detalle ? ` ${detalle}.` : ''}`}
+        tabIndex={elegido ? 0 : -1}
+        className={`hrl-cal__dia${marca.clase}${elegido ? ' hrl-cal__dia--on' : ''}${indice >= 5 ? ' hrl-cal__dia--finde' : ''}`}
+        onClick={() => onSelect?.(d)}
+        onKeyDown={(e) => alTeclear(e, d)}
+        onMouseEnter={(e) => follow(e, nombre, descripcion)}
+        onMouseMove={(e) => follow(e, nombre, descripcion)}
+        onMouseLeave={hide}
+      >
+        <span className="hrl-cal__num">{d}</span>
+        {marca.icono && (
+          <span className="hrl-cal__marca">
+            <Icon name={marca.icono} size={12} />
+          </span>
+        )}
+        {detalle && <span className="hrl-cal__detalle">{detalle}</span>}
+      </button>
+    );
+  };
+
   return (
     <div className="hrl-cal">
       <div className="hrl-cal__semana" aria-hidden="true">
@@ -92,48 +134,16 @@ export function Calendar({
         ))}
       </div>
 
+      {/* Una fila por semana (`role="row"`): una rejilla sin filas no se recorre como
+          tabla en un lector de pantalla (axe, aria-required-children/-parent;
+          1.11.0-redesign.9). Las filas no ocupan sitio (`display: contents`): la
+          rejilla de siete columnas se ve igual. */}
       <div className="hrl-cal__rejilla" role="grid" aria-label={label}>
-        {Array.from({ length: desfase }, (_, i) => (
-          <span key={`hueco-${i}`} className="hrl-cal__hueco" aria-hidden="true" />
+        {semanas.map((semana, s) => (
+          <div key={`semana-${s}`} role="row" className="hrl-cal__fila">
+            {semana.map((celda) => (celda.hueco != null ? <span key={`hueco-${celda.hueco}`} className="hrl-cal__hueco" aria-hidden="true" /> : diaDe(celda.dia)))}
+          </div>
         ))}
-
-        {dias.map((d) => {
-          const estado = statusOf(d) ?? 'empty';
-          const marca = MARCAS[estado] ?? MARCAS.empty;
-          const indice = (desfase + d - 1) % 7;
-          const nombre = `${SEMANA[indice].largo} ${d}`;
-          const detalle = detailOf?.(d);
-          const descripcion = descriptionOf?.(d) ?? marca.texto;
-          const elegido = d === selected;
-
-          return (
-            <button
-              key={d}
-              ref={(n) => {
-                refs.current[d] = n;
-              }}
-              type="button"
-              role="gridcell"
-              aria-selected={elegido}
-              aria-label={`${nombre}. ${marca.texto}.${detalle ? ` ${detalle}.` : ''}`}
-              tabIndex={elegido ? 0 : -1}
-              className={`hrl-cal__dia${marca.clase}${elegido ? ' hrl-cal__dia--on' : ''}${indice >= 5 ? ' hrl-cal__dia--finde' : ''}`}
-              onClick={() => onSelect?.(d)}
-              onKeyDown={(e) => alTeclear(e, d)}
-              onMouseEnter={(e) => follow(e, nombre, descripcion)}
-              onMouseMove={(e) => follow(e, nombre, descripcion)}
-              onMouseLeave={hide}
-            >
-              <span className="hrl-cal__num">{d}</span>
-              {marca.icono && (
-                <span className="hrl-cal__marca">
-                  <Icon name={marca.icono} size={12} />
-                </span>
-              )}
-              {detalle && <span className="hrl-cal__detalle">{detalle}</span>}
-            </button>
-          );
-        })}
       </div>
 
       {legend && (

@@ -3362,6 +3362,10 @@ body { margin: 0; background: #f1f2f4; }
   gap: 4px;
 }
 
+/* Cada semana es una fila para los lectores de pantalla, sin caja propia: sus días
+   siguen siendo celdas de la rejilla de siete columnas. */
+.hrl-cal__fila { display: contents; }
+
 .hrl-cal__cabecera {
   display: block;
   width: 100%;
