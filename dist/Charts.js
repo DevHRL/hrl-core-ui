@@ -1,6 +1,8 @@
 import { jsx, jsxs } from "react/jsx-runtime";
+import { useEffect, useRef, useState } from "react";
 import { useFloatingTip } from "./useFloatingTip.js";
 import { FloatingTip } from "./Tooltip.js";
+import { cx } from "./variants.js";
 const R = 80;
 const LARGO = Math.PI * R;
 function GaugeArc({ value, color, label }) {
@@ -95,6 +97,27 @@ function StackedBars({ labels, series, height = 260, emptyLabel, unit = "registr
     /* @__PURE__ */ jsx(FloatingTip, { tip })
   ] });
 }
+const SEPARACION_ETIQUETAS = 6;
+function usePasoDeEtiquetas(lienzo, columnas) {
+  const [paso, setPaso] = useState(1);
+  useEffect(() => {
+    const el = lienzo.current;
+    if (!el || columnas < 2 || typeof ResizeObserver === "undefined") return void 0;
+    const medir = () => {
+      const etiquetas = [...el.querySelectorAll(".hrl-barras__col--serie .hrl-barras__etiqueta")];
+      if (!etiquetas.length) return;
+      const recorte = el.querySelector(".hrl-barras__col--recorte")?.offsetWidth ?? 0;
+      const columna = Math.max(1, (el.clientWidth - recorte) / columnas);
+      const masAncha = Math.max(...etiquetas.map((e) => e.scrollWidth)) + SEPARACION_ETIQUETAS;
+      setPaso(Math.max(1, Math.ceil(masAncha / columna)));
+    };
+    medir();
+    const observador = new ResizeObserver(medir);
+    observador.observe(el);
+    return () => observador.disconnect();
+  }, [lienzo, columnas]);
+  return paso;
+}
 function SeriesBars({
   points = [],
   color = "var(--primary)",
@@ -106,18 +129,21 @@ function SeriesBars({
   label
 }) {
   const { tip, follow, hide } = useFloatingTip();
+  const lienzo = useRef(null);
   let fin = points.length;
   while (fin > 0 && points[fin - 1].value == null) fin -= 1;
   const visibles = points.slice(0, fin);
   const recortados = points.slice(fin);
+  const paso = usePasoDeEtiquetas(lienzo, visibles.length);
   const max = Math.max(1, ...visibles.filter((p) => p.value != null).map((p) => p.value));
   const marcas = [0, 0.25, 0.5, 0.75, 1].map((f) => Math.round(max * f));
   const compacto = (n) => n >= 1e3 ? `${(n / 1e3).toFixed(1).replace(".0", "")}k` : String(n);
   return /* @__PURE__ */ jsxs("div", { className: "hrl-barras", role: "group", "aria-label": label, children: [
     /* @__PURE__ */ jsx("div", { className: "hrl-barras__eje", style: { paddingTop: 18 }, children: [...marcas].reverse().map((m, i) => /* @__PURE__ */ jsx("span", { children: compacto(m) }, `${m}-${i}`)) }),
-    /* @__PURE__ */ jsxs("div", { className: "hrl-barras__lienzo", style: { height }, children: [
+    /* @__PURE__ */ jsxs("div", { className: "hrl-barras__lienzo", style: { height }, ref: lienzo, children: [
       visibles.map((p, i) => {
         const sinDato = p.value == null;
+        const conEtiqueta = (visibles.length - 1 - i) % paso === 0;
         const titulo = p.title ?? p.label;
         const cuerpo = sinDato ? p.detail ?? noDataLabel : `${format(p.value)}${unit ? ` ${unit}` : ""}${p.detail ? ` \xB7 ${p.detail}` : ""}`;
         return /* @__PURE__ */ jsxs(
@@ -138,7 +164,7 @@ function SeriesBars({
                   style: { height: `${p.value / max * 100}%`, background: color, "--retardo": `${i * 55}ms` }
                 }
               ) }),
-              /* @__PURE__ */ jsx("span", { className: "hrl-barras__etiqueta", children: p.label })
+              /* @__PURE__ */ jsx("span", { className: cx("hrl-barras__etiqueta", !conEtiqueta && "hrl-barras__etiqueta--oculta"), "aria-hidden": !conEtiqueta || void 0, children: p.label })
             ]
           },
           p.key ?? p.label

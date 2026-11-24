@@ -8,6 +8,7 @@
 
      node scripts/humo.mjs   (después de `npm run build`) */
 
+import { readFileSync } from 'node:fs';
 import { createElement } from 'react';
 import { renderToString } from 'react-dom/server';
 import * as kit from '../dist/index.js';
@@ -145,6 +146,10 @@ const ASERCIONES = [
   ['los seis fondos del login existen como clase', () => kit.LOGIN_BACKDROPS.length === 6],
   ['LoginScreen con fondo fijo pinta esa fachada', () => html('LoginScreen', { backdrop: 'dusk', onSubmit: () => {} }).includes('hrl-login--dusk')],
   ['LoginScreen con backdrop="none" no pinta ninguna', () => !html('LoginScreen', { backdrop: 'none', onSubmit: () => {} }).includes('hrl-login--')],
+  ['LoginScreen con remember dibuja la casilla entre la contraseña y el botón, con su ayuda', () => { const h = html('LoginScreen', { onSubmit: () => {}, remember: { label: 'Mantener la sesión iniciada', hint: 'No la marque en una computadora compartida.' } }); return h.includes('hrl-login__recordar') && h.includes('Mantener la sesión iniciada') && h.includes('computadora compartida') && h.indexOf('hrl-login__recordar') < h.indexOf('hrl-login__enviar'); }],
+  ['LoginScreen sin remember no dibuja la casilla', () => !html('LoginScreen', { onSubmit: () => {} }).includes('hrl-login__recordar')],
+  ['SeriesBars rotula todos los meses mientras no se ha medido el ancho', () => { const h = html('SeriesBars', { points: [{ label: 'Ene', value: 1 }, { label: 'Feb', value: 2 }, { label: 'Mar', value: 3 }] }); return (h.match(/hrl-barras__etiqueta/g) ?? []).length === 3 && !h.includes('hrl-barras__etiqueta--oculta'); }],
+  ['StatCard mide su ancho para que la cifra no pase bajo su tendencia', () => { const css = readFileSync(new URL('../tokens.css', import.meta.url), 'utf8'); return css.includes('.hrl-stat { container-type: inline-size;') && css.includes('@container (max-width: 330px)'); }],
   ['LoginScreen lleva el logo y el nombre del sistema', () => { const h = html('LoginScreen', { systemName: 'Mi sistema', onSubmit: () => {} }); return h.includes('hrl-logo') && h.includes('Mi sistema'); }],
   ['ChangePasswordScreen pide tres contraseñas', () => (html('ChangePasswordScreen', { onSubmit: () => {} }).match(/type="password"/g) || []).length === 3],
   ['Stack: la separación sale de la escala de espaciado', () => html('Stack', { gap: 5 }).includes('var(--space-5)')],

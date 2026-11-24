@@ -2,6 +2,7 @@ import { jsx, jsxs } from "react/jsx-runtime";
 import { useState } from "react";
 import { Alert } from "./Alert.js";
 import { Button } from "./Button.js";
+import { Checkbox } from "./Checkbox.js";
 import { HrlLogo } from "./HrlLogo.js";
 import { Sprite } from "./icons.js";
 import { Input } from "./Input.js";
@@ -56,10 +57,11 @@ function useEnvio() {
   };
   return { error, setError, enviando, enviar };
 }
-function LoginScreen({ systemName, onSubmit, backdrop = "auto", labels, footer }) {
+function LoginScreen({ systemName, onSubmit, backdrop = "auto", labels, footer, remember }) {
   const t = { ...TEXTOS, ...labels };
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [recordar, setRecordar] = useState(Boolean(remember?.defaultChecked));
   const { error, enviando, enviar } = useEnvio();
   return /* @__PURE__ */ jsxs(Pantalla, { backdrop, children: [
     /* @__PURE__ */ jsx(HrlLogo, { width: 260, className: "hrl-login__logo" }),
@@ -70,12 +72,16 @@ function LoginScreen({ systemName, onSubmit, backdrop = "auto", labels, footer }
         className: "hrl-login__form",
         onSubmit: (e) => {
           e.preventDefault();
-          enviar(() => onSubmit({ username: username.trim(), password }));
+          enviar(() => onSubmit({ username: username.trim(), password, remember: Boolean(remember) && recordar }));
         },
         children: [
           error && /* @__PURE__ */ jsx(Alert, { tone: "error", title: t.errorTitle, children: error }),
           /* @__PURE__ */ jsx(Input, { label: t.username, required: true, autoFocus: true, autoComplete: "username", value: username, onChange: (e) => setUsername(e.target.value) }),
           /* @__PURE__ */ jsx(Input, { label: t.password, kind: "password", required: true, autoComplete: "current-password", value: password, onChange: (e) => setPassword(e.target.value) }),
+          remember && /* @__PURE__ */ jsxs("div", { className: "hrl-login__recordar", children: [
+            /* @__PURE__ */ jsx(Checkbox, { label: remember.label, checked: recordar, onChange: setRecordar }),
+            remember.hint && /* @__PURE__ */ jsx("p", { className: "hrl-login__recordar-ayuda", children: remember.hint })
+          ] }),
           /* @__PURE__ */ jsx(Button, { type: "submit", tone: "cta", loading: enviando, loadingText: t.submitting, className: "hrl-login__enviar", children: t.submit })
         ]
       }

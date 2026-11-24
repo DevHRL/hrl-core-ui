@@ -1,8 +1,10 @@
 /* Gráficos del handoff, en SVG y sin librerías: el proyecto no tiene ninguna
    de charts y estas tres formas son sencillas de dibujar a mano. */
 
+import { useEffect, useRef, useState } from 'react';
 import { useFloatingTip } from './useFloatingTip.js';
 import { FloatingTip } from './Tooltip.jsx';
+import { cx } from './variants.js';
 
 const R = 80;
 const LARGO = Math.PI * R; // longitud del semicírculo, ~251.3
@@ -156,7 +158,38 @@ export function StackedBars({ labels, series, height = 260, emptyLabel, unit = '
    Solo el último valor lleva su cifra encima; los demás la tienen en el
    tooltip. Un número sobre cada barra compite con las propias barras.
 
-     points: { key?, label, title?, value: number | null, detail? }[] */
+     points: { key?, label, title?, value: number | null, detail? }[]
+
+   Etiquetas a ancho de teléfono (1.11.0-redesign.8): si los meses no caben bajo sus
+   barras, se muestra uno de cada dos (o de cada tres…), siempre el último, y los
+   demás dejan su sitio vacío. Cada barra sigue diciendo su mes en el tooltip y en su
+   `aria-label`. Antes se montaban unos sobre otros («EneFebMar…»). */
+const SEPARACION_ETIQUETAS = 6;
+
+/* Cada cuántas columnas cabe una etiqueta: el ancho de la más larga contra el de
+   una columna. Se mide con el lienzo ya dibujado y se vuelve a medir al cambiar su
+   ancho. `useEffect` y no `useLayoutEffect`: el kit también se pinta en el servidor. */
+function usePasoDeEtiquetas(lienzo, columnas) {
+  const [paso, setPaso] = useState(1);
+  useEffect(() => {
+    const el = lienzo.current;
+    if (!el || columnas < 2 || typeof ResizeObserver === 'undefined') return undefined;
+    const medir = () => {
+      const etiquetas = [...el.querySelectorAll('.hrl-barras__col--serie .hrl-barras__etiqueta')];
+      if (!etiquetas.length) return;
+      const recorte = el.querySelector('.hrl-barras__col--recorte')?.offsetWidth ?? 0;
+      const columna = Math.max(1, (el.clientWidth - recorte) / columnas);
+      const masAncha = Math.max(...etiquetas.map((e) => e.scrollWidth)) + SEPARACION_ETIQUETAS;
+      setPaso(Math.max(1, Math.ceil(masAncha / columna)));
+    };
+    medir();
+    const observador = new ResizeObserver(medir);
+    observador.observe(el);
+    return () => observador.disconnect();
+  }, [lienzo, columnas]);
+  return paso;
+}
+
 export function SeriesBars({
   points = [],
   color = 'var(--primary)',
@@ -168,11 +201,13 @@ export function SeriesBars({
   label,
 }) {
   const { tip, follow, hide } = useFloatingTip();
+  const lienzo = useRef(null);
 
   let fin = points.length;
   while (fin > 0 && points[fin - 1].value == null) fin -= 1;
   const visibles = points.slice(0, fin);
   const recortados = points.slice(fin);
+  const paso = usePasoDeEtiquetas(lienzo, visibles.length);
 
   const max = Math.max(1, ...visibles.filter((p) => p.value != null).map((p) => p.value));
   const marcas = [0, 0.25, 0.5, 0.75, 1].map((f) => Math.round(max * f));
@@ -186,9 +221,10 @@ export function SeriesBars({
         ))}
       </div>
 
-      <div className="hrl-barras__lienzo" style={{ height }}>
+      <div className="hrl-barras__lienzo" style={{ height }} ref={lienzo}>
         {visibles.map((p, i) => {
           const sinDato = p.value == null;
+          const conEtiqueta = (visibles.length - 1 - i) % paso === 0;
           const titulo = p.title ?? p.label;
           const cuerpo = sinDato
             ? (p.detail ?? noDataLabel)
@@ -217,7 +253,9 @@ export function SeriesBars({
                   />
                 </span>
               )}
-              <span className="hrl-barras__etiqueta">{p.label}</span>
+              <span className={cx('hrl-barras__etiqueta', !conEtiqueta && 'hrl-barras__etiqueta--oculta')} aria-hidden={!conEtiqueta || undefined}>
+                {p.label}
+              </span>
             </div>
           );
         })}
