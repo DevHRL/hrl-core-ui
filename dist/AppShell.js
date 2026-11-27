@@ -109,8 +109,8 @@ const SidebarNav = memo(function SidebarNav2({ navItems, active, onSelect, plega
             as: "div",
             style: { display: "block", width: "100%" },
             focusable: false,
+            placement: "right",
             title: item.label,
-            body: item.group ? `${item.group} \xB7 ${item.label}` : item.label,
             children: boton
           },
           item.id

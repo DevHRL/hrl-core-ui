@@ -1,8 +1,11 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { useEffect, useRef, useState } from "react";
-import { useFloatingTip } from "./useFloatingTip.js";
-import { FloatingTip } from "./Tooltip.js";
+import { DataTip } from "./Tooltip.js";
 import { cx } from "./variants.js";
+function anclaDeBarra(elemento) {
+  const r = elemento.getBoundingClientRect();
+  return { x: r.left + r.width / 2, top: r.top, bottom: r.bottom };
+}
 const R = 80;
 const LARGO = Math.PI * R;
 function GaugeArc({ value, color, label }) {
@@ -45,7 +48,7 @@ function Sparkline({ values, color, height = 30 }) {
   )) });
 }
 function StackedBars({ labels, series, height = 260, emptyLabel, unit = "registros" }) {
-  const { tip, follow, hide } = useFloatingTip();
+  const [lectura, setLectura] = useState(null);
   const totales = labels.map((_, i) => series.reduce((s, serie) => s + (serie.values[i] ?? 0), 0));
   const max = Math.max(1, ...totales);
   const marcas = [0, 0.25, 0.5, 0.75, 1].map((f) => Math.round(max * f));
@@ -66,8 +69,8 @@ function StackedBars({ labels, series, height = 260, emptyLabel, unit = "registr
               if (v <= 0) return null;
               const total = totales[i];
               const parte = total ? v / total * 100 : 0;
-              const titulo = series.length > 1 ? `${serie.name} \xB7 ${mes}` : `${mes}`;
-              const cuerpo = series.length > 1 ? `${cifra(v)} ${unit} \xB7 ${parte.toFixed(parte < 10 ? 1 : 0)}% de las ${cifra(total)} del mes` : `${cifra(v)} ${unit}`;
+              const rotulo = series.length > 1 ? `${serie.name}, ${mes}` : `${mes}`;
+              const detalle = series.length > 1 ? `${parte.toFixed(parte < 10 ? 1 : 0)}% de las ${cifra(total)} del mes` : void 0;
               return /* @__PURE__ */ jsx(
                 "span",
                 {
@@ -77,9 +80,8 @@ function StackedBars({ labels, series, height = 260, emptyLabel, unit = "registr
                     background: serie.color,
                     "--retardo": `${i * 55 + j * 40}ms`
                   },
-                  onMouseEnter: (e) => follow(e, titulo, cuerpo),
-                  onMouseMove: (e) => follow(e, titulo, cuerpo),
-                  onMouseLeave: hide
+                  onMouseEnter: (e) => setLectura({ anchor: anclaDeBarra(e.currentTarget), label: rotulo, value: `${cifra(v)} ${unit}`, detail: detalle }),
+                  onMouseLeave: () => setLectura(null)
                 },
                 serie.name
               );
@@ -94,7 +96,7 @@ function StackedBars({ labels, series, height = 260, emptyLabel, unit = "registr
         /* @__PURE__ */ jsx("span", { className: "hrl-barras__etiqueta", children: "\u2014" })
       ] })
     ] }),
-    /* @__PURE__ */ jsx(FloatingTip, { tip })
+    /* @__PURE__ */ jsx(DataTip, { open: Boolean(lectura), ...lectura })
   ] });
 }
 const SEPARACION_ETIQUETAS = 6;
@@ -128,7 +130,7 @@ function SeriesBars({
   emptyTail,
   label
 }) {
-  const { tip, follow, hide } = useFloatingTip();
+  const [lectura, setLectura] = useState(null);
   const lienzo = useRef(null);
   let fin = points.length;
   while (fin > 0 && points[fin - 1].value == null) fin -= 1;
@@ -152,9 +154,16 @@ function SeriesBars({
             className: "hrl-barras__col hrl-barras__col--serie",
             role: "img",
             "aria-label": `${titulo}: ${cuerpo}`,
-            onMouseEnter: (e) => follow(e, titulo, cuerpo),
-            onMouseMove: (e) => follow(e, titulo, cuerpo),
-            onMouseLeave: hide,
+            onMouseEnter: (e) => {
+              const barra = e.currentTarget.querySelector(".hrl-barras__tramo, .hrl-barras__hueco") ?? e.currentTarget;
+              setLectura({
+                anchor: anclaDeBarra(barra),
+                label: titulo,
+                value: sinDato ? noDataLabel : `${format(p.value)}${unit ? ` ${unit}` : ""}`,
+                detail: p.detail
+              });
+            },
+            onMouseLeave: () => setLectura(null),
             children: [
               /* @__PURE__ */ jsx("span", { className: "hrl-barras__valor", children: !sinDato && i === visibles.length - 1 ? format(p.value) : "" }),
               sinDato ? /* @__PURE__ */ jsx("span", { className: "hrl-barras__hueco", children: /* @__PURE__ */ jsx("span", { children: noDataLabel }) }) : /* @__PURE__ */ jsx("span", { className: "hrl-barras__pila", children: /* @__PURE__ */ jsx(
@@ -176,7 +185,7 @@ function SeriesBars({
         /* @__PURE__ */ jsx("span", { className: "hrl-barras__etiqueta", children: recortados.map((p) => p.label).join(" \xB7 ") })
       ] })
     ] }),
-    /* @__PURE__ */ jsx(FloatingTip, { tip })
+    /* @__PURE__ */ jsx(DataTip, { open: Boolean(lectura), ...lectura })
   ] });
 }
 function Funnel({ stages }) {

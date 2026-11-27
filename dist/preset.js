@@ -129,7 +129,21 @@ const preset = {
      multiplicada por --hrl-escala-texto (la preferencia «Tamaño del texto», de
      1 a 1.5): así el texto respeta también el tamaño de letra del navegador,
      no solo el zoom. */
-    "text-3xl": "calc(2.25rem * var(--hrl-escala-texto, 1))"
+    "text-3xl": "calc(2.25rem * var(--hrl-escala-texto, 1))",
+    /* --------------------------------------------------- transiciones */
+    "delay-tip": "0.3s",
+    /* Las dos burbujas (2.0.0). La explicación (Tooltip, InfoTip) es oscura: el
+     sistema hablando de la interfaz. La lectura del dato (DataTip) es una
+     tarjeta blanca: más dato, del mismo material que la tarjeta donde está el
+     gráfico. */
+    "tip-bg": "#101828",
+    "tip-fg": "#ffffff",
+    "tip-muted": "rgba(255, 255, 255, 0.74)",
+    "tip-border": "transparent",
+    "datatip-bg": "#ffffff",
+    "datatip-fg": "#101828",
+    "datatip-muted": "#5d677a",
+    "datatip-border": "rgba(16, 24, 40, 0.07)"
   },
   /* Equivalentes del tema oscuro. Solo los que cambian. */
   colorOscuro: {
@@ -176,7 +190,14 @@ const preset = {
      negro encima (primary-foreground): el verde del tema claro, con texto
      blanco, se apagaba sobre el fondo oscuro. */
     brand: "#2bb39f",
-    "brand-hover": "#3cc4af"
+    "brand-hover": "#3cc4af",
+    /* Burbujas en oscuro: una negra sobre superficie oscura pierde su borde y
+     una blanca deslumbra. La explicación sube un tono y lleva un filo claro;
+     la lectura del dato es una superficie elevada, no blanca. */
+    "tip-bg": "#2b353e",
+    "tip-border": "rgba(255, 255, 255, 0.1)",
+    "datatip-bg": "#222a31",
+    "datatip-border": "rgba(255, 255, 255, 0.08)"
   },
   radius: {
     DEFAULT: "12px",
@@ -197,7 +218,8 @@ const preset = {
     sm: "0 1px 2px rgba(16, 24, 40, 0.06)",
     md: "0 1px 3px rgba(16, 24, 40, 0.04), 0 12px 30px -16px rgba(16, 24, 40, 0.12)",
     lg: "0 1px 3px rgba(16, 24, 40, 0.06), 0 18px 36px -16px rgba(16, 24, 40, 0.2)",
-    overlay: "0 32px 64px -16px rgba(16, 24, 40, 0.32)"
+    overlay: "0 32px 64px -16px rgba(16, 24, 40, 0.32)",
+    datatip: "0 1px 2px rgba(16, 24, 40, 0.05), 0 8px 24px -4px rgba(16, 24, 40, 0.16)"
   },
   text: {
     xs: "calc(0.6875rem * var(--hrl-escala-texto, 1))",
@@ -227,7 +249,9 @@ const preset = {
   duration: {
     fast: "0.2s",
     base: "0.35s",
-    slow: "0.5s"
+    slow: "0.5s",
+    tip: "0.14s",
+    draw: "0.8s"
   },
   /* Transiciones ya armadas (duración + curva), listas para `transition:`. */
   transition: {

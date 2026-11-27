@@ -73,11 +73,13 @@ tokensToCss();                    // el bloque CSS completo, para otro bundler
 | `Card` | `@/core-ui` | `title` · `subtitle` · `total` · `meta` (el estado: insignias o chips) · `actions` · `flush` · `wide` (siempre a lo ancho en un `Mosaic`) · `headingLevel` (2 por defecto) · `children`. Tarjeta blanca sin borde, esquina de 22 px; la cabecera es el título con su descripción, y a la misma altura el estado y la acción. `accent` e `icon` se aceptan pero ya no se dibujan (1.11.0); `accent` fija `--accent` dentro |
 | `Mascot` | `@/core-ui` | La mascota del hospital, Dr. Mochi. `state` idle·thinking·done·problem·sleeping · `size` sm 40·md 64·lg 104·xl 160 o px · `mouth` · `interactive` (clic y teclado: se aplasta; mantenido se aprieta; cinco clics lo marean) · `onReact` (`'tap'`·`'squeeze'`·`'dizzy'`) · `label`. Mira a su alrededor y parpadea solo, sin seguir el cursor. Sin `label` es decorativa: lo que expresa se dice también en texto. Colores en `--mascota-*` |
 | `MascotAlert` | `@/core-ui` | El aviso del momento, dicho por Dr. Mochi (bajo la cabecera: `AppShell notice`). `state` (de `Mascot`) · `tone` info·success·warning·danger · `label` (la etiqueta corta) · `icon` · `title` **(req.)** · `children` (el detalle) · `actions` · `headingLevel`. Para lo que alguien tiene que hacer; un estado informativo no lo necesita |
-| `StatCard` | `@/core-ui` | `label` · `value` · `note` · `severity` neutral·normal·suspect·abnormal·nodata (el icono solo sale en suspect y abnormal) · `percent` · `info` · `delay` · `trend` `{points:{label,value,title?}[],label?,format?}` (barras de los últimos periodos junto a la cifra; `value: null` es un hueco, no un cero) |
+| `StatCard` | `@/core-ui` | `label` · `value` · `note` · `severity` neutral·normal·suspect·abnormal·nodata (sin icono: el tono va en la barra) · `percent` · `info` (explicación detrás de un ⓘ junto a la etiqueta) · `delay` (retrasa el crecimiento de la barra) · `trend` `{points:{label,value,title?}[],label?,format?}` (barras de los últimos periodos junto a la cifra; `value: null` es un hueco, no un cero) |
 | `Alert` | `@/core-ui` | `tone` info·success·warning·error · `title` · `action` · `children` |
 | `Dialog` | `@/core-ui` | `title` **(req.)** · `subtitle` · `onClose` **(req.)** · `maxWidth` · `size` md·full (`full`: ocupa la ventana; cabecera y pie fijos, solo el cuerpo se desplaza en vertical) · `closeButton` (false quita la X; Esc y clic fuera siguen cerrando) · `footer` · `children` |
 | `DetailDialog` | `@/core-ui` | `title` · `subtitle` · `badge` · `icon` · `tone` · `fields` · `block` · `aside` · `onClose` |
-| `Tooltip` | `@/core-ui` | `title` · `body` **(req.)** · `focusable` · `as` · `style` · Con `focusable`, el objetivo mide al menos 24 px de alto sin mover el texto |
+| `Tooltip` | `@/core-ui` | `title` · `body` · `focusable` · `as` · `placement` top·right · `style` · Explicación breve de algo que **no es un control**: sobre un botón, enlace o campo habilitado no sale (uno deshabilitado sí, para decir por qué). Anclado encima del elemento; espera `--delay-tip` al pasar el puntero |
+| `InfoTip` | `@/core-ui` | `label` **(req.)** · `title` · `children`/`body` · `size` · El ⓘ que explica una cifra, una abreviatura o una columna. Es un botón: Tab, «Qué significa: …», y se abre al tocarlo |
+| `DataTip` | `@/core-ui` | `open` · `anchor` `{x,y}`/`{x,top,bottom}` · `label` · `value` · `detail` · `children` · `hint` · `expanded` · La lectura de un dato de un gráfico: tarjeta blanca encima del punto |
 | `Tabs` | `@/core-ui` | `tabs` `{key,label}[]` · `active` · `onChange` · `alerts` · `style`. Píldora gris con la pestaña activa rellena, como las vistas de la barra |
 | `Toast` | `@/core-ui` | `message` · `onClose` **(req.)** · `duration` (3600 ms) |
 | `DropdownMenu` | `@/core-ui` | `trigger` **(req.)** · `items` `{id,label,icon,onSelect,tone,disabled,separator}[]` · `align` |
@@ -136,10 +138,12 @@ Para roles, turnos, salas y cupos. Comparten los tonos `ok`·`info`·`warn`·`cr
 ## 4. Gráficos
 
 `GaugeArc` · `Sparkline` · `StackedBars` · `SeriesBars` · `Funnel` · `Ranking` ·
-`SplitBar`. Todos en SVG o CSS, sin librería. `StackedBars` lleva tooltip por
-tramo y anima cada tramo por separado; acepta `unit` para nombrar lo que cuenta.
+`SplitBar`. Todos en SVG o CSS, sin librería. `StackedBars` se lee por tramo
+(`DataTip` encima de la barra) y anima cada tramo por separado; acepta `unit` para nombrar lo que
+cuenta. Los gráficos son lo único del kit que se anima al aparecer: sus barras crecen cada vez que se
+muestran y se reacomodan al cambiar los datos.
 
-`SeriesBars` es la serie de una sola medida (a ancho de teléfono rotula un mes de cada dos o tres, siempre el último; todos siguen en su tooltip): `points` `{key?,label,title?,value,detail?}[]`
+`SeriesBars` es la serie de una sola medida (a ancho de teléfono rotula un mes de cada dos o tres, siempre el último; todos siguen en su lectura): `points` `{key?,label,title?,value,detail?}[]`
 donde `value: null` **no se dibuja como cero**. Un hueco en medio de la serie
 sale punteado y rotulado; los periodos vacíos del final se agrupan en un bloque
 (`emptyTail`).

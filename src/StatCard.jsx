@@ -1,4 +1,4 @@
-import { Tooltip } from './Tooltip.jsx';
+import { InfoTip, Tooltip } from './Tooltip.jsx';
 import { Icon } from './icons.jsx';
 
 const SEVERIDAD = {
@@ -9,8 +9,8 @@ const SEVERIDAD = {
   nodata: 'var(--subtle-foreground)',
 };
 
-/* El tono de texto de cada severidad: el icono va en él porque el color pleno
-   (el ámbar, sobre todo) no se lee sobre blanco. */
+/* El tono de texto de cada severidad: el color pleno (el ámbar, sobre todo)
+   no se lee sobre blanco. */
 const SEVERIDAD_TEXTO = {
   neutral: 'var(--primary-text)',
   normal: 'var(--success-text)',
@@ -19,18 +19,11 @@ const SEVERIDAD_TEXTO = {
   nodata: 'var(--subtle-foreground)',
 };
 
-/* El icono solo aparece cuando la cifra avisa de algo (sospechosa o
-   anormal). En una fila de cifras normales, cuatro iconos iguales no decían
-   nada, y un visto junto a «0 fuera de plazo» se leía como contradicción. */
-const AVISA = new Set(['suspect', 'abnormal']);
-
-const ICONO = {
-  neutral: 'sh-chart',
-  normal: 'sh-ok',
-  suspect: 'sh-warn',
-  abnormal: 'sh-crit',
-  nodata: 'sh-none',
-};
+/* Sin icono de severidad (2.0.0, 26/11/2026). Antes, una cifra que avisaba
+   (sospechosa o anormal) llevaba un triángulo en un círculo a la derecha de
+   la etiqueta: rompía la alineación de la fila, porque unas tarjetas lo
+   tenían y otras no. Lo que avisa lo dicen la etiqueta y la nota («Por
+   mejorar», «6 por debajo»), y la barra conserva el color de la severidad. */
 
 /* La tendencia junto a la cifra: barras pequeñas de los últimos periodos, la
    del periodo de la cifra en el color de la acción y las anteriores en gris.
@@ -128,8 +121,16 @@ export function StatCard({ label = 'Métrica', value = '—', note, severity = '
       aria-label={onClick ? `${label}: ${value}` : undefined}
     >
       <div className="hrl-stat__top">
-        {info ? (
-          <Tooltip title={label} body={info} focusable={!onClick}>
+        {/* La explicación va detrás del ⓘ (2.0.0), no sobre la etiqueta entera.
+            En una tarjeta que es un botón no se puede anidar otro: ahí el icono
+            se queda como pista visual y la explicación sale al pasar el puntero. */}
+        {info && !onClick ? (
+          <span className="hrl-stat__label hrl-stat__label--info">
+            {label}
+            <InfoTip label={label} size={14}>{info}</InfoTip>
+          </span>
+        ) : info ? (
+          <Tooltip title={label} body={info} focusable={false}>
             <span className="hrl-stat__label hrl-stat__label--info">
               {label}
               <Icon name="sh-info" size={14} />
@@ -137,11 +138,6 @@ export function StatCard({ label = 'Métrica', value = '—', note, severity = '
           </Tooltip>
         ) : (
           <span className="hrl-stat__label">{label}</span>
-        )}
-        {AVISA.has(severity) && (
-          <span className="hrl-stat__icon">
-            <Icon name={ICONO[severity]} size={18} />
-          </span>
         )}
       </div>
       {trend ? (

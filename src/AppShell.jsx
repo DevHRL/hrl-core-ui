@@ -145,8 +145,8 @@ const SidebarNav = memo(function SidebarNav({ navItems, active, onSelect, plegad
                 as="div"
                 style={{ display: 'block', width: '100%' }}
                 focusable={false}
+                placement="right"
                 title={item.label}
-                body={item.group ? `${item.group} · ${item.label}` : item.label}
               >
                 {boton}
               </Tooltip>
@@ -312,7 +312,10 @@ const porcentaje = (n) => `${Math.round(n * 100)} %`;
 
 /* Apariencia y accesibilidad: modo oscuro, contraste, tamaño del texto y
    subrayado de enlaces. Todo se aplica al instante —el cambio es su propia
-   vista previa— y una región aria-live dice qué cambió sin mover el foco. */
+   vista previa— y una región aria-live dice qué cambió sin mover el foco.
+   No hay interruptor de animaciones (se probó en 2.0.0 y se retiró el
+   27/11/2026): el kit solo anima lo que responde a una acción, y quien no
+   quiere movimiento lo pide en su sistema operativo. */
 function Preferencias({ tema, onTema, prefs, onPrefs, onRestablecer }) {
   const [anuncio, setAnuncio] = useState('');
   const cambiado = Object.keys(PREFERENCE_DEFAULTS).some((k) => prefs[k] !== PREFERENCE_DEFAULTS[k]);

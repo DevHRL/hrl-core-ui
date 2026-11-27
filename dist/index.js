@@ -12,7 +12,7 @@ import { StatCard } from "./StatCard.js";
 import { Alert } from "./Alert.js";
 import { Dialog } from "./Dialog.js";
 import { DetailDialog, Field, Timeline } from "./DetailDialog.js";
-import { Tooltip, FloatingTip } from "./Tooltip.js";
+import { Tooltip, FloatingTip, InfoTip, DataTip } from "./Tooltip.js";
 import { TruncatedText } from "./TruncatedText.js";
 import { Tabs } from "./Tabs.js";
 import { Toast } from "./Toast.js";
@@ -70,6 +70,7 @@ export {
   CompactSelect,
   DEPRECATED,
   DataTable,
+  DataTip,
   DayTimeline,
   DetailDialog,
   Dialog,
@@ -89,6 +90,7 @@ export {
   Icon,
   IconButton,
   IconSprite,
+  InfoTip,
   Input,
   LOGIN_BACKDROPS,
   LoginScreen,

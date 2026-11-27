@@ -3,6 +3,59 @@
 Formato: qué cambió y por qué. Las versiones siguen el criterio semántico —
 quitar o renombrar una prop es un cambio mayor, porque rompe a quien ya la usa.
 
+## 2.0.0 — 27/11/2026
+
+Tooltips menos invasivos y menos movimiento. Es mayor por lo que cambia en la pantalla de cada
+sistema sin tocar su código: los botones dejan de mostrar su etiqueta oscura y las pantallas dejan de
+armarse por partes. No se quitó ni se renombró ninguna prop.
+
+**Tooltips: donde se piden, no en cada botón**
+
+- **`Tooltip` no sale sobre un control.** Si envuelve un botón, un enlace o un campo habilitado, no
+  abre nada: el control ya dice lo que es (su texto o su `aria-label`), y una burbuja oscura en cada
+  botón tapaba lo que se estaba mirando a cada paso del puntero. Lo decide el componente, así que
+  ningún sistema tiene que tocar los tooltips que ya escribió. Un control deshabilitado la conserva:
+  es el único modo de saber por qué no se puede pulsar.
+- **`Tooltip` cambia de forma**: anclado al elemento (encima, o debajo si no cabe) y no al costado
+  del cursor; espera `--delay-tip` (0,3 s) antes de salir al pasar el puntero, para que pasar de
+  camino a otra cosa no abra nada, y sale al instante por teclado. Es más pequeño (280 px, texto de
+  12,5 px). `body` deja de ser obligatoria; `placement` admite `right`.
+- **`InfoTip`** (nuevo): el ⓘ que explica una cifra, una abreviatura o una columna, junto a lo que
+  explica. Es un botón de verdad (Tab, nombre accesible «Qué significa: …»). Con ratón vive lo que
+  dura el puntero encima; con el dedo queda abierto hasta otro toque. Props: `label` **(req.)**,
+  `title`, `children` (o `body`), `size`.
+- **`DataTip`** (nuevo): la lectura de un dato de un gráfico, una tarjeta blanca encima del punto
+  con rótulo, cifra y detalle. Se desliza de un punto al siguiente. Props: `open`, `anchor`
+  (`{x, y}` o `{x, top, bottom}`), `label`, `value`, `detail`, `children`, `hint` (pista al pie,
+  «Clic para ampliar») y `expanded` (la lectura ampliada que quien la usa fija con un clic).
+- **`StatCard`**: con `info`, la explicación va detrás de un ⓘ junto a la etiqueta, no sobre la
+  etiqueta entera. **Ya no lleva icono de severidad**: el triángulo de `suspect` y `abnormal`
+  rompía la alineación de una fila de cifras, porque unas tarjetas lo tenían y otras no. Lo dicen la
+  etiqueta, la nota y el color de la barra.
+- **`StackedBars` y `SeriesBars`** leen cada barra con `DataTip`, encima de ella, en vez de la
+  burbuja que seguía al cursor.
+- Tokens nuevos: `--tip-bg`, `--tip-fg`, `--tip-muted`, `--tip-border`, `--datatip-bg`,
+  `--datatip-fg`, `--datatip-muted`, `--datatip-border`, `--shadow-datatip` (con su versión oscura),
+  `--duration-tip` y `--delay-tip`.
+
+**Movimiento: solo los gráficos**
+
+Se probó una pantalla que se armaba sola (tarjetas en cascada, cifras que contaban desde cero,
+dígitos que rodaban, una pestaña que se fundía en otra, botones que cedían al pulsarlos) y se retiró:
+retrasaba la lectura de pantallas que se abren todos los días, cortaba la fluidez en equipos modestos
+y, mientras contaba, mostraba cifras que no eran.
+
+- **Lo único que se mueve al llegar son los gráficos**: sus barras crecen y sus arcos se cierran cada
+  vez que se muestran, como hasta ahora, y al cambiar los datos las barras de `StackedBars`,
+  `SeriesBars` y `Sparkline` se reacomodan en vez de saltar.
+- **Sin entrada**: `.hrl-content` (la pantalla), `Card`/`.hrl-section`, `StatCard`, `.hrl-aviso`,
+  `MascotAlert`, las etapas de `Funnel` y las filas de `Ranking`. La prop `delay` de `StatCard` solo
+  retrasa ya el crecimiento de su barra.
+- Lo que flota (diálogos, cajones, menús, avisos, burbujas) conserva su entrada y su salida.
+- Token nuevo: `--duration-draw` (0,8 s), lo que tarda en trazarse la línea de un gráfico.
+- No hay interruptor de animaciones: con movimiento reducido en el sistema operativo, lo que entra
+  solo se funde.
+
 ## 1.11.0-redesign.9 — 24/11/2026 (prelanzamiento)
 
 Tres arreglos de accesibilidad que encontró axe-core en las pruebas en navegador del Sistema de Reporte

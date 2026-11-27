@@ -250,6 +250,23 @@
   --transition-fast: var(--duration-fast) var(--ease);
   --transition-base: var(--duration-base) var(--ease);
   --transition-slow: var(--duration-slow) var(--ease);
+  --duration-tip: 0.14s;
+  --delay-tip: 0.3s;
+  --duration-draw: 0.8s;
+
+  /* Las dos burbujas (2.0.0). La explicación (Tooltip, InfoTip) es oscura: el
+     sistema hablando de la interfaz. La lectura del dato (DataTip) es una
+     tarjeta blanca: más dato, del mismo material que la tarjeta donde está el
+     gráfico. */
+  --tip-bg: #101828;
+  --tip-fg: #ffffff;
+  --tip-muted: rgba(255, 255, 255, 0.74);
+  --tip-border: transparent;
+  --datatip-bg: var(--bg-surface);
+  --datatip-fg: var(--text-primary);
+  --datatip-muted: var(--text-secondary);
+  --datatip-border: rgba(16, 24, 40, 0.07);
+  --shadow-datatip: 0 1px 2px rgba(16, 24, 40, 0.05), 0 8px 24px -4px rgba(16, 24, 40, 0.16);
 
   /* Alto minimo de un objetivo tactil. El contrato de design.md exige 40px como
      minimo en cualquier control interactivo. */
@@ -367,8 +384,6 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   color: inherit;
   text-align: left;
   transition: box-shadow var(--transition-base);
-  animation: hrl-riseIn 0.5s var(--ease) both;
-  animation-delay: var(--delay, 0ms);
 }
 
 /* Solo cuando la tarjeta lleva `onClick` (un botón real, no un `article`):
@@ -401,21 +416,6 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
 .hrl-stat__label--info:hover svg,
 .hrl-stat__label--info:focus-visible { color: var(--text-primary); }
 
-/* El icono de la severidad en un círculo con borde del mismo color. El icono
-   va en el tono de texto (--sev-texto), que se lee sobre blanco; la barra usa
-   el color pleno (--sev). */
-.hrl-stat__icon {
-  width: 38px;
-  height: 38px;
-  flex: 0 0 auto;
-  border-radius: var(--radius-full);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1.5px solid color-mix(in srgb, var(--sev-texto, var(--sev)) 40%, transparent);
-  color: var(--sev-texto, var(--sev));
-}
-
 .hrl-stat__value {
   font-size: var(--text-2xl, 32px);
   font-weight: var(--weight-extrabold);
@@ -437,7 +437,7 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   background: var(--sev);
   border-radius: 0 var(--radius-full) var(--radius-full) 0;
   transform-origin: left;
-  animation: hrl-barGrowX 0.85s var(--ease) both;
+  animation: hrl-barGrowX 0.85s var(--ease) backwards;
   animation-delay: calc(var(--delay, 0ms) + 120ms);
 }
 
@@ -464,7 +464,7 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   fill: color-mix(in srgb, var(--primary) 22%, var(--muted));
   transform-box: fill-box;
   transform-origin: bottom;
-  animation: hrl-barraCrece 0.6s var(--ease) both;
+  animation: hrl-barraCrece 0.6s var(--ease) backwards;
 }
 .hrl-stat__tendencia-barra--actual { fill: var(--primary); }
 .hrl-stat__tendencia-hueco { stroke: var(--subtle-foreground); stroke-width: 1.5; stroke-dasharray: 2 2; }
@@ -661,7 +661,6 @@ html { scrollbar-color: rgba(145, 158, 171, 0.55) transparent; }
   box-shadow: var(--shadow-card);
   padding: 22px;
   min-width: 0;
-  animation: hrl-riseIn 0.55s var(--ease) both;
 }
 
 .hrl-section--flush { padding: 0; overflow: hidden; }
@@ -1250,7 +1249,8 @@ body { margin: 0; background: #f1f2f4; }
   flex: 1;
   min-width: 0;
   padding: 26px 0 30px;
-  animation: hrl-panelIn 0.34s var(--ease) both;
+  /* Sin entrada (2.0.0): la pantalla está al abrirla. Lo único que se mueve al
+     llegar son los gráficos (ver «Movimiento», al final). */
 }
 
 /* Pantallas estrechas: el menú lateral deja de ocupar sitio y pasa a ser un
@@ -1657,38 +1657,77 @@ body { margin: 0; background: #f1f2f4; }
 
 .hrl-legend span { display: inline-flex; align-items: center; gap: 7px; }
 
-/* ------------------------------------------------------------------ InfoTip */
+/* ------------------------------------------------- Tooltip, InfoTip, FloatingTip
+
+   Desde 2.0.0 la burbuja oscura es corta: una etiqueta o una explicación de
+   una o dos líneas, no un párrafo. Si hace falta más, no es un tooltip: es
+   una nota en la tarjeta o el detalle del registro. */
 
 .hrl-tip {
   position: fixed;
-  /* Se ancla por el costado (siempre por left, ver Tooltip.jsx) y se centra en
-     vertical sobre el punto. El ancho es el de su contenido y no el del espacio
-     que le queda hasta el borde de la ventana. */
-  transform: translateY(-50%);
   width: max-content;
-  background: var(--toast-bg);
-  color: rgba(255, 255, 255, 0.74);
+  max-width: 280px;
+  background: var(--tip-bg);
+  color: var(--tip-muted);
+  border: 1px solid var(--tip-border);
   font-family: var(--font-sans, 'Plus Jakarta Sans', system-ui, sans-serif);
-  font-size: var(--text-base, 13.5px);
-  line-height: 1.5;
-  padding: 14px 18px;
-  border-radius: var(--radius-lg, 14px);
-  max-width: 320px;
-  box-shadow: 0 18px 36px -10px rgba(28, 37, 46, 0.55);
+  font-size: var(--text-sm, 12.5px);
+  line-height: 1.45;
+  padding: 7px 11px;
+  border-radius: var(--radius-sm, 8px);
+  box-shadow: var(--shadow-sm);
   pointer-events: none;
   z-index: 220;
-  animation: hrl-tipIn 0.16s var(--ease) both;
-  /* Sin transición de left/top: sigue al cursor al instante. Con retardo
-     llegaba tarde y, al cambiar de lado, cruzaba por debajo del puntero. */
 }
 
 .hrl-tip__title {
   display: block;
-  color: #fff;
-  font-size: var(--text-md, 14px);
-  font-weight: 700;
-  letter-spacing: -0.1px;
-  margin-bottom: 5px;
+  color: var(--tip-fg);
+  font-size: var(--text-sm, 12.5px);
+  font-weight: var(--weight-semibold);
+}
+
+.hrl-tip__title + .hrl-tip__body { display: block; margin-top: 2px; }
+/* Sin título, el cuerpo es la etiqueta: se lee con el blanco pleno. */
+.hrl-tip__body:first-child { color: var(--tip-fg); }
+
+/* La flecha apunta al ancla aunque la burbuja se haya corrido para no salirse
+   de la ventana (--hrl-tip-flecha la pone Tooltip.jsx). */
+.hrl-tip--anclada::after {
+  content: '';
+  position: absolute;
+  left: var(--hrl-tip-flecha, 50%);
+  width: 8px;
+  height: 8px;
+  background: inherit;
+  border: inherit;
+  transform: translateX(-50%) rotate(45deg);
+}
+.hrl-tip--arriba::after { bottom: -5px; border-top: none; border-left: none; }
+.hrl-tip--abajo::after { top: -5px; border-bottom: none; border-right: none; }
+.hrl-tip--derecha::after { display: none; }
+
+/* Anclada: espera `--delay-tip` antes de salir, para que pasar el puntero de
+   camino a otra cosa no abra nada. Por teclado, o recién cerrada otra, sale
+   sin espera (--inmediata). `backwards` y no `both`: el transform final no se
+   queda puesto (ver design.md § 3.1). */
+.hrl-tip--arriba { transform-origin: var(--hrl-tip-flecha, 50%) 100%; animation: hrl-tipArriba var(--duration-tip) var(--ease) var(--delay-tip) backwards; }
+.hrl-tip--abajo { transform-origin: var(--hrl-tip-flecha, 50%) 0; animation: hrl-tipAbajo var(--duration-tip) var(--ease) var(--delay-tip) backwards; }
+.hrl-tip--derecha { transform-origin: 0 50%; animation: hrl-tipDerecha var(--duration-tip) var(--ease) var(--delay-tip) backwards; }
+.hrl-tip--inmediata { animation-delay: 0s; }
+.hrl-tip--saliendo { animation: hrl-tipSale var(--duration-tip) var(--ease) forwards; }
+
+@keyframes hrl-tipArriba { from { opacity: 0; transform: translateY(4px) scale(0.96); } }
+@keyframes hrl-tipAbajo { from { opacity: 0; transform: translateY(-4px) scale(0.96); } }
+@keyframes hrl-tipDerecha { from { opacity: 0; transform: translateX(-4px) scale(0.96); } }
+@keyframes hrl-tipSale { to { opacity: 0; } }
+
+/* Al costado del cursor (FloatingTip): sin transición de left/top, sigue al
+   cursor al instante. Con retardo llegaba tarde y, al cambiar de lado, cruzaba
+   por debajo del puntero. */
+.hrl-tip--cursor {
+  transform: translateY(-50%);
+  animation: hrl-tipIn var(--duration-tip) var(--ease) both;
 }
 
 @keyframes hrl-tipIn {
@@ -1696,14 +1735,102 @@ body { margin: 0; background: #f1f2f4; }
   to { opacity: 1; transform: translateY(-50%) scale(1); }
 }
 
-/* A la izquierda del punto: sin sitio a la derecha (cerca del borde) el
-   tooltip pasa al otro costado en vez de cortarse o de quedar debajo del cursor. */
-.hrl-tip--izquierda { transform: translate(-100%, -50%); animation-name: hrl-tipInIzquierda; }
+.hrl-tip--cursor.hrl-tip--izquierda { transform: translate(-100%, -50%); animation-name: hrl-tipInIzquierda; }
 
 @keyframes hrl-tipInIzquierda {
   from { opacity: 0; transform: translate(calc(-100% + 4px), -50%) scale(0.97); }
   to { opacity: 1; transform: translate(-100%, -50%) scale(1); }
 }
+
+/* El ⓘ. Se ve de 20 px para no empujar el texto, pero su zona de toque es de
+   40 (--touch-target): el ::before la agranda sin ocupar sitio. */
+.hrl-infotip { display: inline-flex; vertical-align: middle; }
+
+.hrl-infotip__boton {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin: -2px 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--subtle-foreground);
+  cursor: pointer;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.hrl-infotip__boton::before {
+  content: '';
+  position: absolute;
+  inset: calc((20px - var(--touch-target, 40px)) / 2);
+}
+
+.hrl-infotip__boton:hover,
+.hrl-infotip__boton[aria-expanded='true'] { color: var(--foreground); background: var(--neutral-soft); }
+.hrl-infotip__boton:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; }
+
+/* ------------------------------------------------------------------ DataTip
+
+   La lectura del dato: tarjeta blanca encima del punto. El contenedor se
+   ubica con transform (DataTip.jsx) y se desliza de un punto al siguiente;
+   la caja de adentro es la que entra y sale, para no pelear por el mismo
+   transform. */
+.hrl-datatip {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 220;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.hrl-datatip--desliza { transition: transform var(--duration-tip) var(--ease); }
+
+.hrl-datatip__caja {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: max-content;
+  min-width: 112px;
+  max-width: 300px;
+  padding: 10px 14px 11px;
+  background: var(--datatip-bg);
+  color: var(--datatip-fg);
+  border: 1px solid var(--datatip-border);
+  border-radius: var(--radius-lg, 14px);
+  box-shadow: var(--shadow-datatip);
+  font-family: var(--font-sans, 'Plus Jakarta Sans', system-ui, sans-serif);
+  line-height: 1.35;
+  transform-origin: 50% 100%;
+  animation: hrl-datatipArriba var(--duration-tip) var(--ease) backwards;
+}
+
+.hrl-datatip--abajo .hrl-datatip__caja { transform-origin: 50% 0; animation-name: hrl-datatipAbajo; }
+.hrl-datatip--saliendo .hrl-datatip__caja { animation: hrl-datatipSale var(--duration-tip) var(--ease) forwards; }
+
+.hrl-datatip__rotulo { font-size: var(--text-sm, 12.5px); color: var(--datatip-muted); }
+.hrl-datatip__valor {
+  font-size: var(--text-lg, 17px);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+.hrl-datatip__detalle { font-size: var(--text-sm, 12.5px); color: var(--datatip-muted); }
+/* La pista al pie: dice qué más se puede hacer, sin competir con la cifra. */
+.hrl-datatip__pista {
+  margin-top: var(--space-1, 4px);
+  font-size: var(--text-xs, 11px);
+  color: var(--subtle-foreground);
+}
+/* Ampliada, la tarjeta deja más ancho al texto corrido de las comparaciones. */
+.hrl-datatip--ampliada .hrl-datatip__caja { max-width: 340px; }
+
+@keyframes hrl-datatipArriba { from { opacity: 0; transform: translateY(6px) scale(0.96); } }
+@keyframes hrl-datatipAbajo { from { opacity: 0; transform: translateY(-6px) scale(0.96); } }
+@keyframes hrl-datatipSale { to { opacity: 0; transform: scale(0.98); } }
 
 /* -------------------------------------------------------------------- Modal */
 
@@ -2067,7 +2194,6 @@ body { margin: 0; background: #f1f2f4; }
   background: var(--warning-soft);
   border: 1px solid color-mix(in srgb, var(--warning) 26%, transparent);
   color: var(--warning-text);
-  animation: hrl-riseIn 0.5s var(--ease) both;
 }
 
 .hrl-aviso svg { flex: 0 0 auto; margin-top: 1px; }
@@ -2097,7 +2223,7 @@ body { margin: 0; background: #f1f2f4; }
 .hrl-gauge svg { width: 100%; max-width: 200px; display: block; }
 
 .hrl-gauge__arco {
-  animation: hrl-gaugeIn 0.9s var(--ease) both;
+  animation: hrl-gaugeIn 0.9s var(--ease) backwards;
   transition: stroke-dashoffset 0.6s var(--ease);
 }
 
@@ -2130,8 +2256,9 @@ body { margin: 0; background: #f1f2f4; }
 .hrl-spark__barra {
   width: 6px;
   border-radius: 2px;
-  animation: hrl-barGrow 0.8s var(--ease) both;
+  animation: hrl-barGrow 0.8s var(--ease) backwards;
   transform-origin: bottom;
+  transition: height var(--transition-fast);
 }
 
 @keyframes hrl-barGrow {
@@ -2192,10 +2319,12 @@ body { margin: 0; background: #f1f2f4; }
 .hrl-barras__tramo {
   display: block;
   width: 100%;
-  animation: hrl-barGrow 0.7s var(--ease) both;
+  animation: hrl-barGrow 0.7s var(--ease) backwards;
   animation-delay: var(--retardo, 0ms);
   transform-origin: bottom;
-  transition: filter 0.3s var(--ease), opacity 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  /* El alto también: cuando cambian los datos, la barra crece o se encoge en
+     vez de saltar, y se ve cuál cambió (2.0.0). */
+  transition: height var(--transition-fast), filter 0.3s var(--ease), opacity 0.3s var(--ease), box-shadow 0.3s var(--ease);
 }
 
 /* Al apuntar un tramo se atenúan los demás de la misma pila: en una barra
@@ -2247,7 +2376,7 @@ body { margin: 0; background: #f1f2f4; }
   height: 100%;
   border-radius: 4px;
   transform-origin: left;
-  animation: hrl-barGrowX 0.85s var(--ease) both;
+  animation: hrl-barGrowX 0.85s var(--ease) backwards;
 }
 
 .hrl-aviso-info {
@@ -2480,8 +2609,6 @@ body { margin: 0; background: #f1f2f4; }
   padding: 16px 18px;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg, 14px);
-  animation: hrl-riseIn 0.5s var(--ease) both;
-  animation-delay: var(--delay, 0ms);
 }
 
 .hrl-embudo__rotulo {
@@ -2508,8 +2635,6 @@ body { margin: 0; background: #f1f2f4; }
   display: flex;
   flex-direction: column;
   gap: 7px;
-  animation: hrl-riseIn 0.45s var(--ease) both;
-  animation-delay: var(--delay, 0ms);
 }
 
 .hrl-ranking__alto { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; }
@@ -2787,6 +2912,15 @@ body { margin: 0; background: #f1f2f4; }
      blanco, se apagaba sobre el fondo oscuro. */
   --brand: #2bb39f;
   --brand-hover: #3cc4af;
+
+  /* Burbujas en oscuro: una negra sobre superficie oscura pierde su borde y una
+     blanca deslumbra. La explicación sube un tono y lleva un filo claro; la
+     lectura del dato es una superficie elevada, no blanca. */
+  --tip-bg: #2b353e;
+  --tip-border: rgba(255, 255, 255, 0.1);
+  --datatip-bg: #222a31;
+  --datatip-border: rgba(255, 255, 255, 0.08);
+  --shadow-datatip: 0 1px 2px rgba(0, 0, 0, 0.5), 0 10px 28px -6px rgba(0, 0, 0, 0.7);
 
   color-scheme: dark;
 }
@@ -3672,7 +3806,6 @@ body { margin: 0; background: #f1f2f4; }
   border-radius: var(--radius-card);
   background: var(--surface);
   box-shadow: var(--shadow-card);
-  animation: hrl-riseIn 0.5s var(--ease) both;
 }
 
 .hrl-mochi-aviso--success { --mochi-fondo: var(--success-soft); --mochi-texto: var(--success-text); }
@@ -3895,6 +4028,22 @@ body { margin: 0; background: #f1f2f4; }
   .hrl-section { box-shadow: none !important; break-inside: avoid; margin-bottom: 16px; }
 }
 
+
+/* ------------------------------------------------------------ Movimiento (2.0.0)
+
+   Decidido el 27/11/2026, tras probar una pantalla que se armaba sola
+   (tarjetas en cascada, cifras que contaban, una vista que se fundía en otra,
+   botones que cedían): retrasaba la lectura y cortaba la fluidez. Lo único que
+   se mueve al llegar son los gráficos: sus barras crecen y sus arcos se
+   cierran cada vez que se muestran, y al cambiar los datos se reacomodan en
+   vez de saltar. La pantalla, las tarjetas y las cifras están quietas, y la
+   cifra que se ve es siempre la real.
+
+   Lo que flota (diálogos, cajones, menús, avisos, burbujas) conserva su
+   entrada y su salida de siempre: dice de dónde sale y que se cerró. No hay
+   interruptor: con movimiento reducido en el sistema operativo, lo que entra
+   solo se funde (bloque siguiente). */
+
 /* Movimiento reducido: una alternativa, no un apagado. Va al final del
    archivo a propósito: un @keyframes con el mismo nombre lo gana el último
    del documento, y estos deben ganarles a los originales.
@@ -3950,7 +4099,7 @@ body { margin: 0; background: #f1f2f4; }
   display: block;
   height: 100%;
   transform-origin: left;
-  animation: hrl-barGrowX 0.85s var(--ease) both;
+  animation: hrl-barGrowX 0.85s var(--ease) backwards;
 }
 
 .hrl-capacidad__tramo + .hrl-capacidad__tramo { box-shadow: inset 2px 0 0 var(--surface); }
@@ -4292,6 +4441,15 @@ button.hrl-agenda__bloque:hover { box-shadow: var(--shadow-sm); }
 .hrl-agenda__vacio { margin: 0; padding: 18px; text-align: center; font-size: var(--text-sm, 12.5px); color: var(--muted-foreground); }
 
 @media (prefers-reduced-motion: reduce) {
+  /* 2.0.0: las burbujas aparecen en su sitio y la lectura del dato salta de
+     un punto al siguiente sin deslizarse. */
+  @keyframes hrl-tipArriba { from { opacity: 0; } }
+  @keyframes hrl-tipAbajo { from { opacity: 0; } }
+  @keyframes hrl-tipDerecha { from { opacity: 0; } }
+  @keyframes hrl-datatipArriba { from { opacity: 0; } }
+  @keyframes hrl-datatipAbajo { from { opacity: 0; } }
+  @keyframes hrl-datatipSale { to { opacity: 0; } }
+  .hrl-datatip--desliza { transition: none; }
   .hrl-nuevo *,
   .hrl-nuevo *::before,
   .hrl-nuevo *::after,
