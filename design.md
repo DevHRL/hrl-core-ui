@@ -143,10 +143,20 @@ hoy. Renombrar uno es un cambio de API: el nombre anterior pasa a
   resolverse contra él; el diálogo aparece fuera de la vista.
 - El cierre se anima antes de desmontar: `useExitAnimation`, no desmontar de golpe.
 - Al cerrar un menú, el foco vuelve al elemento que lo abrió.
-- **Un tooltip sale al costado del cursor**, centrado en vertical, y pasa al otro
-  costado cerca de un borde. Nunca arriba ni debajo (el puntero lo tapa), y sin
-  transición de posición: con retardo llega tarde y cruza bajo el cursor. Por
-  teclado se ancla al costado del propio elemento.
+- **Tres burbujas, cada una con su trabajo** (2.0.0). `Tooltip`: explicación
+  breve de algo que no es un control, anclada encima del elemento (debajo si no
+  cabe); al pasar el puntero espera `--delay-tip` antes de salir. **Sobre un
+  botón, un enlace o un campo no sale**: el control se explica solo, y una
+  burbuja en cada botón tapaba lo que se miraba (uno deshabilitado sí la
+  conserva, para decir por qué). `InfoTip`: el ⓘ junto a una cifra o una
+  abreviatura. `DataTip`: la lectura de un dato de un gráfico, blanca y encima
+  del punto. `FloatingTip` sigue al costado del cursor, solo en superficies con
+  miles de celdas.
+- **Lo único que se anima al llegar son los gráficos** (2.0.0): sus barras
+  crecen cada vez que se muestran y se reacomodan al cambiar los datos. La
+  pantalla, las tarjetas y las cifras no tienen entrada; lo que flota conserva
+  su entrada y su salida. Se probó una pantalla que se armaba por partes y se
+  retiró: retrasaba la lectura y cortaba la fluidez.
 - **Un menú se abre hacia donde quepa** (debajo del disparador o, si no, encima) y
   se acota a la ventana en los dos ejes; si no cabe entero, se desplaza.
 - El espacio disponible se mide con `anchoVisible()` (`src/viewport.js`), no con
@@ -211,7 +221,8 @@ Los componentes tienen que poder decir la verdad:
   en el último mes con datos y rotula el bloque vacío (`emptyTail`).
 - Si una cifra puede leerse de dos maneras (personas o atenciones, suma por
   categoría o total único), el componente ofrece dónde decirlo: tooltip o leyenda.
-- Todo KPI, botón, icono y abreviatura lleva su `Tooltip`.
+- Toda cifra o abreviatura que hay que explicar lleva su ⓘ (`InfoTip`, `info`
+  de `StatCard`); un botón no lleva tooltip: su texto o su `aria-label` lo dicen.
 
 ---
 

@@ -1,5 +1,5 @@
 import { jsx, jsxs } from "react/jsx-runtime";
-import { Tooltip } from "./Tooltip.js";
+import { InfoTip, Tooltip } from "./Tooltip.js";
 import { Icon } from "./icons.js";
 const SEVERIDAD = {
   neutral: "var(--accent)",
@@ -14,14 +14,6 @@ const SEVERIDAD_TEXTO = {
   suspect: "var(--warning-fg)",
   abnormal: "var(--destructive-text)",
   nodata: "var(--subtle-foreground)"
-};
-const AVISA = /* @__PURE__ */ new Set(["suspect", "abnormal"]);
-const ICONO = {
-  neutral: "sh-chart",
-  normal: "sh-ok",
-  suspect: "sh-warn",
-  abnormal: "sh-crit",
-  nodata: "sh-none"
 };
 const ANCHO_TENDENCIA = 104;
 const ALTO_TENDENCIA = 40;
@@ -96,13 +88,13 @@ function StatCard({ label = "M\xE9trica", value = "\u2014", note, severity = "ne
       onClick,
       "aria-label": onClick ? `${label}: ${value}` : void 0,
       children: [
-        /* @__PURE__ */ jsxs("div", { className: "hrl-stat__top", children: [
-          info ? /* @__PURE__ */ jsx(Tooltip, { title: label, body: info, focusable: !onClick, children: /* @__PURE__ */ jsxs("span", { className: "hrl-stat__label hrl-stat__label--info", children: [
-            label,
-            /* @__PURE__ */ jsx(Icon, { name: "sh-info", size: 14 })
-          ] }) }) : /* @__PURE__ */ jsx("span", { className: "hrl-stat__label", children: label }),
-          AVISA.has(severity) && /* @__PURE__ */ jsx("span", { className: "hrl-stat__icon", children: /* @__PURE__ */ jsx(Icon, { name: ICONO[severity], size: 18 }) })
-        ] }),
+        /* @__PURE__ */ jsx("div", { className: "hrl-stat__top", children: info && !onClick ? /* @__PURE__ */ jsxs("span", { className: "hrl-stat__label hrl-stat__label--info", children: [
+          label,
+          /* @__PURE__ */ jsx(InfoTip, { label, size: 14, children: info })
+        ] }) : info ? /* @__PURE__ */ jsx(Tooltip, { title: label, body: info, focusable: false, children: /* @__PURE__ */ jsxs("span", { className: "hrl-stat__label hrl-stat__label--info", children: [
+          label,
+          /* @__PURE__ */ jsx(Icon, { name: "sh-info", size: 14 })
+        ] }) }) : /* @__PURE__ */ jsx("span", { className: "hrl-stat__label", children: label }) }),
         trend ? /* @__PURE__ */ jsxs("div", { className: "hrl-stat__cuerpo", children: [
           /* @__PURE__ */ jsx("strong", { className: "hrl-stat__value", children: value }),
           /* @__PURE__ */ jsx(Tendencia, { trend })

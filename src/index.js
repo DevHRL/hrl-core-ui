@@ -25,7 +25,7 @@ export { StatCard } from './StatCard.jsx';
 export { Alert } from './Alert.jsx';
 export { Dialog } from './Dialog.jsx';
 export { DetailDialog, Field, Timeline } from './DetailDialog.jsx';
-export { Tooltip, FloatingTip } from './Tooltip.jsx';
+export { Tooltip, FloatingTip, InfoTip, DataTip } from './Tooltip.jsx';
 export { TruncatedText } from './TruncatedText.jsx';
 export { Tabs } from './Tabs.jsx';
 export { Toast } from './Toast.jsx';

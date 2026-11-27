@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/tiempos.js"],
+  "sourcesContent": ["/* Lee una duraci\u00F3n de los tokens (`--delay-tip`\u2026) en milisegundos, para el JS\n   que tiene que coincidir con lo que hace el CSS. As\u00ED un tiempo se ajusta en\n   tokens.json y no queda una copia en cada componente. Sin documento (pintado\n   en el servidor) o sin el token, `porDefecto`. */\nexport function msDelToken(nombre, porDefecto) {\n  if (typeof window === 'undefined') return porDefecto;\n  const crudo = getComputedStyle(document.documentElement).getPropertyValue(nombre).trim();\n  const n = parseFloat(crudo);\n  if (!Number.isFinite(n)) return porDefecto;\n  return crudo.endsWith('ms') ? n : n * 1000;\n}\n"],
+  "mappings": "AAIO,SAAS,WAAW,QAAQ,YAAY;AAC7C,MAAI,OAAO,WAAW,YAAa,QAAO;AAC1C,QAAM,QAAQ,iBAAiB,SAAS,eAAe,EAAE,iBAAiB,MAAM,EAAE,KAAK;AACvF,QAAM,IAAI,WAAW,KAAK;AAC1B,MAAI,CAAC,OAAO,SAAS,CAAC,EAAG,QAAO;AAChC,SAAO,MAAM,SAAS,IAAI,IAAI,IAAI,IAAI;AACxC;",
+  "names": []
+}
