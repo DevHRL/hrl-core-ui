@@ -1,0 +1,4 @@
+# Rama generada por .github/workflows/catalogo.yml en el repositorio
+# del kit. Solo contiene el sitio ya compilado: no hay nada que construir.
+[build]
+  publish = "."
